@@ -9,3 +9,7 @@ test/*.json
 
 # local working notes
 docs/entwicklung/STAND.md
+
+# internal planning sheets, local only
+docs/konzept/
+docs/entwicklung/

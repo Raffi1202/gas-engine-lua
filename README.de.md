@@ -74,7 +74,6 @@ Ohne Datei bleibt alles wie bisher. Was die Widgets anbieten, steht in
 | Widget Carb | `src/gas_carb/` |
 | Anleitungen (Quelle HTML, PDF daneben) | `docs/anleitung/`, `docs/*.pdf` |
 | Bildschirmfotos aus dem Simulator | `docs/bilder-simulator/` |
-| Konzept | `docs/konzept/` |
 | Tests, Erklärung in [test/LIESMICH.md](test/LIESMICH.md) | `test/` |
 
 ## Entwicklung

@@ -76,7 +76,6 @@ everything works as before. What the widgets offer is described in
 | Widget Carb | `src/gas_carb/` |
 | Manuals (HTML source, PDF next to it) | `docs/anleitung/`, `docs/*.pdf` |
 | Simulator screenshots | `docs/bilder-simulator/` |
-| Concept | `docs/konzept/` |
 | Tests, explained in [test/LIESMICH.md](test/LIESMICH.md) (German) | `test/` |
 
 ## Development
