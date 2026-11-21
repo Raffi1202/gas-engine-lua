@@ -2,7 +2,7 @@
 
 # Installation
 
-The steps are the same for both widgets; replace the file and folder name (`Gas-Engine-ECU-1.10.0.zip` / `gas_ecu` or `Gas-Engine-Carb-0.10.0.zip` / `gas_carb`).
+The steps are the same for both widgets; replace the file and folder name (`Gas-Engine-ECU-1.11.0.zip` / `gas_ecu` or `Gas-Engine-Carb-0.11.0.zip` / `gas_carb`).
 
 ## With FrSky Suite (recommended)
 1. Download the package ZIP from the latest **release** on GitHub. Do not unzip it.

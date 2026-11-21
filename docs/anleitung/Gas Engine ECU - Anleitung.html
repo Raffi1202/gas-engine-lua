@@ -31,20 +31,20 @@
   .neu { break-before: page; }
   .klein { font-size: 9pt; color: #56607a; }
 </style></head><body>
-<h1>Gas Engine ECU</h1><div class='unter'>Anleitung, Version 1.10.0 · Stand 21.11.2026</div>
+<h1>Gas Engine ECU</h1><div class='unter'>Anleitung, Version 1.11.0 · Stand 21.11.2026</div>
 <p>Gas Engine ECU ist ein Vollbild-Widget für FrSky-Sender mit Ethos. Es zeigt die Telemetrie eines Einspritzmotors mit ECU: Zylindertemperaturen, Drehzahl, Kraftstoffdruck, ECU-Spannung, Tank, Akkus, Stromweiche und Empfang. Es warnt mit Farbe, Ansage und Vibration und führt eine Liste deiner Flüge.</p>
 <div class='kasten blau'><b>Stand der Erprobung:</b> Getestet am X18RS (Ethos 26.2.0) mit einem Telemetrie-Simulator (48 Sensoren, Empfänger SR10 Plus): Sensorsuche, Stromweiche, Akkus, Sprache. Im Ethos-Simulator getestet: alle Seiten auf 800×480 und 480×320, deutsch und englisch. <b>Noch nicht getestet:</b> echter Flug, alle Menüpunkte einzeln am Sender, Ansagen im Flug, die Flugliste am Sender, andere Sender als X18RS.</div>
 <h2>1 Was du brauchst</h2><ul class='haken'>
 <li>Einen FrSky-Sender mit Ethos 26.1 oder neuer und Farbdisplay (X20, X18, X14, X10 u. a.).</li>
 <li>Die FrSky Suite auf dem Computer (zum Installieren), oder einen Kartenleser.</li>
-<li>Die Datei <b>Gas-Engine-ECU-1.10.0.zip</b> aus dem GitHub-Release.</li>
+<li>Die Datei <b>Gas-Engine-ECU-1.11.0.zip</b> aus dem GitHub-Release.</li>
 <li>Ein Modell mit Telemetrie: mindestens Drehzahl oder Zylindertemperatur. Alles weitere ist freiwillig.</li>
 <li>Einen Dreistufenschalter für Aus / Zündung / Choke (für Flugliste und «Motor aus»-Alarm).</li>
 </ul>
 <h2>2 Installieren</h2><h3>Mit der FrSky Suite (empfohlen)</h3><ol>
 <li>Schliesse den Sender per USB an den Computer an und wähle auf dem Sender <b>Ethos Suite</b>.</li>
 <li>Öffne die FrSky Suite und wähle <b>Lua-Bibliothek</b>.</li>
-<li>Klicke <b>Von lokaler ZIP installieren</b> und wähle <b>Gas-Engine-ECU-1.10.0.zip</b>. Entpacke die ZIP vorher nicht.</li>
+<li>Klicke <b>Von lokaler ZIP installieren</b> und wähle <b>Gas-Engine-ECU-1.11.0.zip</b>. Entpacke die ZIP vorher nicht.</li>
 <li>Trenne den Sender und starte ihn neu.</li>
 </ol><h3>Ohne Suite, über die SD-Karte</h3><ol>
 <li>Entpacke die ZIP auf dem Computer. Darin liegt der Ordner <b>gas_ecu</b>.</li>
@@ -228,6 +228,7 @@
 <tr><td>je Grenzwert (Zylinder, Drehzahl, Spritdruck, ECU-Spannung, Tank %, Tank-Restzeit, Akku 1–3, Zellen ungleich, Servostrom, Empfang)</td><td>ja</td><td>ja / nein</td><td>Nein: Ton, Ansage und Vibration dieses Alarms schweigen, solange der Motorschalter auf Aus steht. Die Anzeige bleibt farbig.</td></tr>
 </table>
 <h3>Mit dem Lua-Studio</h3><p>Hast du das PC-Programm Lua-Studio, legt es je Modell eine Datei <b>SD:/scripts/studio/Modellname.gas_ecu.lua</b> an (Sonderzeichen und Umlaute im Namen werden zu «_»). Dann kommen Einstellungen, Grenzen und die Kästchen der Kompaktansicht bzw. der Seite 1 aus dieser Datei, und oben im Menü steht «Studio-Datei geladen». Änderungen, die du danach im Menü machst, speichert das Widget in <b>Modellname.gas_ecu.funke.lua</b>; der Knopf <b>Zurück auf Studio-Stand</b> verwirft sie nach einer Rückfrage. Ohne Studio-Datei heisst der Knopf <b>Zurück auf Standard</b> und setzt alle Einstellungen auf den Werkwert, die Sensoren bleiben. Ist die Datei kaputt oder zu neu, steht unten 8 s ein Hinweis, danach ein «!» oben rechts, und das Widget arbeitet wie ohne Studio.</p>
+<p><b>Zylinder und Tank im eigenen Layout</b> (ab dieser Version): Wähle im Lua-Studio die Darstellung <b>zylinder</b> beim Wert «höchste Zylindertemperatur» oder <b>tank</b> bei «Tank %». Der Platz zeigt dann alle Zylinder-Säulen bzw. die Tank-Säule mit dem Knopf VOLLGETANKT genau wie Seite 1, auf die Platzgrösse skaliert (mindestens 160 × 220 Pixel bei 800 Pixel Breite). Jede Darstellung einmal je Ansicht.</p>
 <p>Im Lua-Studio heisst die Einstellung «auch bei Motor aus» (Feld <b>beiMotorAus</b>). Ein Grenzeintrag ohne Zahl ändert die Werkgrenze nie; ganz abgeschaltet wird ein Alarm nur mit «aus».</p>
 <h2 class='neu'>9 Wenn etwas nicht geht</h2>
 <table><tr><th style='width:36%'>Was du siehst</th><th>Was du tust</th></tr><tr><td>Das Widget fehlt in der Auswahl</td><td>Ordner liegt nicht auf der SD-Karte unter scripts/, oder der Lua-Speicher ist voll. Ordner prüfen, Sender neu starten, wenig benutzte Skripte von der SD-Karte entfernen.</td></tr><tr><td>«nur im Vollbild»</td><td>Das Feld ist kleiner als die Kompaktansicht. Layout «Vollbild» oder das Layout mit Kopf- und Fussleiste wählen.</td></tr><tr><td>Überall Striche, oben «KEINE DATEN»</td><td>Keine Telemetrie oder keine Sensoren zugewiesen. Empfänger an? Modell › Telemetrie › Sensoren suchen, dann im Widget «Suchen».</td></tr><tr><td>Ein Feld zeigt einen Strich</td><td>Der Sensor ist zugewiesen, liefert aber keinen Wert. In Ethos unter Telemetrie nachsehen, ob er Werte hat.</td></tr><tr><td>Ein Feld fehlt ganz</td><td>Kein Sensor zugewiesen. Im Menü zuweisen.</td></tr><tr><td>Falscher Sensor nach der Suche</td><td>Oben im Menü stehen die Felder, bei denen mehrere Sensoren passten. Von Hand richtig wählen.</td></tr><tr><td>Akku zeigt «Zellenzahl im Menü wählen»</td><td>Reiner Spannungssensor ohne Zellenzahl. «Akku n Zellen» einstellen.</td></tr><tr><td>Dauernd Zellwarnung bei LiFe oder NiMH</td><td>«Akku n Art» richtig einstellen, dann stimmen die Grenzen.</td></tr><tr><td>Keine Ansagen</td><td>«Ansagen» ein? Stumm-Schalter aus? Lautstärke des Senders? Ordner audio/ mitkopiert?</td></tr><tr><td>Kein Flug in der Liste</td><td>Motorschalter nicht zugewiesen oder «Stellung Aus» falsch.</td></tr><tr><td>Klein rot unten links ein Fehlertext</td><td>Ein Skriptfehler. Bild machen und mit dem Log (FrSky Suite › Debug-Log) als Fehler melden, siehe TESTLEITFADEN.</td></tr></table>

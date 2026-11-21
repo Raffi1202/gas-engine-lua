@@ -1111,6 +1111,8 @@ function K.wecke(w)
         collectgarbage()
         KOMPAKT = lade("kompakt.lua")
       end
+      -- Studio-Plätze «zylinder»/«tank» brauchen Seite 1 auch in der Kompaktansicht
+      if SEITE[1] == nil and stu and stu.st and stu.st.seite1 then SEITE[1] = lade("seite1.lua") end
     elseif SEITE[w.seite] == nil then
       KOMPAKT = nil
       for i = 1, SEITEN do SEITE[i] = nil end
@@ -1145,8 +1147,9 @@ function K.zeichne(w)
   end
   if an and L.kompakt then
     if KOMPAKT then KOMPAKT.leiste(w, L, Z, math.floor(36 * L.s)) end
-    ANSICHT.zeichne(w, L, Z, an)
+    ANSICHT.zeichne(w, L, Z, an, nil, SEITE[1])
     ANSICHT.hinweis(w, L, Z)
+    if w.dialog and w.dialog ~= "detail" then Z.dialog(w, L) end   -- z. B. Rückfrage des Knopfs im Platz «tank»
     if w.fehler then Z.fehlerZeichen(L) end
     return
   end
@@ -1164,7 +1167,7 @@ function K.zeichne(w)
     return
   end
   local S = SEITE[w.seite]
-  if an and w.seite == 1 then ANSICHT.zeichne(w, L, Z, an)        -- Studio ersetzt nur Seite 1
+  if an and w.seite == 1 then ANSICHT.zeichne(w, L, Z, an, nil, S)        -- Studio ersetzt nur Seite 1
   elseif S then S.zeichne(w, L, Z) end
   Z.kopf(w, L)
   if ANSICHT then ANSICHT.hinweis(w, L, Z) end

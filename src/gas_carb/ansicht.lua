@@ -1,5 +1,5 @@
 -- Gas Engine Carb: Plätze einer Studio-Ansicht zeichnen (Lua-Studio-Format v1, Abschnitte 6.3, 6.4 und 7).
--- Darstellungsarten: zahl, ring, balken_w, balken_s, kurve, status. Zeichnet nur; die Werte kommen aus w (Lua-Werte),
+-- Darstellungsarten: zahl, ring, balken_w, balken_s, kurve, status, zylinder, tank. Zeichnet nur; die Werte kommen aus w (Lua-Werte),
 -- aus w.studio.q (Sensoren, Kanäle), die Farben aus den Grenzen je Wert (w.studio.gr bzw. den Einstellungen).
 local A = {}
 local floor, max, min, abs = math.floor, math.max, math.min, math.abs
@@ -135,12 +135,32 @@ local function kurvePunkt(pl, x, now)
   return k
 end
 
-function A.zeichne(w, L, Z, an, dy)
+-- Plätze «zylinder» und «tank»: Zeichenroutinen der eingebauten Seite 1 (S1) mit eigener Skalierung.
+-- Bezugsgrösse = Spalte der eingebauten Seite im Entwurf 800 x 480; die Schrift wächst höchstens auf das 1,2-Fache.
+local GRUPPE = { zylinder = { 247, 356, "ZYLINDER" }, tank = { 247, 316, "KRAFTSTOFF" } }
+local function gruppe(w, L, Z, S1, pl, x, y, b, h)
+  local r = GRUPPE[pl.darstellung]
+  local sp = min(1.2 * L.s, b / r[1], h / r[2])
+  local Lp = pl.L
+  if Lp == nil or Lp.basis ~= L or Lp.s ~= sp then
+    Lp = setmetatable({ s = sp, klein = sp < 0.7, fi = {}, basis = L }, { __index = L })
+    pl.L = Lp
+  end
+  Z.kasten(Lp, x, y, b, h, pl.titel or r[3])
+  if pl.darstellung == "zylinder" then S1.zylinder(w, Lp, Z, x, b, y, h)
+  else S1.kraftstoff(w, Lp, Z, x, b, y, h, true) end
+end
+
+function A.zeichne(w, L, Z, an, dy, S1)
   local C, s = Z.C, L.s
   local now = os.clock()
   for _, pl in ipairs(an.plaetze) do
     local x, y, b, h = pl.x, pl.y + (dy or 0), pl.b, pl.h
     if pl.w == "leer" then goto weiter end
+    if GRUPPE[pl.darstellung] then
+      if S1 and S1.zylinder then gruppe(w, L, Z, S1, pl, x, y, b, h) end
+      goto weiter
+    end
     do
       local v, einh, stellen, name, zust = A.wert(w, pl.w)
       local st = A.stufe(w, pl.w, v)

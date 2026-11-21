@@ -15,3 +15,17 @@ What each widget offers to Lua-Studio is described in [`studio/gas_ecu/beschreib
 
 ---
 [← Home](../Home.md) | [Previous](Alarms.md) | [Next →](FAQ.md)
+
+## Cylinders and tank in your own layout (from ECU 1.11.0 / Carb 0.11.0)
+
+Two display types draw a whole group of page 1 inside one box of your layout:
+
+| `darstellung` | `w` | Minimum size (at 800 px width) | Shows |
+|---|---|---|---|
+| `zylinder` | `lua:cht_max` | 160 × 220 | All cylinder columns with temperature, trend arrow, peak mark, «Diff» and «max»; colours and limits from the cylinder settings |
+| `tank` | `lua:tank_proz` | 160 × 220 | Tank column with %, ml, used, flow, time left and the button REFUELLED (with confirmation, same as page 1) |
+
+- Each type at most once per view; a second one, a wrong `w` or an unknown type shows as a number and the «!» note.
+- The content scales with the box; in small boxes «max» and «Flow» are left out (as on small screens).
+- Only `titel` can be changed; colours, `min`/`max`, `zusatz` and `stufen` have no effect here.
+- Older widget versions show such a box as a plain number. Older Lua-Studio versions do not offer the types.

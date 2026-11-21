@@ -2,7 +2,7 @@
 
 # Alarms
 
-> **Pre-release:** Gas Engine ECU 1.10.0 / Carb 0.10.0 are tested in the Ethos simulator; the transmitter test on the X18RS follows. Use at your own risk.
+> **Pre-release:** Gas Engine ECU 1.11.0 / Carb 0.11.0 are tested in the Ethos simulator; the transmitter test on the X18RS follows. Use at your own risk.
 
 Every monitored value has **two thresholds**: **warning** (orange, announcement) and **alarm** (red, announcement and, if switched on, vibration). The announcement repeats every «Repeat every» seconds (default 30 s) while the condition lasts and stops when the value is good again. The mute switch silences all announcements; the colours stay. A 0 switches a limit off.
 

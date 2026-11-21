@@ -10,20 +10,22 @@ vibration. Display, menu and voice in German and English.
 
 | Widget | For | Version | Folder on the SD card |
 |---|---|---|---|
-| **Gas Engine ECU** | Fuel-injected engines with an ECU (RPM, cylinders, fuel pressure, ECU voltage) | 1.10.0 | `SD:/scripts/gas_ecu/` |
-| **Gas Engine Carb** | Carburettor engines, e.g. with FrSky AES / AES II | 0.10.0 | `SD:/scripts/gas_carb/` |
+| **Gas Engine ECU** | Fuel-injected engines with an ECU (RPM, cylinders, fuel pressure, ECU voltage) | 1.11.0 | `SD:/scripts/gas_ecu/` |
+| **Gas Engine Carb** | Carburettor engines, e.g. with FrSky AES / AES II | 0.11.0 | `SD:/scripts/gas_carb/` |
 
 ![Gas Engine ECU page 1 (English, Ethos simulator)](docs/bilder-simulator/Gas%20Engine%20ECU%20-%20Sim%20800x480%2012%20Englisch%20Seite%201%20Alarm.png)
 
-**Status:** public pre-release (public beta). Gas Engine ECU 1.10.0 / Carb 0.10.0 are tested in the Ethos simulator; the
+**Status:** public pre-release (public beta). Gas Engine ECU 1.11.0 / Carb 0.11.0 are tested in the Ethos simulator; the
 transmitter test on the X18RS follows. Use at your own risk. License: GPL-3.0, see below.
+
+**New in Gas Engine ECU 1.11.0 / Carb 0.11.0:** two new Lua-Studio display types: **`zylinder`** (all cylinder columns as on page 1, `w = "lua:cht_max"`) and **`tank`** (tank column with %, ml, used, flow, time left and the REFUELLED button, `w = "lua:tank_proz"`), so cylinders and tank can be placed anywhere in your own layout. Needs a Lua-Studio version that offers them; older Lua-Studio versions simply do not offer them.
 
 **New in Gas Engine ECU 1.10.0 / Carb 0.10.0 (renamed from Motoren ECU / Vergaser):** «Alarm also with motor off» per limit (menu and Lua-Studio, on by default);
 a Lua-Studio limit without a number keeps the factory limit; memory is freed on model change.
 
 ## Quick start
 
-1. Download `Gas-Engine-ECU-1.10.0.zip` or `Gas-Engine-Carb-0.10.0.zip` from the latest **release**.
+1. Download `Gas-Engine-ECU-1.11.0.zip` or `Gas-Engine-Carb-0.11.0.zip` from the latest **release**.
 2. Connect the radio by USB, choose **Ethos Suite** on the radio and open **FrSky Suite** on the computer.
 3. Suite › **Lua library** › **Install from local ZIP** › choose the ZIP (do not unzip it). Restart the radio.
 4. Model › **DISP** › new screen with layout **full screen** › choose the widget.
@@ -57,7 +59,7 @@ again, see [Wiki › Installation](wiki/en/Installation.md#upgrading-from-motore
 
 Tested on a real X18RS (with a telemetry simulator, 48 sensors, receiver SR10 Plus): sensor search, power switch alarm,
 batteries, battery type, language, switch name field, the Lua-Studio file. **Never flown yet.** Not yet tested on the
-radio: everything new in 1.10.0 / 0.10.0, every single menu item, announcements in flight, other radios.
+radio: everything new in 1.11.0 / 0.11.0, every single menu item, announcements in flight, other radios.
 Questions, «Refuelled» and the flight list need touch; the rotary encoder only changes pages.
 
 ## Lua-Studio

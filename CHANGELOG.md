@@ -2,6 +2,15 @@
 
 Older entries (before ECU 1.9.0 / Vergaser 0.9.0) in German.
 
+## Gas Engine ECU 1.11.0 / Gas Engine Carb 0.11.0 – 21.11.2026 (pre-release)
+- **Cylinders and tank in your own layout:** two new Lua-Studio display types for a box of a view.
+  - `darstellung = "zylinder"` with `w = "lua:cht_max"`: all cylinder columns as on page 1 (temperature, trend arrow, peak mark, «Diff», «max»), same colours and limits. Minimum size 160 × 220 at 800 px width.
+  - `darstellung = "tank"` with `w = "lua:tank_proz"`: tank column with %, ml, used, flow, time left and the button REFUELLED (same confirmation and function as page 1). Minimum size 160 × 220.
+  - Both reuse the drawing code of page 1 and scale with the box (small boxes leave out «max» and «Flow»). Each type at most once per view; a second one or a non-matching `w` falls back to a number with the «!» note.
+  - Also in the compact view (the confirmation of REFUELLED is now drawn there too).
+- `studio/*/beschreibung.json`: `zylinder` / `tank` added to the `darstellungen` of `cht_max` / `tank_proz`; new top-level field `darstellungenExtra` with names, descriptions and minimum sizes (`min.b`, `min.h`).
+- Backward compatible: studio files without the new types behave as before; older widget versions show such a box as a number. Alarm rules (no switch-off without `aus`, `beiMotorAus`) unchanged.
+
 ## Gas Engine ECU 1.10.0 / Gas Engine Carb 0.10.0 – 21.11.2026 (pre-release)
 - **Renamed from Motoren ECU / Motoren Vergaser – breaking: old models must re-add the widget; Studio files must be renamed or re-transferred.**
   - New names: **Gas Engine ECU** (folder `SD:/scripts/gas_ecu/`, widget key `gasecu`) and **Gas Engine Carb** (folder `SD:/scripts/gas_carb/`, widget key `gascarb`). Repository: `gas-engine-lua`.

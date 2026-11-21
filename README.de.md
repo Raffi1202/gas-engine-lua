@@ -10,20 +10,22 @@ Farbe, Ansage und Vibration. Anzeige, Menü und Ansagen deutsch und englisch.
 
 | Widget | Für | Version | Ordner auf der SD-Karte |
 |---|---|---|---|
-| **Gas Engine ECU** | Einspritzmotoren mit ECU (Drehzahl, Zylinder, Kraftstoffdruck, ECU-Spannung) | 1.10.0 | `SD:/scripts/gas_ecu/` |
-| **Gas Engine Carb** | Vergasermotoren, z. B. mit FrSky AES / AES II | 0.10.0 | `SD:/scripts/gas_carb/` |
+| **Gas Engine ECU** | Einspritzmotoren mit ECU (Drehzahl, Zylinder, Kraftstoffdruck, ECU-Spannung) | 1.11.0 | `SD:/scripts/gas_ecu/` |
+| **Gas Engine Carb** | Vergasermotoren, z. B. mit FrSky AES / AES II | 0.11.0 | `SD:/scripts/gas_carb/` |
 
 ![Seite 1 der Gas Engine ECU im Simulator](docs/bilder-simulator/Gas%20Engine%20ECU%20-%20Sim%20800x480%2001%20Seite%201%20Normal.png)
 
-**Stand:** öffentliche Vorabversion (public beta). Gas Engine ECU 1.10.0 / Carb 0.10.0 sind im Ethos-Simulator getestet; der
+**Stand:** öffentliche Vorabversion (public beta). Gas Engine ECU 1.11.0 / Carb 0.11.0 sind im Ethos-Simulator getestet; der
 Sendertest an der X18RS folgt. Benutzung auf eigene Gefahr. Lizenz: GPL-3.0, siehe unten.
+
+**Neu in Gas Engine ECU 1.11.0 / Carb 0.11.0:** zwei neue Lua-Studio-Darstellungen: **`zylinder`** (alle Zylinder-Säulen wie Seite 1, `w = "lua:cht_max"`) und **`tank`** (Tank-Säule mit %, ml, Verbrauch, Fluss, Restzeit und Knopf VOLLGETANKT, `w = "lua:tank_proz"`); Zylinder und Tank lassen sich damit im eigenen Layout frei platzieren. Braucht eine Lua-Studio-Version, die sie anbietet; ältere Lua-Studio-Versionen bieten sie einfach nicht an.
 
 **Neu in Gas Engine ECU 1.10.0 / Carb 0.10.0 (bisher Motoren ECU / Vergaser):** «Alarm auch bei Motor aus» je Grenze (Menü und Lua-Studio, ab Werk an); eine
 Lua-Studio-Grenze ohne Zahl behält die Werkgrenze; Speicher wird beim Modellwechsel frei.
 
 ## Schnellstart
 
-1. Aus dem neusten **Release** `Gas-Engine-ECU-1.10.0.zip` oder `Gas-Engine-Carb-0.10.0.zip` laden.
+1. Aus dem neusten **Release** `Gas-Engine-ECU-1.11.0.zip` oder `Gas-Engine-Carb-0.11.0.zip` laden.
 2. Sender per USB anschliessen, am Sender **Ethos Suite** wählen, am Computer die **FrSky Suite** öffnen.
 3. Suite › **Lua-Bibliothek** › **Von lokaler ZIP installieren** › die ZIP wählen (nicht entpacken). Sender neu starten.
 4. Modell › **DISP** › neuer Bildschirm im Layout **Vollbild** › Widget wählen.
@@ -55,7 +57,7 @@ SD-Karte. Beim Aktualisieren bleiben Einstellungen, Tank, Flüge und Zuweisungen
 
 Am echten X18RS getestet (mit Telemetrie-Simulator, 48 Sensoren, Empfänger SR10 Plus): Sensorsuche,
 Stromweichen-Alarm, Akkus, Akkuart, Sprache, Textfeld für Schalternamen, die Lua-Studio-Datei. **Noch nie im echten
-Flug.** Noch nicht am Sender getestet: alles Neue in 1.10.0 / 0.10.0, jeder Menüpunkt einzeln, Ansagen im Flug, andere
+Flug.** Noch nicht am Sender getestet: alles Neue in 1.11.0 / 0.11.0, jeder Menüpunkt einzeln, Ansagen im Flug, andere
 Sender. Rückfragen, «Vollgetankt» und die Flugliste brauchen Berührung; das Drehrad blättert nur die Seiten.
 
 ## Lua-Studio

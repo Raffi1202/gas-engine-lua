@@ -120,12 +120,13 @@ local function drehzahl(w, L, Z, x0, b, top, h)
   end
 end
 
-local function kraftstoff(w, L, Z, x0, b, top, h)
+-- nurTank: ohne Druck (Studio-Platz «tank»)
+local function kraftstoff(w, L, Z, x0, b, top, h, nurTank)
   local C, s, v, g, tk, c = Z.C, L.s, w.v, w.g, w.tk, w.cfg
   local unten = top + h
   local y = top + 34 * s
   -- Druck mit Sollbereich (nur wenn ein Drucksensor gewählt ist)
-  if c.druck then
+  if c.druck and not nurTank then
     Z.text(L, x0 + 12 * s, y + 11 * s, "Druck", 15, C.dim, LEFT)
     local dx, dw, dy, dh = x0 + 12 * s, b * 0.58, y + 24 * s, 16 * s
     Z.feld(dx, dy, dw, dh, 4 * s, C.grau, C.dunkel)
@@ -273,5 +274,8 @@ function S.zeichne(w, L, Z)
   kraftstoff(w, L, Z, x3, b3, top, h)
   if mitFuss then fuss(w, L, Z) end
 end
+
+-- Für Studio-Plätze «zylinder» und «tank» (ansicht.lua)
+S.zylinder, S.kraftstoff = zylinder, kraftstoff
 
 return S

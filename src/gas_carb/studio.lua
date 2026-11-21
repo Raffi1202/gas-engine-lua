@@ -154,7 +154,9 @@ S.GRENZ_FELD = {
 local function snake(n) return (n:gsub("%u", function(c) return "_" .. c:lower() end)) end
 
 local DARST = { zahl = { 90, 50 }, ring = { 110, 110 }, balken_w = { 140, 40 }, balken_s = { 50, 110 },
-  kurve = { 180, 90 }, status = { 120, 40 } }
+  kurve = { 180, 90 }, status = { 120, 40 }, zylinder = { 160, 220 }, tank = { 160, 220 } }
+-- Darstellungen mit ganzer Gruppe der eingebauten Seite 1: nur mit passendem Wert (sonst Zahl)
+local GRUPPE = { zylinder = "^lua:cht_max$", tank = "^lua:tank_proz$" }
 local ZUSATZ = { keine = true, min = true, max = true, mittel = true }
 
 -- ---------------------------------------------------------------- Zusammenführen und prüfen
@@ -312,6 +314,14 @@ local function platz(z, an, a, pi, p)
   local pl = { x = p.x, y = p.y, b = p.b, h = p.h, w = p.w, darstellung = "zahl", zusatz = "keine", kurveS = 120 }
   if p.darstellung ~= nil then
     if DARST[p.darstellung] then pl.darstellung = p.darstellung else fehler(st, "platz " .. pi .. ".darstellung", "unbekannt, Zahl") end
+  end
+  local gm = GRUPPE[pl.darstellung]
+  if gm then
+    an.gruppen = an.gruppen or {}
+    if an.gruppen[pl.darstellung] then      -- je Ansicht nur einmal (Befehlsgrenze beim Zeichnen)
+      fehler(st, "platz " .. pi, "mehr als 1 " .. pl.darstellung .. ", Zahl"); pl.darstellung = "zahl"
+    elseif p.w:find(gm) then st.seite1 = true; an.gruppen[pl.darstellung] = true
+    else fehler(st, "platz " .. pi .. ".darstellung", pl.darstellung .. " passt nicht zu " .. p.w .. ", Zahl"); pl.darstellung = "zahl" end
   end
   if pl.darstellung == "kurve" then
     an.kurven = an.kurven + 1
