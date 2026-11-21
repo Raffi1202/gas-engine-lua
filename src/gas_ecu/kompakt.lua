@@ -37,8 +37,8 @@ local function leiste(w, L, Z, sb)
   local mt, mf, tf
   if (w.nAktiv or 0) > 0 and w.meldText and w.meldText ~= "" then
     mt, mf, tf = w.meldText, w.stufe == 2 and C.rot or C.orange, C.dunkel
-  elseif w.hinweis then
-    mt, mf, tf = w.hinweis, C.blau, C.weiss or C.text
+  elseif w.hinweis or w.studioT then
+    mt, mf, tf = w.hinweis or w.studioT, w.hinweis and C.blau or C.orange, w.hinweis and (C.weiss or C.text) or C.dunkel
   end
   if mt and rest - x > 40 then
     -- zu lang: hintere Meldungen weglassen (wichtigste stehen vorne), sonst Zeichen kürzen

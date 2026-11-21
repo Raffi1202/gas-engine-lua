@@ -2,6 +2,12 @@
 
 Older entries (before ECU 1.9.0 / Vergaser 0.9.0) in German.
 
+## Gas Engine ECU 1.12.1 / Gas Engine Carb 0.12.1 – 22.11.2026 (pre-release)
+- The Studio note («Studio: view 800x480 adjusted», «Studio: file faulty …») now appears in the widget's own status/message line at the top instead of a band at the bottom, so it never covers values.
+- A tank place (`lua:tank_proz`, `lua:tank_ml`, `lua:restzeit`) without a tank capacity shows «No tank capacity» instead of an empty bar. With a Studio file, settings such as the tank capacity come from the Studio file only.
+- Grammar: «1 sensor newly assigned» / «n sensors …» (German and English).
+- Known: command counts above the guideline (Carb first frame ~10,500, ECU wakeup 5,700–8,400) are not fixed in this version.
+
 ## Gas Engine ECU 1.12.0 / Gas Engine Carb 0.12.0 – 22.11.2026 (pre-release)
 - **Studio layout is always found** (Lua-Studio issue #1):
   - The widget looks for the studio file in `SCRIPTS:/studio/`, then `SD:/scripts/studio/`, then `RADIO:/scripts/studio/` (the same folder under two names counts once). Changes made on the radio (`.funke.lua`) and the info file stay in `SCRIPTS:/studio/`.

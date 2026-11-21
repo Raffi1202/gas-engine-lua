@@ -3,7 +3,7 @@
 local NAME = "Gas Engine ECU"
 local INFO = "Vollbild-Telemetrie für Einspritzer mit ECU: Motor, Elektrik und Flug-Übersicht mit Warnungen und Ansagen."
 local PAKET_KEY = "local.gasengine.ecu"   -- Schlüssel der Suite, nie ändern
-local VERSION = "1.12.0"
+local VERSION = "1.12.1"
 local K = nil
 local gemeldet = {}
 local instanzen = 0   -- lebende Widget-Objekte (Speicher freigeben, sobald keines mehr da ist)

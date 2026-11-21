@@ -1024,18 +1024,18 @@ local function studioAnsicht(w, W, H)
   return an
 end
 
--- Hinweiszeile unten (R4): Fehlergrund bleibt stehen, «angepasst» nur 5 s
-local function studioZeile(w, L)
+-- Studio-Hinweis (R4, A1): steht in der eigenen Kopf- bzw. Meldezeile des Widgets (w.studioT), nie über den Plätzen.
+-- Fehlergrund bleibt stehen, «angepasst» nur 5 s, übrige Studio-Hinweise 8 s.
+local function studioText(w)
   local t = w.studioFehl
   if not t and w.anpBis then
     if os.clock() < w.anpBis then t = w.anpText else w.anpBis = nil end
   end
-  if not t then return end
-  local hb = max(18, floor(22 * L.s))
-  Z.rechteck(0, L.H - hb, L.W, hb, Z.C.dunkel)
-  Z.roh[t] = true
-  Z.text(L, L.W / 2, L.H - hb / 2, t, 13, Z.C.orange, CENTERED, L.W - 16 * L.s)
+  local st = w.studio
+  if not t and st and st.text and st.textBis and os.clock() < st.textBis then t = st.text end
+  w.studioT = t
 end
+local function studioZeile() end
 
 local SEITENNAME = { "Motor", "Elektrik", "Übersicht" }
 
@@ -1147,10 +1147,10 @@ function K.wecke(w)
         if w.suchArt == "auto" then
           if n > 0 then
             w.autoOffen = false
-            hinweis(w, n .. " Sensoren automatisch zugewiesen", now)
+            hinweis(w, n .. (n == 1 and " Sensor automatisch zugewiesen" or " Sensoren automatisch zugewiesen"), now)
           end
         else
-          hinweis(w, tostring(n) .. " Sensoren neu zugewiesen", now)
+          hinweis(w, tostring(n) .. (n == 1 and " Sensor neu zugewiesen" or " Sensoren neu zugewiesen"), now)
         end
         print("Gas Engine Carb: Suche: " .. n .. " neu zugewiesen")
         if n > 0 and model and model.dirty then pcall(model.dirty) end
@@ -1207,6 +1207,7 @@ function K.zeichne(w)
   if neuF and #w.fenster < 6 then w.fenster[#w.fenster + 1] = { W, H }; w.infoAlt = nil end
   -- Studio-Ansicht genau für diese Fenstergrösse?
   local an = studioAnsicht(w, W, H)
+  studioText(w)
   if an and L.kompakt then
     if KOMPAKT then KOMPAKT.leiste(w, L, Z, math.floor(36 * L.s)) end
     ANSICHT.zeichne(w, L, Z, an, nil, SEITE[1])

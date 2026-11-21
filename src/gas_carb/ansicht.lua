@@ -179,6 +179,10 @@ function A.zeichne(w, L, Z, an, dy, S1)
       end
       local anteil = v and min(1, max(0, (v - mi) / (ma - mi))) or 0
       local txt, zf = zahlText(Z, v, stellen, einh, zust, w.sp)
+      -- Tankwerte ohne «Tankinhalt»: statt einer leeren Säule sagen, was fehlt (mit Studio-Datei kommt er aus deren Einstellungen)
+      if v == nil and not (w.g and w.g.tank) and (pl.w == "lua:tank_proz" or pl.w == "lua:tank_ml" or pl.w == "lua:restzeit") then
+        txt = "Tankinhalt fehlt"
+      end
       local wf = (st > 0) and fb or (zf or C.text)
       local zt, zv = zusatz(w, pl, v)
       local zl = zt and (zt .. " " .. Z.zahl(zv, stellen)) or nil
@@ -246,9 +250,7 @@ function A.hinweis(w, L, Z)
   if not st or not st.text then return end
   local C, s = Z.C, L.s
   if os.clock() < st.textBis then
-    local hb = max(18, floor(24 * s))
-    Z.rechteck(0, L.H - hb, L.W, hb, C.dunkel)
-    Z.text(L, L.W / 2, L.H - hb / 2, st.text, 14, C.orange, CENTERED, L.W - 16 * s)
+    return                                -- der Text selbst steht in der Kopf-/Meldezeile (kern: studioText)
   else
     Z.text(L, L.W - 6 * s, 10 * s, "!", 14, C.orange, RIGHT)
   end
