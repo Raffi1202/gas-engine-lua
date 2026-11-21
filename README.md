@@ -102,7 +102,6 @@ their own version numbers, so two tag series `gas-ecu-vX.Y.Z` and `gas-carb-vX.Y
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos widget for turbines (several ECU brands) |
 | [Glider](https://github.com/Raffi1202/glider-lua) | Ethos widget for gliders (vario, thermals) |
 | [Lua-Studio](https://github.com/Raffi1202/lua-studio) | PC app to set up the widgets (Mac/Windows) |
-| [Ethos sensor IDs](https://github.com/Raffi1202/ethos-sensor-ids) | Which sensor Ethos creates for each AppID |
 
 ## License
 

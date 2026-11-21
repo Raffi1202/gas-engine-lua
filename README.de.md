@@ -92,7 +92,6 @@ Simulator-Treiber, Zufallstest und Paket-Skripte gehören zum Baukasten des Auto
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos-Widget für Turbinen (mehrere ECU-Hersteller) |
 | [Glider](https://github.com/Raffi1202/glider-lua) | Ethos-Widget für Segler (Vario, Thermik) |
 | [Lua-Studio](https://github.com/Raffi1202/lua-studio) | PC-Programm zum Einrichten der Widgets (Mac/Windows) |
-| [Ethos-Sensor-IDs](https://github.com/Raffi1202/ethos-sensor-ids) | Welchen Sensor Ethos zu jeder AppID anlegt |
 
 ## Lizenz
 
