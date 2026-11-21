@@ -265,7 +265,9 @@ end
 -- FORMAT 3 (bis 1.1.x): Quellen bis «stumm». FORMAT 4 (1.2.0–1.4.0): dazu cht3, cht4, rxBatt.
 -- FORMAT 5 (ab 1.4.1): dazu rbChState. ENDE nennt je älterem Format die letzte Quelle.
 -- FORMAT 6 (ab 1.9.0): Quellen unverändert; neu sind die Ja/Nein-Werte «Alarm auch bei Motor aus» (Datei, nach Namen).
-M.FORMAT = 6
+-- FORMAT 7 (Studio-Layout sicher finden): Quellen unverändert; nach «ende» steht die Wahl «Studio-Layout»
+-- («<Ort>:<Name>» oder leer = automatisch). FORMAT 6 hat dieselben Quellen ohne diesen Wert.
+M.FORMAT = 7
 local ENDE = { [3] = "stumm", [4] = "rxBatt", [5] = "rbChState" }
 
 -- Quellen in Speicher-Reihenfolge; mit bis = Name nur die Quellen bis und mit diesem Feld (ältere Formate).
@@ -322,12 +324,17 @@ function M.lies(w)
     end
     local fmt = hol("fmt")
     local q = ENDE[fmt] and quellen(ENDE[fmt]) or quellen()
-    if fmt == M.FORMAT or ENDE[fmt] then
+    if fmt == M.FORMAT or fmt == M.FORMAT - 1 or ENDE[fmt] then
       local werte = {}
       for i = 1, #q do werte[i] = hol("q" .. i) end
       if hol("ende") == fmt then
         gefunden = true
         for i, name in ipairs(q) do c[name] = istQuelle(werte[i]) and werte[i] or nil end
+        w.wahl = nil
+        if fmt == M.FORMAT then
+          local s = hol("studio")
+          if type(s) == "string" and s ~= "" and #s <= 48 then w.wahl = s end
+        end
       else
         print("Gas Engine ECU: gespeicherte Sensoren unlesbar, bitte neu zuweisen")
       end
@@ -394,6 +401,7 @@ function M.schreibe(w)
     pcall(storage.write, "q" .. i, istQuelle(v) and v or 0)
   end
   pcall(storage.write, "ende", M.FORMAT)
+  pcall(storage.write, "studio", type(w.wahl) == "string" and w.wahl or "")
 end
 
 -- Zahlen und dauerhafte Werte in die Datei. Gibt true zurück, wenn geschrieben.

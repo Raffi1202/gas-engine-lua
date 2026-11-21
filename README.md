@@ -18,6 +18,8 @@ vibration. Display, menu and voice in German and English.
 **Status:** public pre-release (public beta). Gas Engine ECU 1.11.0 / Carb 0.11.0 are tested in the Ethos simulator; the
 transmitter test on the X18RS follows. Use at your own risk. License: GPL-3.0, see below.
 
+**New in Gas Engine ECU 1.12.0 / Carb 0.12.0:** the studio layout is always found: search in `SCRIPTS:/studio/`, `SD:/scripts/studio/` and `RADIO:/scripts/studio/`, menu entry **«Studio layout»** to pick a file whose name does not match the model, views scaled to other window sizes, and a note line when the default display is shown. See [Studio layout not showing?](#studio-layout-not-showing).
+
 **New in Gas Engine ECU 1.11.0 / Carb 0.11.0:** two new Lua-Studio display types: **`zylinder`** (all cylinder columns as on page 1, `w = "lua:cht_max"`) and **`tank`** (tank column with %, ml, used, flow, time left and the REFUELLED button, `w = "lua:tank_proz"`), so cylinders and tank can be placed anywhere in your own layout. Needs a Lua-Studio version that offers them; older Lua-Studio versions simply do not offer them.
 
 **New in Gas Engine ECU 1.10.0 / Carb 0.10.0 (renamed from Motoren ECU / Vergaser):** «Alarm also with motor off» per limit (menu and Lua-Studio, on by default);
@@ -69,6 +71,14 @@ Lua-Studio writes one file per model to `SCRIPTS:/studio/`; the widget reads it 
 everything works as before. What the widgets offer is described in
 [studio/gas_ecu/beschreibung.json](studio/gas_ecu/beschreibung.json) and
 [studio/gas_carb/beschreibung.json](studio/gas_carb/beschreibung.json).
+
+
+### Studio layout not showing?
+1. Copy the file to `scripts/studio/` on the SD card or in the radio memory (`SCRIPTS:/studio/`, `SD:/scripts/studio/` and `RADIO:/scripts/studio/` are all searched).
+2. If the file name does not match the model name: widget menu › **Studio layout** › pick the file (place in brackets). «automatic (model name)» uses `<model>.gas_ecu.lua` / `<model>.gas_carb.lua`.
+3. Other window size (e.g. with top and bottom bar, 784 × 316, or a smaller radio): the widget scales the closest view and shows «Studio: view 800x480 adapted» for 5 s. Boxes too small for their type become numbers or are left out.
+4. A line at the bottom «Studio: file faulty (…)» or «Studio: no matching view» tells why the default display is shown. Export the file again from Lua-Studio.
+5. The info file `SCRIPTS:/studio/<model>.<lua>.info.json` shows `studioQuelle`, `studioWahl`, `ansichtGenutzt`, `angepasst` and `hinweis`; Lua-Studio reads it.
 
 ## Repository layout
 

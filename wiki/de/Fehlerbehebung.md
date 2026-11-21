@@ -21,3 +21,10 @@ Alle Lua-Skripte auf dem Sender teilen sich einen Lua-Speicher (rund 2048 KB auf
 
 ---
 [← Start](../Home.md) | [Zurück](FAQ.md) | [Weiter →](Versionen.md)
+
+### Studio-Layout erscheint nicht?
+1. Datei nach `scripts/studio/` auf der SD-Karte oder im Funkenspeicher kopieren (gesucht wird in `SCRIPTS:/studio/`, `SD:/scripts/studio/` und `RADIO:/scripts/studio/`).
+2. Passt der Dateiname nicht zum Modellnamen: Widget-Menü › **Studio-Layout** › Datei wählen (Ort in Klammern). «automatisch (Modellname)» nimmt `<Modell>.gas_ecu.lua` / `<Modell>.gas_carb.lua`.
+3. Andere Fenstergrösse (z. B. mit Kopf- und Fussleiste 784 × 316 oder kleinere Funke): Das Widget rechnet die ähnlichste Ansicht um und zeigt 5 s lang «Studio: Ansicht 800x480 angepasst». Zu kleine Plätze werden Zahl oder fallen weg.
+4. Eine Zeile unten «Studio: Datei fehlerhaft (…)» oder «Studio: keine passende Ansicht» nennt den Grund für die Standardanzeige. Datei im Lua-Studio neu exportieren.
+5. Die Info-Datei `SCRIPTS:/studio/<Modell>.<lua>.info.json` zeigt `studioQuelle`, `studioWahl`, `ansichtGenutzt`, `angepasst` und `hinweis`; Lua-Studio liest sie.

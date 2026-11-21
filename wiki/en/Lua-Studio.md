@@ -29,3 +29,10 @@ Two display types draw a whole group of page 1 inside one box of your layout:
 - The content scales with the box; in small boxes «max» and «Flow» are left out (as on small screens).
 - Only `titel` can be changed; colours, `min`/`max`, `zusatz` and `stufen` have no effect here.
 - Older widget versions show such a box as a plain number. Older Lua-Studio versions do not offer the types.
+
+### Studio layout not showing?
+1. Copy the file to `scripts/studio/` on the SD card or in the radio memory (`SCRIPTS:/studio/`, `SD:/scripts/studio/` and `RADIO:/scripts/studio/` are all searched).
+2. If the file name does not match the model name: widget menu › **Studio layout** › pick the file (place in brackets). «automatic (model name)» uses `<model>.gas_ecu.lua` / `<model>.gas_carb.lua`.
+3. Other window size (e.g. with top and bottom bar, 784 × 316, or a smaller radio): the widget scales the closest view and shows «Studio: view 800x480 adapted» for 5 s. Boxes too small for their type become numbers or are left out.
+4. A line at the bottom «Studio: file faulty (…)» or «Studio: no matching view» tells why the default display is shown. Export the file again from Lua-Studio.
+5. The info file `SCRIPTS:/studio/<model>.<lua>.info.json` shows `studioQuelle`, `studioWahl`, `ansichtGenutzt`, `angepasst` and `hinweis`; Lua-Studio reads it.

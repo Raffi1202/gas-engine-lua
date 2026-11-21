@@ -60,7 +60,10 @@ function I.schritt(w, version, S)
     ' "modell": ' .. js(okN and name or "") .. ',\n "kennung": ' .. js(S.kennung()) .. ',\n' ..
     ((okP and type(pfad) == "string" and pfad ~= "") and (' "modellPfad": ' .. js(pfad) .. ',\n') or "") ..
     ' "funke": ' .. js(brett) .. ',\n "ethos": ' .. js(ethos) .. ',\n "fenster": [ ' .. table.concat(fe, ", ") .. ' ],\n' ..
-    ' "studioDatei": ' .. sd .. ',\n "sensoren": [\n  ' .. table.concat(z.sensoren, ",\n  ") .. '\n ]\n}\n'
+    ' "studioDatei": ' .. sd .. ',\n "sensoren": [\n  ' .. table.concat(z.sensoren, ",\n  ") .. '\n ],\n' ..
+    ' "studioQuelle": ' .. js(w.studioQuelle or "") .. ',\n "studioWahl": ' .. js(w.studioWahl or "auto") .. ',\n' ..
+    ' "ansichtGenutzt": ' .. js(w.ansichtGenutzt or "") .. ',\n "angepasst": ' .. (w.angepasst and "true" or "false") .. ',\n' ..
+    ' "hinweis": ' .. js(w.studioFehl or w.anpText or "") .. '\n}\n'
   w.infoZ = nil
   if t == w.infoAlt then return true end
   local _, _, _, pi = S.pfade()

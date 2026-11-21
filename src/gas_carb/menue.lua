@@ -1,6 +1,6 @@
 -- Gas Engine Carb: Einstellungen im Ethos-Menü (Widget lange drücken › Widget konfigurieren).
 -- Gruppen als aufklappbare Felder; oben der Knopf zum automatischen Zuweisen der Sensoren.
-return function(w, F, fertig, suche, zurueck)
+return function(w, F, fertig, suche, zurueck, waehlen)
   local c = w.cfg
   local T = w.uebers or function(t) return t end   -- Englisch: Menütexte übersetzen
   local function leer(v)
@@ -48,6 +48,18 @@ return function(w, F, fertig, suche, zurueck)
       })
     end })
   end
+  -- Studio-Layout wählen (R2.2): Liste baut K.menue beim Öffnen; 0 = automatisch (Modellname)
+  if form.addChoiceField and w.studioListe and waehlen then local okW, eW = pcall(function()
+    local l = { { T("automatisch (Modellname)"), 0 } }
+    for i, e in ipairs(w.studioListe) do l[#l + 1] = { e[2], i } end
+    form.addChoiceField(form.addLine(T("Studio-Layout")), nil, l, function()
+      for i, e in ipairs(w.studioListe) do if e[1] == w.wahl then return i end end
+      return 0
+    end, function(v)
+      local e = w.studioListe[v]
+      pcall(waehlen, e and e[1] or nil)
+    end)
+  end) if not okW then print("Studio-Layout menu: " .. tostring(eW)) end end
   -- Kurze Zeilen: links nur das Feld, rechts die Anzahl; lange Texte überlappten sonst den rechten Teil (X18RS)
   local hw = w.suchHinweise or {}
   local en = w.sp == 2
@@ -85,7 +97,8 @@ return function(w, F, fertig, suche, zurueck)
         fertig()
       end
       if art == "q" then
-        form.addSourceField(line, nil, get, set)
+        -- nur echte Quellen (userdata) ans Feld geben: eine Lua-Tabelle (Testsensoren) lässt Ethos mit «true» abbrechen
+        form.addSourceField(line, nil, function() local v = c[name] if type(v) == "userdata" then return v end return nil end, set)
       elseif art == "b" then
         form.addBooleanField(line, nil, get, set)
       elseif art == "w" then

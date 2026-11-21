@@ -2,6 +2,17 @@
 
 Older entries (before ECU 1.9.0 / Vergaser 0.9.0) in German.
 
+## Gas Engine ECU 1.12.0 / Gas Engine Carb 0.12.0 – 22.11.2026 (pre-release)
+- **Studio layout is always found** (Lua-Studio issue #1):
+  - The widget looks for the studio file in `SCRIPTS:/studio/`, then `SD:/scripts/studio/`, then `RADIO:/scripts/studio/` (the same folder under two names counts once). Changes made on the radio (`.funke.lua`) and the info file stay in `SCRIPTS:/studio/`.
+  - New menu entry **«Studio layout»**: lists every `*.gas_ecu.lua` / `*.gas_carb.lua` of the three places (without `.funke.lua`) with the place in brackets, plus «automatic (model name)». Use it when the file name does not match the model name. An explicit choice wins over the file with the model name. The choice is stored at the end of the widget storage (format +1); updating from the previous version keeps all sensors, the choice starts at «automatic».
+  - **Window size:** if no view matches the window exactly, the view with the closest aspect ratio (on a tie the larger one) is scaled to the free area below the widget's own header. Boxes that get too small for their display type are drawn as a number, boxes too small even for that are left out and counted in the note. Scaling is done once per window size.
+  - **Feedback:** if the default display is shown although a file was found or chosen, a line at the bottom tells why («Studio: file faulty (…)», «Studio: no matching view»). A scaled view shows «Studio: view 800x480 adapted» for 5 s.
+  - Info file: new fields at the end `studioQuelle`, `studioWahl`, `ansichtGenutzt`, `angepasst`, `hinweis`.
+  - A newly added widget (nothing stored yet) now loads its studio file right away; before it waited for the next model load.
+- **Fix:** closing the widget menu could log «Error in menue: true» and show the red error mark (since 1.11.0 / 0.11.0 seen in the simulator); a source field now only receives real sources.
+- Unchanged: studio file formats 1/2, «no switch-off without `aus`», `beiMotorAus`, freeing memory, announcements and alarms.
+
 ## Gas Engine ECU 1.11.0 / Gas Engine Carb 0.11.0 – 21.11.2026 (pre-release)
 - **Cylinders and tank in your own layout:** two new Lua-Studio display types for a box of a view.
   - `darstellung = "zylinder"` with `w = "lua:cht_max"`: all cylinder columns as on page 1 (temperature, trend arrow, peak mark, «Diff», «max»), same colours and limits. Minimum size 160 × 220 at 800 px width.

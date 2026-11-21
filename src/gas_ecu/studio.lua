@@ -80,6 +80,9 @@ end
 local S = {}
 S.FORMAT = 1                       -- höchstes Studio-Format, das dieses Lua liest
 S.ORDNER = "SCRIPTS:/studio/"
+-- Suchorte der Studio-Datei in dieser Reihenfolge (R1). .funke.lua und Info-Datei bleiben in S.ORDNER.
+S.ORTE = { "SCRIPTS:/studio/", "SD:/scripts/studio/", "RADIO:/scripts/studio/" }
+S.ORTNAME = { "SCRIPTS", "SD", "RADIO" }
 S.LUA = "gas_ecu"
 S.LUA_ALT = "motoren_ecu"   -- Name bis 1.9.0 / 0.9.0: alte Studio-Datei einmal lesen (Übergang)
 S.laden = studioLaden
@@ -91,6 +94,54 @@ function S.kennung()
   local k = ((ok and type(n) == "string") and n or ""):gsub("[^%w]", "_"):sub(1, 32)
   if k == "" then k = "modell" end
   return k
+end
+
+-- Gewählte Datei aus dem Widget-Speicher («<Ort>:<Name>») als Pfad, sonst nil
+function S.wahlPfad(wahl)
+  if type(wahl) ~= "string" or #wahl > 48 then return nil end
+  local o, n = wahl:match("^([123]):([^/\\:]+)$")
+  if not o then return nil end
+  return S.ORTE[tonumber(o)] .. n .. "." .. S.LUA .. ".lua"
+end
+
+-- Studio-Datei zur Modellkennung an allen Orten suchen (R2.1). Rückgabe: Tabelle oder nil, Grund, Pfad
+function S.suchen()
+  local k = S.kennung()
+  for _, o in ipairs(S.ORTE) do
+    local p = o .. k .. "." .. S.LUA .. ".lua"
+    local d, g = studioLaden(p, S.FORMAT)
+    if d or g ~= "fehlt" then return d, g, p end
+  end
+  return nil, "fehlt"
+end
+
+-- Auswahlliste für das Widget-Menü (R2.2): alle *.<lua>.lua der drei Orte ohne .funke.lua. Nur beim Öffnen des
+-- Menüs. Derselbe Ordner unter zwei Namen (SCRIPTS: = SD:/scripts) zählt nur einmal: gleiche Dateiliste = gleicher Ort.
+function S.liste()
+  local r, gesehen = {}, {}
+  if not (system and system.listFiles) then return r end
+  local endung = "%." .. S.LUA .. "%.lua$"
+  for i, o in ipairs(S.ORTE) do
+    local ok, l = pcall(system.listFiles, o)
+    if ok and type(l) == "table" then
+      local namen = {}
+      for j, n in ipairs(l) do
+        if j > 60 then break end
+        if type(n) == "string" and n:find(endung) and not n:find("%.funke%.") then
+          namen[#namen + 1] = n:gsub(endung, "")
+        end
+      end
+      table.sort(namen)
+      local sig = table.concat(namen, "|")
+      if #namen > 0 and not gesehen[sig] then
+        gesehen[sig] = true
+        for _, n in ipairs(namen) do
+          if #r < 30 and #n <= 40 then r[#r + 1] = { i .. ":" .. n, n .. " (" .. S.ORTNAME[i] .. ")" } end
+        end
+      end
+    end
+  end
+  return r
 end
 
 function S.pfade()
@@ -200,6 +251,7 @@ function S.pruefeStart(d, fk, F, WERTE)
   z.nGrStudio = #z.grenzen
   if fk then for _, e in ipairs(liste(fk.grenzen)) do z.grenzen[#z.grenzen + 1] = e end end
   z.ansichten = type(d.ansichten) == "table" and d.ansichten or {}
+  st.nRoh = #z.ansichten
   return z
 end
 

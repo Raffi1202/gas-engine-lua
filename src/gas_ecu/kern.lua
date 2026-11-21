@@ -25,6 +25,8 @@ local AUDIO = { "audio/de/", "audio/en/" }   -- je Sprache derselbe Dateiname
 local MAX_SCHLEPPS = 20
 
 local floor, abs, max, min = math.floor, math.abs, math.max, math.min
+local studioNeu
+local NAME_LOG = "Gas Engine ECU"
 
 local function lade(datei)
   local f, e = loadfile(datei)
@@ -253,6 +255,7 @@ function K.neu()
     local ok, q = pcall(system.getSource, { category = CATEGORY_SYSTEM_EVENT, member = SYSTEM_EVENT_TELEMETRY_ACTIVE })
     if ok then w.qTele = q end
   end
+  w.studioZ = w.studioZ or { art = "start" }   -- neues Widget ohne gespeicherten Stand: Ethos ruft kein read
   return w
 end
 
@@ -873,18 +876,35 @@ local function studioSchritt(w, now)
     local S = lade("studio.lua")
     z.S = S
     S.funkeAufraeumen()
-    local p, pf = S.pfade()
-    local d, grund = S.laden(p, S.FORMAT)
-    if not d and grund == "fehlt" and S.LUA_ALT then   -- Übergang: Studio-Datei mit dem alten Namen
+    local _, pf = S.pfade()
+    -- R2: ausdrückliche Wahl im Menü vor der Datei zum Modellnamen; R1: alle Orte
+    local d, grund, quelle
+    local wp = S.wahlPfad(w.wahl)
+    w.studioWahl = wp and "menue" or "auto"
+    if wp then
+      d, grund = S.laden(wp, S.FORMAT)
+      quelle = wp
+    else
+      d, grund, quelle = S.suchen()
+    end
+    if not d and grund == "fehlt" and not wp and S.LUA_ALT then   -- Übergang: Studio-Datei mit dem alten Namen
       local da, ga = S.laden(S.ORDNER .. S.kennung() .. "." .. S.LUA_ALT .. ".lua", S.FORMAT)
       if da or ga ~= "fehlt" then
-        d, grund = da, ga
+        d, grund, quelle = da, ga, S.ORDNER .. S.kennung() .. "." .. S.LUA_ALT .. ".lua"
         if da then print("Gas Engine ECU: old studio file found, please re-transfer") end
       end
     end
     w.studioStatus = d and "geladen" or grund
+    w.studioQuelle = (d or grund ~= "fehlt" or wp) and quelle or ""
+    -- R4: Standardanzeige trotz gefundener oder gewählter Datei: Hinweiszeile mit Grund, bleibt stehen
+    if not d and (grund ~= "fehlt" or wp) then
+      local en = w.sp == 2
+      local g = grund == "zuNeu" and (en and "format too new" or "Format zu neu")
+        or grund == "fehlt" and (en and "missing" or "fehlt") or (en and "content invalid" or "Inhalt ungültig")
+      w.studioFehl = (en and "Studio: file faulty (" or "Studio: Datei fehlerhaft (") .. g .. ")"
+      print(NAME_LOG .. ": " .. w.studioFehl .. " " .. tostring(quelle))
+    end
     if not d then
-      if grund ~= "fehlt" then studioHinweis(w, STUDIO_TEXT[grund]) end
       z.art = "info"
     else
       z.d, z.pf, z.art = d, pf, "funke"
@@ -910,6 +930,9 @@ local function studioSchritt(w, now)
       S.anwenden(b, st, z.F, true)
       w.studioBasis = b.cfg
       if st.fehler > 0 then studioHinweis(w, "Studio-Datei: " .. st.fehler .. " Fehler") end
+      if #st.ansichten == 0 and (st.nRoh or 0) > 0 then
+        w.studioFehl = w.sp == 2 and "Studio: no matching view" or "Studio: keine passende Ansicht"
+      end
       studioGrenzen(w, S)
       -- Schlüssel, für die ein Sensor oder Kanal gesucht werden muss
       local ks, da = {}, {}
@@ -974,6 +997,44 @@ local function studioFunke(w)
   local ok = S.funkeSchreiben(S.funkeText(w, F, w.studioBasis or {}, w.studio and w.studio.st and w.studio.st.werte))
   if not ok then studioHinweis(w, STUDIO_TEXT.nicht) end
   if w.studio and w.studio.st then studioGrenzen(w, S) end
+end
+
+-- Studio-Ansicht für diese Fenstergrösse (R3), einmal je Grösse gerechnet und gemerkt
+local function studioAnsicht(w, W, H)
+  local stu = w.studio
+  if not (ANSICHT and stu and stu.st and #stu.st.ansichten > 0) then return nil end
+  local c = w.anCache
+  if c and c.st == stu.st and c.W == W and c.H == H then return c.an end
+  local an, angepasst, weg, quelle = ANSICHT.waehle(stu.st.ansichten, W, H)
+  w.anCache = { st = stu.st, W = W, H = H, an = an }
+  local en = w.sp == 2
+  local alt = tostring(w.ansichtGenutzt) .. tostring(w.angepasst)
+  w.ansichtGenutzt = quelle and (quelle.breite .. "x" .. quelle.hoehe) or ""
+  w.angepasst = angepasst and an ~= nil
+  w.anpText, w.anpBis = nil, nil
+  if an == nil then
+    w.studioFehl = en and "Studio: no matching view" or "Studio: keine passende Ansicht"
+  elseif angepasst then
+    w.anpText = (en and "Studio: view %dx%d adapted" or "Studio: Ansicht %dx%d angepasst"):format(quelle.breite, quelle.hoehe)
+      .. (weg > 0 and ((en and ", %d omitted" or ", %d weggelassen"):format(weg)) or "")
+    w.anpBis = os.clock() + 5
+    print(NAME_LOG .. ": " .. w.anpText .. " -> " .. W .. "x" .. H)
+  end
+  if alt ~= tostring(w.ansichtGenutzt) .. tostring(w.angepasst) then w.infoNeu = true end
+  return an
+end
+
+-- Hinweiszeile unten (R4): Fehlergrund bleibt stehen, «angepasst» nur 5 s
+local function studioZeile(w, L)
+  local t = w.studioFehl
+  if not t and w.anpBis then
+    if os.clock() < w.anpBis then t = w.anpText else w.anpBis = nil end
+  end
+  if not t then return end
+  local hb = max(18, floor(22 * L.s))
+  Z.rechteck(0, L.H - hb, L.W, hb, Z.C.dunkel)
+  Z.roh[t] = true
+  Z.text(L, L.W / 2, L.H - hb / 2, t, 13, Z.C.orange, CENTERED, L.W - 16 * L.s)
 end
 
 local SEITENNAME = { "Motor", "Elektrik", "Übersicht" }
@@ -1062,6 +1123,10 @@ function K.wecke(w)
       w.suchLaeuft = true
     end
     -- Lua-Studio: ein Schritt je Aufruf nach dem Modellwechsel; Änderungen aus dem Menü in .funke.lua
+    if w.infoNeu and w.studioZ and w.studioZ.fertig and not w.suchLaeuft then
+      w.infoNeu = nil
+      w.studioZ = { art = "info" }
+    end
     if w.studioZ and not w.studioZ.fertig and not w.suchLaeuft then
       local ok, e = pcall(studioSchritt, w, now)
       if not ok then w.studioZ.fertig = true; print("Gas Engine ECU: Studio: " .. tostring(e)) end
@@ -1141,15 +1206,13 @@ function K.zeichne(w)
   for _, f in ipairs(w.fenster) do if f[1] == W and f[2] == H then neuF = false end end
   if neuF and #w.fenster < 6 then w.fenster[#w.fenster + 1] = { W, H }; w.infoAlt = nil end
   -- Studio-Ansicht genau für diese Fenstergrösse?
-  local an
-  if ANSICHT and w.studio and w.studio.st then
-    for _, a in ipairs(w.studio.st.ansichten) do if a.breite == W and a.hoehe == H then an = a break end end
-  end
+  local an = studioAnsicht(w, W, H)
   if an and L.kompakt then
     if KOMPAKT then KOMPAKT.leiste(w, L, Z, math.floor(36 * L.s)) end
     ANSICHT.zeichne(w, L, Z, an, nil, SEITE[1])
     ANSICHT.hinweis(w, L, Z)
     if w.dialog and w.dialog ~= "detail" then Z.dialog(w, L) end   -- z. B. Rückfrage des Knopfs im Platz «tank»
+    studioZeile(w, L)
     if w.fehler then Z.fehlerZeichen(L) end
     return
   end
@@ -1159,6 +1222,7 @@ function K.zeichne(w)
     elseif KOMPAKT then                          -- erstes Bild: kompakt.lua lädt erst im nächsten wakeup
       KOMPAKT.zeichne(w, L, Z)
     end
+    studioZeile(w, L)
     if w.fehler then Z.fehlerZeichen(L) end
     return
   end
@@ -1176,6 +1240,7 @@ function K.zeichne(w)
   elseif w.dialog then
     Z.dialog(w, L)
   end
+  studioZeile(w, L)
   if w.fehler then Z.fehlerZeichen(L) end
 end
 
@@ -1281,6 +1346,8 @@ end
 function K.menue(w)
   pcall(sprache, w)
   local F = lade("felder.lua")
+  local okL, l = pcall(function() return lade("studio.lua").liste() end)
+  w.studioListe = okL and l or {}
   lade("menue.lua")(w, F, function()
     grenzen(w); w.dateiOffen = true
     if w.studio and w.studio.st then w.funkeOffen, w.tFunke = true, os.clock() end
@@ -1298,7 +1365,19 @@ function K.menue(w)
       for k, v in pairs(std) do w.cfg[k] = v end
       grenzen(w); w.dateiOffen = true
     end
+  end, function(wahl)
+    if wahl == w.wahl then return end
+    w.wahl = wahl
+    studioNeu(w)
   end)
+end
+
+-- Studio neu suchen und laden (Modellwechsel oder neue Wahl im Menü)
+studioNeu = function(w)
+  w.studio, w.studioStatus, w.infoAlt, w.fenster = nil, nil, nil, {}
+  w.studioFehl, w.anpText, w.anpBis, w.anCache, w.ansichtGenutzt, w.angepasst = nil, nil, nil, nil, nil, nil
+  ANSICHT = nil                         -- Studio-Ansicht erst wieder laden, wenn das neue Modell eine hat
+  w.studioZ = { art = "start" }
 end
 
 function K.lies(w)
@@ -1306,9 +1385,7 @@ function K.lies(w)
   w.gelesen = F.lies(w)
   w.autoOffen = not w.gelesen
   grenzen(w)
-  w.studio, w.studioStatus, w.infoAlt, w.fenster = nil, nil, nil, {}
-  ANSICHT = nil                         -- Studio-Ansicht erst wieder laden, wenn das neue Modell eine hat
-  w.studioZ = { art = "start" }
+  studioNeu(w)
 end
 
 function K.schreibe(w)

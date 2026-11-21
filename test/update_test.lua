@@ -34,11 +34,17 @@ band, pos = {}, 0
 local w3 = { cfg = {}, tk = {} }
 local alle = {}
 for _, n in ipairs(MN.folge) do local f = MN.feld(n); if f and f[2] == "q" then w3.cfg[n] = quelle(n); alle[#alle + 1] = n end end
+w3.wahl = "2:Mein_Layout"           -- Wahl «Studio-Layout» (ab ECU 1.12.0 / Carb 0.12.0 am Ende des Speichers)
 MN.schreibe(w3)
+local nWerte, nByte = #band, 0
+for _, v in ipairs(band) do nByte = nByte + (type(v) == "string" and #v or 4) end
 local w4 = { tk = {} }
 pos = 0
 MN.lies(w4)
 local fehlt2 = 0
 for _, n in ipairs(alle) do if not (w4.cfg[n] and w4.cfg[n].name == n) then fehlt2 = fehlt2 + 1 end end
 print(string.format("Rundlauf aktuell: %d Quellen, %d fehlen", #alle, fehlt2))
+print(string.format("Wahl alt -> neu: %s (erwartet nil = automatisch); Rundlauf Wahl: %s; Speicher: %d Werte, rund %d Byte",
+  tostring(w2.wahl), tostring(w4.wahl), nWerte, nByte))
+if w2.wahl ~= nil or w4.wahl ~= "2:Mein_Layout" then fehlt2 = fehlt2 + 1 end
 print((#fehlt == 0 and fehlt2 == 0) and "ERGEBNIS: kein Fehler" or "ERGEBNIS: FEHLER")

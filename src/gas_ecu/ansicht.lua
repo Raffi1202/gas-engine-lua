@@ -254,4 +254,49 @@ function A.hinweis(w, L, Z)
   end
 end
 
+-- Mindestgrössen je Darstellung (wie studio.lua, Entwurf 800 breit)
+local MIN = { zahl = { 90, 50 }, ring = { 110, 110 }, balken_w = { 140, 40 }, balken_s = { 50, 110 },
+  kurve = { 180, 90 }, status = { 120, 40 }, zylinder = { 160, 220 }, tank = { 160, 220 } }
+
+-- Oberkante der freien Fläche (unter der eigenen Kopfzeile), wie «reserviert» in beschreibung.json
+local function oben(Bw, Hh)
+  if Hh < Bw * 0.5 then return max(23, floor(36 * min(Bw / 784, Hh / 316) + 0.5)) end
+  return max(52, floor(80 * min(Bw / 800, Hh / 480)))
+end
+
+-- Ansicht für die Fenstergrösse W x H (R3), einmal je Grösse: genau passend, sonst das ähnlichste Seitenverhältnis
+-- (bei Gleichstand die grössere Fläche), Plätze proportional in die freie Fläche umgerechnet. Zu kleine Plätze
+-- werden Zahl, sind sie auch dafür zu klein, fallen sie weg. Rückgabe: Ansicht oder nil, angepasst, weggelassen, Quelle
+function A.waehle(ansichten, W, H)
+  local best, bd
+  for _, a in ipairs(ansichten) do
+    if a.breite == W and a.hoehe == H then return a, false, 0, a end
+    local d = abs(math.log((a.breite / a.hoehe) / (W / H)))
+    if best == nil or d < bd - 1e-6 or (abs(d - bd) <= 1e-6 and a.breite * a.hoehe > best.breite * best.hoehe) then best, bd = a, d end
+  end
+  if best == nil then return nil, false, 0 end
+  local o1, o2 = oben(best.breite, best.hoehe), oben(W, H)
+  local fx, fy = W / best.breite, (H - o2) / (best.hoehe - o1)
+  local m = W / 800
+  local neu = { breite = W, hoehe = H, plaetze = {}, kurven = best.kurven }
+  local weg = 0
+  for _, p in ipairs(best.plaetze) do
+    local x, y = floor(p.x * fx), o2 + floor((max(p.y, o1) - o1) * fy)
+    local b, h = floor(p.b * fx), floor(p.h * fy)
+    if x + b > W then b = W - x end
+    if y + h > H then h = H - y end
+    local d = p.darstellung
+    local mi = MIN[d] or MIN.zahl
+    if b < floor(mi[1] * m) or h < floor(mi[2] * m) then d = "zahl"; mi = MIN.zahl end
+    if b < floor(mi[1] * m) or h < floor(mi[2] * m) then
+      weg = weg + 1
+    else
+      local q = setmetatable({ x = x, y = y, b = b, h = h, darstellung = d }, { __index = p })
+      neu.plaetze[#neu.plaetze + 1] = q
+    end
+  end
+  if #neu.plaetze == 0 then return nil, true, weg, best end
+  return neu, true, weg, best
+end
+
 return A
