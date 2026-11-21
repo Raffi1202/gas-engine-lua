@@ -47,6 +47,4 @@ Zwei Vollbild-Widgets für FrSky-Sender mit Ethos: **Gas Engine ECU** für Einsp
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos widget for turbines (several ECU brands) |
 | [Glider](https://github.com/Raffi1202/glider-lua) | Ethos widget for gliders (vario, thermals) |
 | [Lua-Studio](https://github.com/Raffi1202/lua-studio) | PC app to set up the widgets (Mac/Windows) |
-| [Telemetry simulator](https://github.com/Raffi1202/telemetrie-simulator) | ESP32-S3 that simulates FrSky telemetry sensors |
-| [Ethos model converter](https://github.com/Raffi1202/ethos-modell-konverter) | Move models between Ethos radios |
 | [Ethos sensor IDs](https://github.com/Raffi1202/ethos-sensor-ids) | Which sensor Ethos creates for each AppID |
