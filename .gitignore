@@ -7,5 +7,5 @@ dist/
 test/*.json
 *.bin
 
-# Lokale Arbeitsnotizen, nie ins Repo
+# local working notes
 docs/entwicklung/STAND.md
