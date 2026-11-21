@@ -1,4 +1,4 @@
--- Gas Engine ECU: Lua-Studio-Format v1 (FrSky Koordination, «Lua-Studio-Format v1.md»). Laden, prüfen und zusammenführen
+-- Gas Engine ECU: Lua-Studio-Format v1 («Lua-Studio-Format v1.md»). Laden, prüfen und zusammenführen
 -- der Studio-Datei und der .funke.lua, Schreiben der .funke.lua. Wird nur geladen, wenn eine Studio-Datei da ist
 -- oder das Menü an der Funke etwas ändert, und danach wieder freigegeben.
 -- Die Funktion studioLaden ist WÖRTLICH aus «Lua-Studio-Format v1 - Referenz studio_laden.lua» übernommen.

@@ -1,5 +1,5 @@
 -- Gas Engine Carb: Sensoren automatisch zuweisen. Füllt nur leere Felder; was von Hand gesetzt ist, bleibt.
--- Ablauf nach «Vorgaben Sensorzuordnung» (FrSky Koordination, 20.11.2026):
+-- Ablauf nach «Vorgaben Sensorzuordnung» (20.11.2026):
 -- Stufe 1: Kennung aus AppID + Teilwert (kennung.lua, nur während der Suche geladen), je Feld Schlüssel in Rangfolge.
 -- Stufe 2: nur für Sensoren ohne Kennung (DIY 0x5xxx, berechnete Sensoren): bekannte AppIDs und Namen.
 -- Jeder Aufruf macht einen Schritt (siehe unten). Mehrdeutige Treffer stehen danach in w.suchHinweise

@@ -1,4 +1,4 @@
--- Feste Fälle der automatischen Sensorzuordnung (Vorgaben Sensorzuordnung, FrSky Koordination 20.11.2026), ohne Simulator.
+-- Feste Fälle der automatischen Sensorzuordnung (Vorgaben Sensorzuordnung 20.11.2026), ohne Simulator.
 -- Aufruf aus dem Projektordner:  /opt/homebrew/opt/lua@5.4/bin/lua test/suche_test.lua
 -- Prüft beide Widgets mit nachgebildeten Ethos-Quellen (appId, subId, physId, name, value).
 CATEGORY_TELEMETRY_SENSOR, CATEGORY_NONE, UNIT_VOLT, UNIT_AMPERE = 4, 0, 1, 2

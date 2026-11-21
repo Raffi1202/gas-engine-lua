@@ -88,7 +88,7 @@ Erste Fassung für Tester.
 - Gemessen (Mac, Zählhaken): höchstens rund 2 840 Befehle je Aufruf bei 100 Sensoren, 17 Aufrufe. Zuordnung gleich wie 1.6.0.
 
 ## Motoren ECU 1.6.0 und Motoren Vergaser 0.6.0 – 20.11.2026
-- Automatische Sensorzuordnung neu nach der gemeinsamen Sensorkennung (FrSky Koordination, «Vorgaben Sensorzuordnung»): Merkmal ist AppID + Teilwert (`kennung.lua`, nur während der Suche geladen), nicht mehr der Name. Je Feld eine Rangfolge; von Hand gesetzte Felder bleiben.
+- Automatische Sensorzuordnung neu nach der gemeinsamen Sensorkennung («Vorgaben Sensorzuordnung»): Merkmal ist AppID + Teilwert (`kennung.lua`, nur während der Suche geladen), nicht mehr der Name. Je Feld eine Rangfolge; von Hand gesetzte Felder bleiben.
 - ECU: Drehzahl 0x0500 (JetCat), Zylinder/EGT aus Temp. 1, ECU-Spannung aus 0x0900 (SportECU/Hornet). Liegt 0x0900 oder 0x0910 vor, gilt 0x0410 als ECU-Status und kommt nicht in einen Zylinder.
 - Vergaser: Gas Suite (0x0D00–0x0D70) und AES II (0x0D80–0x0E20) vor Temp. 1, Temp. 2 und Drehzahl 0x0500.
 - Zylinder-Temperaturen nur so viele, wie «Anzahl Zylinder» vorgibt. Zellensensoren (0x0300) auf Akku 1–3; eine reine Gesamtspannung wird nicht als Akku eingetragen (Anzeige wie bisher).
