@@ -1,0 +1,11 @@
+.DS_Store
+._*
+daten/
+*.luac
+dist/
+# Testmodelle und Funken-Abbilder nie ins Repo
+test/*.json
+*.bin
+
+# Lokale Arbeitsnotizen, nie ins Repo
+docs/entwicklung/STAND.md

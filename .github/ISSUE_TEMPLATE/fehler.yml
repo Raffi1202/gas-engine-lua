@@ -1,0 +1,49 @@
+name: Bug report
+description: Something does not work as described in the test guide or the manual.
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: widget
+    attributes:
+      label: Widget
+      options: ["Gas Engine ECU", "Gas Engine Carb"]
+    validations: { required: true }
+  - type: input
+    id: version
+    attributes:
+      label: Widget version
+      description: shown at the top of the widget menu, e.g. «Gas Engine ECU 1.10.0»
+    validations: { required: true }
+  - type: input
+    id: sender
+    attributes:
+      label: Radio and Ethos version
+      placeholder: "e.g. X18RS, Ethos 26.2.0"
+    validations: { required: true }
+  - type: input
+    id: testfall
+    attributes:
+      label: Test case (number from TESTLEITFADEN.md), if any
+      placeholder: "e.g. B3"
+  - type: textarea
+    id: schritte
+    attributes:
+      label: Steps
+      description: What did you do, step by step?
+    validations: { required: true }
+  - type: textarea
+    id: erwartet
+    attributes:
+      label: Expected and actual result
+    validations: { required: true }
+  - type: textarea
+    id: log
+    attributes:
+      label: Log (FrSky Suite › Debug log)
+      description: Lines starting with «Gas Engine ECU:» or «Gas Engine Carb:», and everything with «error»
+      render: text
+  - type: textarea
+    id: bild
+    attributes:
+      label: Screenshot
+      description: drag it in here

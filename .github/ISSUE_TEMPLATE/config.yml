@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Wiki (English)
+    url: https://github.com/Raffi1202/gas-engine-lua/tree/main/wiki/en
+    about: Installation, setup, alarms, troubleshooting
+  - name: Wiki (Deutsch)
+    url: https://github.com/Raffi1202/gas-engine-lua/tree/main/wiki/de
+    about: Installation, Einrichten, Alarme, Fehlerbehebung

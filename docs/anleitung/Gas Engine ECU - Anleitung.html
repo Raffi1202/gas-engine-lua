@@ -1,0 +1,240 @@
+<!doctype html><html lang='de'><head><meta charset='utf-8'><title>Gas Engine ECU – Anleitung</title><style>  @page { size: A4; margin: 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 10.5pt; line-height: 1.42; color: #1a1f2b; margin: 0; }
+  h1 { font-size: 24pt; margin: 0 0 2mm; }
+  h2 { font-size: 14.5pt; margin: 7mm 0 2.5mm; padding-bottom: 1mm; border-bottom: 1.5pt solid #1f4f96; color: #12305e; break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 4mm 0 1.5mm; break-after: avoid; }
+  p { margin: 0 0 2.5mm; }
+  ol, ul { margin: 0 0 2.5mm; padding-left: 6mm; }
+  li { margin-bottom: 1.2mm; break-inside: avoid; }
+  .unter { color: #56607a; font-size: 11pt; margin-bottom: 5mm; }
+  .bild { position: relative; width: 100%; margin: 3mm 0; break-inside: avoid; }
+  .bild img { width: 100%; display: block; border-radius: 2mm; border: 0.5pt solid #99a; }
+  .bild .t, .halb .t { font-size: 9pt; color: #56607a; margin-top: 1mm; }
+  .schmal { width: 72%; margin-left: auto; margin-right: auto; }
+  .halb { display: flex; gap: 5mm; break-inside: avoid; margin: 3mm 0; }
+  .halb > div { flex: 1; }
+  .halb img { width: 100%; display: block; border-radius: 1.5mm; border: 0.5pt solid #99a; }
+  .nr { position: absolute; width: 6.2mm; height: 6.2mm; margin: -3.1mm 0 0 -3.1mm; border-radius: 50%; background: #e11d48;
+        color: #fff; font-weight: 700; font-size: 9.5pt; line-height: 6.2mm; text-align: center; border: 0.6pt solid #fff; }
+  .n { display: inline-block; min-width: 5mm; height: 5mm; border-radius: 50%; background: #e11d48; color: #fff; font-weight: 700;
+       font-size: 8.5pt; line-height: 5mm; text-align: center; margin-right: 1mm; }
+  table { border-collapse: collapse; width: 100%; margin: 2mm 0 3mm; font-size: 9.6pt; }
+  tr { break-inside: avoid; }
+  th, td { border: 0.5pt solid #b6bccb; padding: 1.3mm 2mm; text-align: left; vertical-align: top; }
+  th { background: #e9eef8; }
+  .kasten { border: 1pt solid #d99a00; background: #fff7df; border-radius: 2mm; padding: 2.5mm 3.5mm; margin: 3mm 0; break-inside: avoid; }
+  .kasten.blau { border-color: #1f4f96; background: #eef3fb; }
+  .gruen { color: #15803d; font-weight: 700; } .orange { color: #b45309; font-weight: 700; } .rot { color: #b91c1c; font-weight: 700; }
+  .haken { list-style: none; padding-left: 0; }
+  .haken li::before { content: "☐  "; font-size: 12pt; }
+  .neu { break-before: page; }
+  .klein { font-size: 9pt; color: #56607a; }
+</style></head><body>
+<h1>Gas Engine ECU</h1><div class='unter'>Anleitung, Version 1.10.0 · Stand 21.11.2026</div>
+<p>Gas Engine ECU ist ein Vollbild-Widget für FrSky-Sender mit Ethos. Es zeigt die Telemetrie eines Einspritzmotors mit ECU: Zylindertemperaturen, Drehzahl, Kraftstoffdruck, ECU-Spannung, Tank, Akkus, Stromweiche und Empfang. Es warnt mit Farbe, Ansage und Vibration und führt eine Liste deiner Flüge.</p>
+<div class='kasten blau'><b>Stand der Erprobung:</b> Getestet am X18RS (Ethos 26.2.0) mit einem Telemetrie-Simulator (48 Sensoren, Empfänger SR10 Plus): Sensorsuche, Stromweiche, Akkus, Sprache. Im Ethos-Simulator getestet: alle Seiten auf 800×480 und 480×320, deutsch und englisch. <b>Noch nicht getestet:</b> echter Flug, alle Menüpunkte einzeln am Sender, Ansagen im Flug, die Flugliste am Sender, andere Sender als X18RS.</div>
+<h2>1 Was du brauchst</h2><ul class='haken'>
+<li>Einen FrSky-Sender mit Ethos 26.1 oder neuer und Farbdisplay (X20, X18, X14, X10 u. a.).</li>
+<li>Die FrSky Suite auf dem Computer (zum Installieren), oder einen Kartenleser.</li>
+<li>Die Datei <b>Gas-Engine-ECU-1.10.0.zip</b> aus dem GitHub-Release.</li>
+<li>Ein Modell mit Telemetrie: mindestens Drehzahl oder Zylindertemperatur. Alles weitere ist freiwillig.</li>
+<li>Einen Dreistufenschalter für Aus / Zündung / Choke (für Flugliste und «Motor aus»-Alarm).</li>
+</ul>
+<h2>2 Installieren</h2><h3>Mit der FrSky Suite (empfohlen)</h3><ol>
+<li>Schliesse den Sender per USB an den Computer an und wähle auf dem Sender <b>Ethos Suite</b>.</li>
+<li>Öffne die FrSky Suite und wähle <b>Lua-Bibliothek</b>.</li>
+<li>Klicke <b>Von lokaler ZIP installieren</b> und wähle <b>Gas-Engine-ECU-1.10.0.zip</b>. Entpacke die ZIP vorher nicht.</li>
+<li>Trenne den Sender und starte ihn neu.</li>
+</ol><h3>Ohne Suite, über die SD-Karte</h3><ol>
+<li>Entpacke die ZIP auf dem Computer. Darin liegt der Ordner <b>gas_ecu</b>.</li>
+<li>Kopiere den ganzen Ordner auf die SD-Karte des Senders nach <b>scripts/</b>, also <b>SD:/scripts/gas_ecu/</b>.</li>
+<li>Auf dem Mac danach im Terminal <b>dot_clean -m</b> auf den Ordner anwenden, sonst stören versteckte Dateien.</li>
+<li>Starte den Sender neu.</li>
+</ol><div class='kasten'>Die X18RS mit Ethos 26.2 lädt Skripte nur von der SD-Karte. Liegt der Ordner im internen Speicher (RADIO), erscheint das Widget nicht in der Auswahl.</div>
+<h2>3 Bildschirm einrichten</h2><ol>
+<li>Wähle das Modell, in dem du das Widget willst.</li>
+<li>Drücke die Taste <b>DISP</b> und lege einen neuen Bildschirm an. Wähle das Layout <b>Vollbild</b> (ein Widget über den ganzen Bildschirm, ohne Titel).</li>
+<li>Tippe auf das leere Feld und wähle <b>Gas Engine ECU</b>.</li>
+<li>Du siehst jetzt Seite 1. Ohne Sensoren stehen überall Striche, das ist richtig.</li>
+</ol><div class='kasten blau'>Kompaktansicht: Wählst du statt «Vollbild» das Layout mit Kopf- und Fussleiste (ein Widget), zeigt das Widget von selbst eine kompakte Seite (Kapitel 5). In einem noch kleineren Feld steht «nur im Vollbild».</div>
+<h2>4 Sensoren zuweisen</h2><ol>
+<li>Lass im Modell zuerst Ethos die Sensoren finden: Modell › Telemetrie › <b>Sensoren suchen</b>.</li>
+<li>Halte auf dem Widget lange gedrückt und wähle <b>Widget konfigurieren</b>.</li>
+<li>Drücke oben bei <b>Sensoren automatisch suchen</b> auf <b>Suchen</b>. Die Suche läuft einige Sekunden in Schritten und füllt nur leere Felder.</li>
+<li>Schliesse das Menü. Nach einigen Sekunden zeigt das Widget kurz «n Sensoren neu zugewiesen». Öffne das Menü danach wieder.</li>
+<li>Passen für ein Feld mehrere Sensoren, steht oben «Mehrere Sensoren passen, bitte prüfen:», darunter das Feld, die Anzahl und welcher Sensor gewählt ist. Prüfe diese Felder in ihrer Gruppe und wähle bei Bedarf von Hand.</li>
+<li>Weise von Hand zu, was die Suche nicht kennt: <b>Motorschalter (3 Stufen)</b>, <b>Gas (Kanal)</b>, <b>Stumm (Schalter)</b> und die zwei Schalter der Statusleiste.</li>
+<li>Stelle <b>Anzahl Zylinder</b>, <b>Tankinhalt</b> und bei jedem Akku <b>Rolle</b>, <b>Zellen</b> und <b>Art</b> ein.</li>
+</ol><p>Die Sensoren erkennt die Suche an ihrer FrSky-Kennung (Application ID) und an bekannten Namen. Ein gelöschter Sensor («---») gilt als leer und wird neu gefüllt.</p>
+<h2 class='neu'>5 Die Anzeige</h2>
+<p>Drei Seiten. Weiter mit Wischen nach links oder Drehrad nach rechts, zurück mit Wischen nach rechts oder Drehrad nach links. Der erste Drehrad-Schritt nach dem Laden wählt in Ethos das Widget aus.</p>
+<h3>Seite 1 Motor</h3>
+<div class="bild"><img src="../bilder-simulator/Gas%20Engine%20ECU%20-%20Sim%20800x480%2002%20Seite%201%20Alarm.png"><div class="t">Seite 1 im Simulator</div></div>
+<table><tr><th style='width:22%'>Teil</th><th>Was es zeigt</th></tr><tr><td>Statusleiste oben</td><td>Zustand (LÄUFT, WARMLAUF, KEINE DATEN, WARNUNG, ALARM), Zündung, Choke, die zwei Schalter, rechts Modellname, ECU-Spannung, Empfang und Seite.</td></tr><tr><td>Meldezeile</td><td>Alle aktiven Warnungen (orange) und Alarme (rot) als Text.</td></tr><tr><td>Zylinder</td><td>Ein Balken je Zylinder mit Temperatur, Trendpfeil, Unterschied und Höchstwert.</td></tr><tr><td>Drehzahl</td><td>Bogen mit Drehzahl und Höchstwert, darunter der Gasbalken in Prozent.</td></tr><tr><td>Kraftstoff</td><td>Druckbalken in bar, Tank in Prozent und ml, Verbrauch, Durchfluss, Restzeit, Knopf <b>VOLLGETANKT</b>.</td></tr><tr><td>Fussleiste</td><td>Höhe, Steigen, Geschwindigkeit.</td></tr></table>
+<h3>Seite 2 Elektrik</h3>
+<div class="bild"><img src="../bilder-simulator/Gas%20Engine%20ECU%20-%20Sim%20800x480%2007%20Seite%202%20Elektrik%203%20Akkus.png"><div class="t">Seite 2 mit drei Akkus (6S, Zellensensoren)</div></div>
+<table><tr><th style='width:22%'>Teil</th><th>Was es zeigt</th></tr><tr><td>Akkus</td><td>Bis 3 Spalten. Mit Zellensensor: ein senkrechter Balken je Zelle mit Wert, 5 und 6 Zellen in zwei Reihen, unten Δ = Unterschied. Mit reinem Spannungssensor: ein Balken der mittleren Zelle (Gesamt ÷ Zellenzahl) und «Ø … V je Zelle»; ohne Zellenzahl «Zellenzahl im Menü wählen».</td></tr><tr><td>Stromweiche</td><td>Nur wenn Sensoren gewählt sind: Zustand, Akkuspannungen und -ströme, Kanalströme als Balken.</td></tr><tr><td>Empfang</td><td>Empfangswerte der Empfänger 1 und 2 (2,4 GHz, 900 MHz, VFR).</td></tr><tr><td>RXBATT</td><td>Empfängerspannung.</td></tr></table>
+<h3>Seite 3 Übersicht</h3>
+<div class="bild"><img src="../bilder-simulator/Gas%20Engine%20ECU%20-%20Sim%20800x480%2008%20Seite%203%20Flugliste.png"><div class="t">Seite 3: links Gesamt, rechts die Flüge</div></div>
+<p>Links stehen die Höchst- und Tiefstwerte seit dem letzten Zurücksetzen (Gesamt), rechts die Flüge. Tippe einen Flug an, um seine Werte zu sehen. Dort kannst du ihn mit <b>FLUG n LÖSCHEN</b> einzeln löschen, die Nummern rücken nach. <b>ÜBERSICHT ZURÜCKSETZEN</b> löscht Höchstwerte und Flugliste nach einer Rückfrage; der Tank bleibt.</p>
+<h3>Kompaktansicht</h3>
+<div class="bild"><img src="../bilder-simulator/Gas%20Engine%20ECU%20-%20Sim%20784x316%2014%20Kompakt%20Alarm.png"><div class="t">Kompaktansicht im Layout mit Kopf- und Fussleiste</div></div>
+<p>Oben links die Motorlaufzeit des laufenden Flugs, daneben Zustand, Zündung und Choke, rechts der Empfang. Gibt es eine Warnung, steht sie anstelle der Pillen. Darunter vier Ringe: Drehzahl, heissester Zylinder (mit Nummer), Tank mit Restzeit und der erste Akku mit tiefster Zelle. Die acht Felder zeigen Druck, ECU-Spannung, Zylinderunterschied, Durchfluss, Verbrauch, Gas, Höhe und Steigen. Blättern gibt es hier nicht; für Akkus im Detail und die Flugliste das Vollbild nehmen.</p>
+<h2>6 Warnungen und Alarme</h2>
+<p>Jeder überwachte Wert hat zwei Schwellen. <span class='orange'>Warnung</span>: Feld und Meldezeile orange, die Ansage kommt. <span class='rot'>Alarm</span>: rot, Ansage und, wenn eingeschaltet, Vibration. Solange der Zustand bleibt, kommt die Ansage alle «Wiederholung alle» Sekunden wieder (Werk 30 s). Sie hört auf, sobald der Wert wieder gut ist. Zwischen zwei Ansagen liegen mindestens 3 s. Der Stumm-Schalter schaltet alle Ansagen ab, Farben bleiben.</p>
+<table><tr><th>Meldung</th><th>Wann</th><th style='width:14%'>Stufe</th></tr><tr><td>TELEMETRIE WEG</td><td>Keine Telemetrie mehr. Kommt sie zurück: «Telemetrie wieder da».</td><td>Warnung</td></tr><tr><td>MOTOR AUS</td><td>Motor steht, obwohl der Motorschalter auf Zündung steht (nach der Startsperre).</td><td>Alarm</td></tr><tr><td>CHOKE AUS!</td><td>Choke an, Motor läuft und warm oder Gas hoch.</td><td>Warnung</td></tr><tr><td>STROMWEICHE FEHLER</td><td>Die Stromweiche meldet Failsafe, verlorenen Empfänger, kein Signal, Überlast oder einen gestörten Kanal.</td><td>Alarm</td></tr></table>
+<p>Alle Grenzwerte mit ihren Ansagen stehen in Kapitel 8 bei der Einstellung.</p>
+<p><b>Alarm auch bei Motor aus.</b> Steht der Motorschalter auf Aus, kommen alle Warnungen und Alarme weiter (Werkeinstellung). In der Menügruppe <b>Alarm auch bei Motor aus</b> kannst du je Grenzwert den Haken entfernen; der Schalter <b>alle</b> setzt alle Haken auf einmal. Ohne Haken schweigen bei Motorschalter Aus nur Ton, Ansage und Vibration dieses Werts; die Anzeige bleibt orange bzw. rot. Steht der Schalter wieder auf Zündung, kommt die Ansage wieder. Ohne zugewiesenen Motorschalter wirkt die Einstellung nicht. <b>MOTOR AUS</b>, <b>STROMWEICHE FEHLER</b>, <b>TELEMETRIE WEG</b> und <b>CHOKE AUS!</b> kommen immer.</p>
+<h2>7 Bedienen</h2>
+<table><tr><td style='width:22%'><b>Flug starten</b></td><td>Motorschalter von Aus auf Zündung. Ein pausierter Flug läuft weiter («Flug geht weiter»).</td></tr><tr><td style='width:22%'><b>Flug beenden</b></td><td>Motorschalter auf Aus. Rückfrage «Flug beendet?»: <b>JA, BEENDET</b> speichert den Flug, <b>NEIN, NUR PAUSE</b> lässt ihn offen.</td></tr><tr><td style='width:22%'><b>Vollgetankt</b></td><td>Knopf <b>VOLLGETANKT</b> auf Seite 1, dann <b>JA, VOLLGETANKT</b>. Der Verbrauch geht auf 0, der Tank auf 100 %.</td></tr><tr><td style='width:22%'><b>Ohne Berührung</b></td><td>Das Drehrad wechselt die Seiten. Rückfragen, VOLLGETANKT und die Flugliste brauchen in dieser Version Berührung.</td></tr><tr><td style='width:22%'><b>Ansagen stumm</b></td><td>Stumm-Schalter umlegen.</td></tr></table>
+<h2 class='neu'>8 Alle Einstellungen</h2><p>Widget lange drücken › <b>Widget konfigurieren</b>. Die Gruppen lassen sich aufklappen. Zahlen mit 0 schalten eine Grenze ab. Sensoren, Kanäle und Schalter stehen im Modell, alle anderen Werte in der Datei <b>daten/Modellname.txt</b> im Skriptordner.</p>
+<h3>Motor</h3>
+<table><tr><th style='width:27%'>Einstellung</th><th style='width:15%'>Werkwert</th><th style='width:17%'>Bereich</th><th>Wirkung</th></tr>
+<tr><td>Anzahl Zylinder</td><td>2</td><td>1 / 2 / 3 / 4</td><td>Wie viele Zylinderbalken Seite 1 zeigt.</td></tr>
+<tr><td>Zylinder 1 Temp.</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Temperatursensor des Zylinders (°C).</td></tr>
+<tr><td>Zylinder 2 Temp.</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Temperatursensor des Zylinders (°C).</td></tr>
+<tr><td>Zylinder 3 Temp.</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Temperatursensor des Zylinders (°C).</td></tr>
+<tr><td>Zylinder 4 Temp.</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Temperatursensor des Zylinders (°C).</td></tr>
+<tr><td>Drehzahl</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Drehzahlsensor. Über «Motor läuft ab» erkennt das Widget, ob der Motor läuft.</td></tr>
+<tr><td>Kraftstoffdruck</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Kraftstoffdruck der ECU (bar).</td></tr>
+<tr><td>ECU-Spannung</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Versorgungsspannung der ECU, erscheint oben in der Statusleiste.</td></tr>
+<tr><td>Gas (Kanal)</td><td>leer</td><td>Sensor, Kanal oder Schalter</td><td>Gaskanal des Senders (keine Telemetrie). Zeigt den Gasbalken und dient der Choke-Warnung.</td></tr>
+<tr><td>Motorschalter (3 Stufen)</td><td>leer</td><td>Sensor, Kanal oder Schalter</td><td>Dreistufenschalter für Aus / Zündung / Choke. Aus → Ein startet einen Flug, Ein → Aus fragt «Flug beendet?».</td></tr>
+<tr><td>Stellung Aus (Kill)</td><td>oben</td><td>oben / Mitte / unten</td><td>In welcher Schalterstellung der Motor aus ist (Kill).</td></tr>
+<tr><td>Stellung Choke</td><td>unten</td><td>oben / Mitte / unten</td><td>In welcher Schalterstellung der Choke an ist.</td></tr>
+</table>
+<h3>Motor: Grenzwerte (0 = aus)</h3>
+<table><tr><th style='width:27%'>Einstellung</th><th style='width:15%'>Werkwert</th><th style='width:17%'>Bereich</th><th>Wirkung</th></tr>
+<tr><td>Motor läuft ab</td><td>0 (aus)</td><td>0 – 5000 U/min</td><td>Ab dieser Drehzahl gilt der Motor als laufend. 0 = jede Drehzahl über 0.</td></tr>
+<tr><td>Zylinder kalt unter</td><td>0 (aus)</td><td>0 – 600°</td><td>Unter dieser Temperatur zeigt die Statusleiste «WARMLAUF» statt «LÄUFT».</td></tr>
+<tr><td>Zylinder Warnung über</td><td>200°</td><td>0 – 600°</td><td>Zylinder darüber: orange, Ansage «Zylinder Nummer n, zu heiss».</td></tr>
+<tr><td>Zylinder Alarm über</td><td>230°</td><td>0 – 600°</td><td>Zylinder darüber: rot, Alarm mit Ansage «Achtung! Zylinder Nummer n, viel zu heiss» und Vibration.</td></tr>
+<tr><td>Zyl.-Unterschied über</td><td>40°</td><td>0 – 300°</td><td>Unterschied heissester zu kältester Zylinder darüber: Warnung «Zylinder ungleich warm». Kommt auch bei stehendem Motor und nach dem Abstellen; nur in der Startsperre nach dem Anlassen nicht.</td></tr>
+<tr><td>Drehzahl Warnung über</td><td>0 (aus)</td><td>0 – 30000 U/min</td><td>Drehzahl darüber: Warnung «Drehzahl zu hoch».</td></tr>
+<tr><td>Drehzahl Alarm über</td><td>0 (aus)</td><td>0 – 30000 U/min</td><td>Drehzahl darüber: Alarm «Drehzahl zu hoch».</td></tr>
+<tr><td>Druck Sollbereich von</td><td>1,5</td><td>0,0 – 999,9</td><td>Druck darunter (bei laufendem Motor): Warnung «Spritdruck tief». Zusammen mit «bis» der grüne Bereich der Druckanzeige.</td></tr>
+<tr><td>Druck Sollbereich bis</td><td>0 (aus)</td><td>0,0 – 999,9</td><td>Obere Grenze des grünen Bereichs der Druckanzeige (nur Anzeige).</td></tr>
+<tr><td>Druck Alarm unter</td><td>1,0</td><td>0,0 – 999,9</td><td>Druck darunter (bei laufendem Motor): Alarm «Achtung! Spritdruck viel zu tief».</td></tr>
+<tr><td>ECU Warnung unter</td><td>0 (aus)</td><td>0,0 – 30,0 V</td><td>ECU-Spannung darunter: Warnung.</td></tr>
+<tr><td>ECU Alarm unter</td><td>0 (aus)</td><td>0,0 – 30,0 V</td><td>ECU-Spannung darunter: Alarm.</td></tr>
+<tr><td>Choke-Warnung ab Zyl.</td><td>0 (aus)</td><td>0 – 600°</td><td>Choke noch an und Zylinder ab dieser Temperatur: «Bitte Choke ausschalten».</td></tr>
+<tr><td>Choke-Warnung ab Gas</td><td>0 (aus)</td><td>0 – 100 %</td><td>Choke noch an und Gas ab diesem Wert: «Bitte Choke ausschalten».</td></tr>
+</table>
+<h3>Motor: Skalen der Anzeige</h3>
+<table><tr><th style='width:27%'>Einstellung</th><th style='width:15%'>Werkwert</th><th style='width:17%'>Bereich</th><th>Wirkung</th></tr>
+<tr><td>Zylinder von</td><td>0°</td><td>0 – 600°</td><td>Unteres Ende der Zylinderbalken (nur Anzeige).</td></tr>
+<tr><td>Zylinder bis</td><td>250°</td><td>10 – 600°</td><td>Oberes Ende der Zylinderbalken (nur Anzeige).</td></tr>
+<tr><td>Drehzahl bis</td><td>9000 U/min</td><td>1000 – 30000 U/min</td><td>Endwert des Drehzahlbogens (nur Anzeige).</td></tr>
+<tr><td>Druck bis</td><td>5,0</td><td>0,1 – 999,9</td><td>Endwert der Druckanzeige (bar, nur Anzeige).</td></tr>
+</table>
+<h3>Kraftstoff</h3>
+<table><tr><th style='width:27%'>Einstellung</th><th style='width:15%'>Werkwert</th><th style='width:17%'>Bereich</th><th>Wirkung</th></tr>
+<tr><td>Impulszähler (Flowsensor)</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Impulszähler des Durchflusssensors. Daraus rechnet das Widget den Verbrauch.</td></tr>
+<tr><td>ml pro Impuls</td><td>0,100 ml</td><td>0,001 – 10,000 ml</td><td>Menge je Impuls. 0,100 ml gilt für das FrSky-Flowmeter.</td></tr>
+<tr><td>Durchfluss (ml/min)</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Durchfluss in ml/min, für Anzeige und Restzeit.</td></tr>
+<tr><td>Tankinhalt</td><td>0 (aus)</td><td>0 – 20000 ml</td><td>Tankinhalt in ml. 0 = keine Tankanzeige in Prozent.</td></tr>
+<tr><td>Reserve unter</td><td>0 (aus)</td><td>0 – 100 %</td><td>Tank darunter: Warnung «Tank auf Reserve».</td></tr>
+<tr><td>Alarm unter</td><td>0 (aus)</td><td>0 – 100 %</td><td>Tank darunter: Alarm «Achtung! Tank fast leer».</td></tr>
+<tr><td>Alarm Restzeit unter</td><td>0 (aus)</td><td>0 – 120 min</td><td>Restzeit darunter: derselbe Alarm «Tank fast leer». Gilt nur bei laufendem Motor; bei stehendem Motor gibt es keine Restzeit. Die Grenze «Alarm Tank unter» (Prozent) gilt immer.</td></tr>
+</table>
+<h3>Flug und Empfang</h3>
+<table><tr><th style='width:27%'>Einstellung</th><th style='width:15%'>Werkwert</th><th style='width:17%'>Bereich</th><th>Wirkung</th></tr>
+<tr><td>Höhe</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Höhe für die Fussleiste und die Flugliste.</td></tr>
+<tr><td>Steigen</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Steigen für die Fussleiste und die Flugliste.</td></tr>
+<tr><td>Geschwindigkeit</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Geschwindigkeit für die Fussleiste.</td></tr>
+<tr><td>Empfang (Statusleiste)</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Empfangswert oben in der Statusleiste. Ohne eigenen Sensor nimmt die Suche RSSI von Empfänger 1.</td></tr>
+</table>
+<h3>Akkus (Zellen- oder Spannungssensor)</h3>
+<table><tr><th style='width:27%'>Einstellung</th><th style='width:15%'>Werkwert</th><th style='width:17%'>Bereich</th><th>Wirkung</th></tr>
+<tr><td>Akku 1 Sensor</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Zellensensor (z. B. FLVS) oder reiner Spannungssensor des Akkus. Das Widget erkennt die Art selbst.</td></tr>
+<tr><td>Akku 1 ist</td><td>Empfänger</td><td>Empfänger / Zündung / Anlasser / ECU / Akku</td><td>Bestimmt Name und Ansage des Akkus (z. B. «Empfängerakku Nummer eins»). Gleiche Rollen bekommen eine Nummer.</td></tr>
+<tr><td>Akku 1 Zellen</td><td>automatisch</td><td>automatisch / 1S / 2S / 3S / 4S / 5S / 6S</td><td>Zellenzahl. Nötig bei einem reinen Spannungssensor: Gesamtspannung ÷ Zellenzahl = mittlere Zelle. Bei einem Zellensensor reicht «automatisch».</td></tr>
+<tr><td>Akku 1 Art</td><td>LiPo</td><td>LiPo / LiFe / NiMH</td><td>LiPo, LiFe oder NiMH. Beim Wechsel setzt das Widget die beiden Zellgrenzen dieses Akkus (LiPo 3,50/3,30 V, LiFe 3,10/2,90 V, NiMH 1,15/1,05 V) und die Skala der Balken.</td></tr>
+<tr><td>Akku 1 Zelle Warnung unter</td><td>3,50 V</td><td>0,00 – 5,00 V</td><td>Tiefste Zelle darunter: orange, Ansage «… Spannung tief».</td></tr>
+<tr><td>Akku 1 Zelle Alarm unter</td><td>3,30 V</td><td>0,00 – 5,00 V</td><td>Tiefste Zelle darunter: rot, Alarm «Achtung! … fast leer».</td></tr>
+<tr><td>Akku 2 Sensor</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Zellensensor (z. B. FLVS) oder reiner Spannungssensor des Akkus. Das Widget erkennt die Art selbst.</td></tr>
+<tr><td>Akku 2 ist</td><td>Empfänger</td><td>Empfänger / Zündung / Anlasser / ECU / Akku</td><td>Bestimmt Name und Ansage des Akkus (z. B. «Empfängerakku Nummer eins»). Gleiche Rollen bekommen eine Nummer.</td></tr>
+<tr><td>Akku 2 Zellen</td><td>automatisch</td><td>automatisch / 1S / 2S / 3S / 4S / 5S / 6S</td><td>Zellenzahl. Nötig bei einem reinen Spannungssensor: Gesamtspannung ÷ Zellenzahl = mittlere Zelle. Bei einem Zellensensor reicht «automatisch».</td></tr>
+<tr><td>Akku 2 Art</td><td>LiPo</td><td>LiPo / LiFe / NiMH</td><td>LiPo, LiFe oder NiMH. Beim Wechsel setzt das Widget die beiden Zellgrenzen dieses Akkus (LiPo 3,50/3,30 V, LiFe 3,10/2,90 V, NiMH 1,15/1,05 V) und die Skala der Balken.</td></tr>
+<tr><td>Akku 2 Zelle Warnung unter</td><td>3,50 V</td><td>0,00 – 5,00 V</td><td>Tiefste Zelle darunter: orange, Ansage «… Spannung tief».</td></tr>
+<tr><td>Akku 2 Zelle Alarm unter</td><td>3,30 V</td><td>0,00 – 5,00 V</td><td>Tiefste Zelle darunter: rot, Alarm «Achtung! … fast leer».</td></tr>
+<tr><td>Akku 3 Sensor</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Zellensensor (z. B. FLVS) oder reiner Spannungssensor des Akkus. Das Widget erkennt die Art selbst.</td></tr>
+<tr><td>Akku 3 ist</td><td>Anlasser</td><td>Empfänger / Zündung / Anlasser / ECU / Akku</td><td>Bestimmt Name und Ansage des Akkus (z. B. «Empfängerakku Nummer eins»). Gleiche Rollen bekommen eine Nummer.</td></tr>
+<tr><td>Akku 3 Zellen</td><td>automatisch</td><td>automatisch / 1S / 2S / 3S / 4S / 5S / 6S</td><td>Zellenzahl. Nötig bei einem reinen Spannungssensor: Gesamtspannung ÷ Zellenzahl = mittlere Zelle. Bei einem Zellensensor reicht «automatisch».</td></tr>
+<tr><td>Akku 3 Art</td><td>LiPo</td><td>LiPo / LiFe / NiMH</td><td>LiPo, LiFe oder NiMH. Beim Wechsel setzt das Widget die beiden Zellgrenzen dieses Akkus (LiPo 3,50/3,30 V, LiFe 3,10/2,90 V, NiMH 1,15/1,05 V) und die Skala der Balken.</td></tr>
+<tr><td>Akku 3 Zelle Warnung unter</td><td>3,50 V</td><td>0,00 – 5,00 V</td><td>Tiefste Zelle darunter: orange, Ansage «… Spannung tief».</td></tr>
+<tr><td>Akku 3 Zelle Alarm unter</td><td>3,30 V</td><td>0,00 – 5,00 V</td><td>Tiefste Zelle darunter: rot, Alarm «Achtung! … fast leer».</td></tr>
+<tr><td>Zellenunterschied über</td><td>0,15 V</td><td>0,00 – 2,00 V</td><td>Unterschied höchste zu tiefster Zelle ab diesem Wert: Warnung «… Zellen ungleich». Nur mit Zellensensor.</td></tr>
+<tr><td>Zellenbalken leer bei</td><td>3,00 V</td><td>0,00 – 5,00 V</td><td>Zellenbalken leer bei diesem Wert (LiPo).</td></tr>
+<tr><td>Zellenbalken voll bei</td><td>4,20 V</td><td>0,00 – 5,00 V</td><td>Zellenbalken voll bei diesem Wert (LiPo).</td></tr>
+</table>
+<h3>Stromweiche (RB, falls vorhanden)</h3>
+<table><tr><th style='width:27%'>Einstellung</th><th style='width:15%'>Werkwert</th><th style='width:17%'>Bereich</th><th>Wirkung</th></tr>
+<tr><td>Akku 1 Spannung</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Spannung des Akkus an der Stromweiche (RB).</td></tr>
+<tr><td>Akku 1 Strom</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Strom des Akkus an der Stromweiche.</td></tr>
+<tr><td>Akku 2 Spannung</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Spannung des Akkus an der Stromweiche (RB).</td></tr>
+<tr><td>Akku 2 Strom</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Strom des Akkus an der Stromweiche.</td></tr>
+<tr><td>Zustand Empfänger (RB State)</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Zustand der Empfänger an der Stromweiche. Alles ausser «OK» und einzelnen verlorenen Paketen gibt den Alarm «Stromweiche Fehler».</td></tr>
+<tr><td>Zustand Kanäle (RB Ch. State)</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Zustand der Servokanäle an der Stromweiche. Ein gestörter Kanal («KO») gibt den Alarm «Stromweiche Fehler».</td></tr>
+<tr><td>Strom Kanal 1</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Strom eines Servokanals der Stromweiche, als Balken auf Seite 2.</td></tr>
+<tr><td>Strom Kanal 2</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Strom eines Servokanals der Stromweiche, als Balken auf Seite 2.</td></tr>
+<tr><td>Strom Kanal 3</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Strom eines Servokanals der Stromweiche, als Balken auf Seite 2.</td></tr>
+<tr><td>Strom Kanal 4</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Strom eines Servokanals der Stromweiche, als Balken auf Seite 2.</td></tr>
+<tr><td>Strom Kanal 5</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Strom eines Servokanals der Stromweiche, als Balken auf Seite 2.</td></tr>
+<tr><td>Strom Kanal 6</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Strom eines Servokanals der Stromweiche, als Balken auf Seite 2.</td></tr>
+<tr><td>Strom Kanal 7</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Strom eines Servokanals der Stromweiche, als Balken auf Seite 2.</td></tr>
+<tr><td>Strom Kanal 8</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Strom eines Servokanals der Stromweiche, als Balken auf Seite 2.</td></tr>
+<tr><td>Kanalstrom Warnung über</td><td>0 (aus)</td><td>0,0 – 50,0 A</td><td>Höchster Kanalstrom darüber: Warnung «Servostrom zu hoch».</td></tr>
+<tr><td>Kanalstrom Alarm über</td><td>0 (aus)</td><td>0,0 – 50,0 A</td><td>Höchster Kanalstrom darüber: Alarm «Servostrom zu hoch».</td></tr>
+</table>
+<h3>Empfänger</h3>
+<table><tr><th style='width:27%'>Einstellung</th><th style='width:15%'>Werkwert</th><th style='width:17%'>Bereich</th><th>Wirkung</th></tr>
+<tr><td>Empfängerspannung (RxBatt)</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Empfängerspannung, als eigene Karte auf Seite 2.</td></tr>
+<tr><td>RX1 RSSI 2,4 GHz</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Empfangswert des Empfängers für das Feld «Empfang» auf Seite 2.</td></tr>
+<tr><td>RX1 RSSI 900 MHz</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Empfangswert des Empfängers für das Feld «Empfang» auf Seite 2.</td></tr>
+<tr><td>RX1 VFR</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Empfangswert des Empfängers für das Feld «Empfang» auf Seite 2.</td></tr>
+<tr><td>RX2 RSSI 2,4 GHz</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Empfangswert des Empfängers für das Feld «Empfang» auf Seite 2.</td></tr>
+<tr><td>RX2 RSSI 900 MHz</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Empfangswert des Empfängers für das Feld «Empfang» auf Seite 2.</td></tr>
+<tr><td>RX2 VFR</td><td>leer, «Suchen» füllt</td><td>Sensor, Kanal oder Schalter</td><td>Empfangswert des Empfängers für das Feld «Empfang» auf Seite 2.</td></tr>
+<tr><td>RSSI Warnung unter</td><td>0 (aus)</td><td>0 – 100</td><td>Empfang darunter: Warnung «Empfänger Nummer n, Empfang schwach».</td></tr>
+<tr><td>RSSI Alarm unter</td><td>0 (aus)</td><td>0 – 100</td><td>Empfang darunter: Alarm.</td></tr>
+</table>
+<h3>Schalter in der Statusleiste</h3>
+<table><tr><th style='width:27%'>Einstellung</th><th style='width:15%'>Werkwert</th><th style='width:17%'>Bereich</th><th>Wirkung</th></tr>
+<tr><td>Schalter 1</td><td>leer</td><td>Sensor, Kanal oder Schalter</td><td>Schalter, der oben als grüne Pille erscheint, wenn er an ist (z. B. Schleppkupplung, Licht).</td></tr>
+<tr><td>Schalter 1 Name</td><td>SCHALTER 1</td><td>Text, 12 Zeichen</td><td>Text der Pille, höchstens 12 Zeichen.</td></tr>
+<tr><td>Schalter 1 umkehren</td><td>nein</td><td>ja / nein</td><td>Kehrt die Stellung um, wenn die Pille falsch herum leuchtet.</td></tr>
+<tr><td>Schalter 2</td><td>leer</td><td>Sensor, Kanal oder Schalter</td><td>Schalter, der oben als grüne Pille erscheint, wenn er an ist (z. B. Schleppkupplung, Licht).</td></tr>
+<tr><td>Schalter 2 Name</td><td>SCHALTER 2</td><td>Text, 12 Zeichen</td><td>Text der Pille, höchstens 12 Zeichen.</td></tr>
+<tr><td>Schalter 2 umkehren</td><td>nein</td><td>ja / nein</td><td>Kehrt die Stellung um, wenn die Pille falsch herum leuchtet.</td></tr>
+</table>
+<h3>Anzeige</h3>
+<table><tr><th style='width:27%'>Einstellung</th><th style='width:15%'>Werkwert</th><th style='width:17%'>Bereich</th><th>Wirkung</th></tr>
+<tr><td>Sprache / Language</td><td>wie Sender</td><td>wie Sender / Deutsch / English</td><td>Sprache von Anzeige, Menü und Ansagen. «wie Sender» = Deutsch bei deutschem Sender, sonst Englisch.</td></tr>
+</table>
+<h3>Warnungen</h3>
+<table><tr><th style='width:27%'>Einstellung</th><th style='width:15%'>Werkwert</th><th style='width:17%'>Bereich</th><th>Wirkung</th></tr>
+<tr><td>Ansagen</td><td>ja</td><td>ja / nein</td><td>Ansagen ein oder aus.</td></tr>
+<tr><td>Wert mit ansagen</td><td>ja</td><td>ja / nein</td><td>Nach der Ansage den Messwert ansagen (z. B. «205 Grad»).</td></tr>
+<tr><td>Vibration bei Alarm</td><td>ja</td><td>ja / nein</td><td>Bei einem Alarm (rot) vibriert der Sender.</td></tr>
+<tr><td>Wiederholung alle</td><td>30 s</td><td>5 – 600 s</td><td>Eine Warnung wird frühestens nach dieser Zeit wiederholt.</td></tr>
+<tr><td>Startsperre</td><td>10 s</td><td>0 – 120 s</td><td>Nach dem Anlassen so lange keine Motorwarnungen (Druck, Unterschied, Motor aus).</td></tr>
+<tr><td>Stumm (Schalter)</td><td>leer</td><td>Sensor, Kanal oder Schalter</td><td>Schalter, der alle Ansagen stummschaltet. Beim Umschalten kommt «Ansagen aus» bzw. «Ansagen ein».</td></tr>
+</table>
+<h3>Alarm auch bei Motor aus</h3>
+<table><tr><th style='width:27%'>Einstellung</th><th style='width:15%'>Werkwert</th><th style='width:17%'>Bereich</th><th>Wirkung</th></tr>
+<tr><td>alle</td><td>ja</td><td>ja / nein</td><td>Setzt alle Haken dieser Gruppe auf einmal.</td></tr>
+<tr><td>je Grenzwert (Zylinder, Drehzahl, Spritdruck, ECU-Spannung, Tank %, Tank-Restzeit, Akku 1–3, Zellen ungleich, Servostrom, Empfang)</td><td>ja</td><td>ja / nein</td><td>Nein: Ton, Ansage und Vibration dieses Alarms schweigen, solange der Motorschalter auf Aus steht. Die Anzeige bleibt farbig.</td></tr>
+</table>
+<h3>Mit dem Lua-Studio</h3><p>Hast du das PC-Programm Lua-Studio, legt es je Modell eine Datei <b>SD:/scripts/studio/Modellname.gas_ecu.lua</b> an (Sonderzeichen und Umlaute im Namen werden zu «_»). Dann kommen Einstellungen, Grenzen und die Kästchen der Kompaktansicht bzw. der Seite 1 aus dieser Datei, und oben im Menü steht «Studio-Datei geladen». Änderungen, die du danach im Menü machst, speichert das Widget in <b>Modellname.gas_ecu.funke.lua</b>; der Knopf <b>Zurück auf Studio-Stand</b> verwirft sie nach einer Rückfrage. Ohne Studio-Datei heisst der Knopf <b>Zurück auf Standard</b> und setzt alle Einstellungen auf den Werkwert, die Sensoren bleiben. Ist die Datei kaputt oder zu neu, steht unten 8 s ein Hinweis, danach ein «!» oben rechts, und das Widget arbeitet wie ohne Studio.</p>
+<p>Im Lua-Studio heisst die Einstellung «auch bei Motor aus» (Feld <b>beiMotorAus</b>). Ein Grenzeintrag ohne Zahl ändert die Werkgrenze nie; ganz abgeschaltet wird ein Alarm nur mit «aus».</p>
+<h2 class='neu'>9 Wenn etwas nicht geht</h2>
+<table><tr><th style='width:36%'>Was du siehst</th><th>Was du tust</th></tr><tr><td>Das Widget fehlt in der Auswahl</td><td>Ordner liegt nicht auf der SD-Karte unter scripts/, oder der Lua-Speicher ist voll. Ordner prüfen, Sender neu starten, wenig benutzte Skripte von der SD-Karte entfernen.</td></tr><tr><td>«nur im Vollbild»</td><td>Das Feld ist kleiner als die Kompaktansicht. Layout «Vollbild» oder das Layout mit Kopf- und Fussleiste wählen.</td></tr><tr><td>Überall Striche, oben «KEINE DATEN»</td><td>Keine Telemetrie oder keine Sensoren zugewiesen. Empfänger an? Modell › Telemetrie › Sensoren suchen, dann im Widget «Suchen».</td></tr><tr><td>Ein Feld zeigt einen Strich</td><td>Der Sensor ist zugewiesen, liefert aber keinen Wert. In Ethos unter Telemetrie nachsehen, ob er Werte hat.</td></tr><tr><td>Ein Feld fehlt ganz</td><td>Kein Sensor zugewiesen. Im Menü zuweisen.</td></tr><tr><td>Falscher Sensor nach der Suche</td><td>Oben im Menü stehen die Felder, bei denen mehrere Sensoren passten. Von Hand richtig wählen.</td></tr><tr><td>Akku zeigt «Zellenzahl im Menü wählen»</td><td>Reiner Spannungssensor ohne Zellenzahl. «Akku n Zellen» einstellen.</td></tr><tr><td>Dauernd Zellwarnung bei LiFe oder NiMH</td><td>«Akku n Art» richtig einstellen, dann stimmen die Grenzen.</td></tr><tr><td>Keine Ansagen</td><td>«Ansagen» ein? Stumm-Schalter aus? Lautstärke des Senders? Ordner audio/ mitkopiert?</td></tr><tr><td>Kein Flug in der Liste</td><td>Motorschalter nicht zugewiesen oder «Stellung Aus» falsch.</td></tr><tr><td>Klein rot unten links ein Fehlertext</td><td>Ein Skriptfehler. Bild machen und mit dem Log (FrSky Suite › Debug-Log) als Fehler melden, siehe TESTLEITFADEN.</td></tr></table>
+<h2>10 Aktualisieren und Entfernen</h2><p>Aktualisieren: neue ZIP genauso installieren. Einstellungen, Tank, Flüge und Zuweisungen bleiben, auch über mehrere Versionen.</p><p><b>Umstieg von Motoren ECU (bis 1.9.0):</b> Das Widget hat einen neuen Namen (Ordner <b>gas_ecu</b>). Das Widget im Bildschirm des Modells neu wählen und die Sensoren mit «Suchen» zuweisen; Einstellungen, Tank und Flüge der alten Version werden nicht übernommen. Eine Lua-Studio-Datei mit dem alten Namen (<b>.motoren_ecu.lua</b>) wird noch gelesen; bitte aus Lua-Studio neu übertragen. Danach den alten Ordner <b>SD:/scripts/motoren_ecu/</b> löschen. Entfernen: in der FrSky Suite unter Lua-Bibliothek löschen oder den Ordner <b>SD:/scripts/gas_ecu/</b> löschen; mit ihm gehen die gespeicherten Daten im Unterordner <b>daten/</b>.</p>
+<h2>11 Welche Sender</h2><table><tr><th>Sender</th><th>Display</th><th>Stand</th></tr>
+<tr><td>X18RS / X18S / X18</td><td>480×320</td><td>am Sender getestet (X18RS)</td></tr>
+<tr><td>X20 / X20S / X20RS / X20 Pro</td><td>800×480</td><td>nur im Simulator</td></tr>
+<tr><td>X14 / X14S</td><td>640×360</td><td>nicht getestet</td></tr>
+<tr><td>X10 / Twin X Lite</td><td>480×272</td><td>nicht getestet</td></tr>
+</table></body></html>

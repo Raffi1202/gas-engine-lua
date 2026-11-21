@@ -1,0 +1,232 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><title>Gas Engine Carb – Manual</title><style>  @page { size: A4; margin: 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 10.5pt; line-height: 1.42; color: #1a1f2b; margin: 0; }
+  h1 { font-size: 24pt; margin: 0 0 2mm; }
+  h2 { font-size: 14.5pt; margin: 7mm 0 2.5mm; padding-bottom: 1mm; border-bottom: 1.5pt solid #1f4f96; color: #12305e; break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 4mm 0 1.5mm; break-after: avoid; }
+  p { margin: 0 0 2.5mm; }
+  ol, ul { margin: 0 0 2.5mm; padding-left: 6mm; }
+  li { margin-bottom: 1.2mm; break-inside: avoid; }
+  .unter { color: #56607a; font-size: 11pt; margin-bottom: 5mm; }
+  .bild { position: relative; width: 100%; margin: 3mm 0; break-inside: avoid; }
+  .bild img { width: 100%; display: block; border-radius: 2mm; border: 0.5pt solid #99a; }
+  .bild .t, .halb .t { font-size: 9pt; color: #56607a; margin-top: 1mm; }
+  .schmal { width: 72%; margin-left: auto; margin-right: auto; }
+  .halb { display: flex; gap: 5mm; break-inside: avoid; margin: 3mm 0; }
+  .halb > div { flex: 1; }
+  .halb img { width: 100%; display: block; border-radius: 1.5mm; border: 0.5pt solid #99a; }
+  .nr { position: absolute; width: 6.2mm; height: 6.2mm; margin: -3.1mm 0 0 -3.1mm; border-radius: 50%; background: #e11d48;
+        color: #fff; font-weight: 700; font-size: 9.5pt; line-height: 6.2mm; text-align: center; border: 0.6pt solid #fff; }
+  .n { display: inline-block; min-width: 5mm; height: 5mm; border-radius: 50%; background: #e11d48; color: #fff; font-weight: 700;
+       font-size: 8.5pt; line-height: 5mm; text-align: center; margin-right: 1mm; }
+  table { border-collapse: collapse; width: 100%; margin: 2mm 0 3mm; font-size: 9.6pt; }
+  tr { break-inside: avoid; }
+  th, td { border: 0.5pt solid #b6bccb; padding: 1.3mm 2mm; text-align: left; vertical-align: top; }
+  th { background: #e9eef8; }
+  .kasten { border: 1pt solid #d99a00; background: #fff7df; border-radius: 2mm; padding: 2.5mm 3.5mm; margin: 3mm 0; break-inside: avoid; }
+  .kasten.blau { border-color: #1f4f96; background: #eef3fb; }
+  .gruen { color: #15803d; font-weight: 700; } .orange { color: #b45309; font-weight: 700; } .rot { color: #b91c1c; font-weight: 700; }
+  .haken { list-style: none; padding-left: 0; }
+  .haken li::before { content: "☐  "; font-size: 12pt; }
+  .neu { break-before: page; }
+  .klein { font-size: 9pt; color: #56607a; }
+</style></head><body>
+<h1>Gas Engine Carb</h1><div class='unter'>Manual, Version 0.10.0 · as of 21.11.2026</div>
+<p>Gas Engine Carb is a full-screen widget for FrSky radios running Ethos. It shows the telemetry of a carburettor engine, for example with FrSky AES: cylinder temperatures, RPM, tank, batteries, power switch and reception. It warns with colour, voice and vibration and keeps a list of your flights.</p>
+<div class='kasten blau'><b>Testing status:</b> Tested on an X18RS (Ethos 26.2.0) with a telemetry simulator (48 sensors, receiver SR10 Plus): sensor search, power switch, batteries, language. Tested in the Ethos simulator: all pages at 800×480 and 480×320, German and English. <b>Not yet tested:</b> a real flight, every menu item on the radio, announcements in flight, the flight list on the radio, radios other than the X18RS.</div>
+<h2>1 What you need</h2><ul class='haken'>
+<li>A FrSky radio with Ethos 26.1 or newer and a colour display (X20, X18, X14, X10 and others).</li>
+<li>FrSky Suite on your computer (for installing), or a card reader.</li>
+<li>The file <b>Gas-Engine-Carb-0.10.0.zip</b> from the GitHub release.</li>
+<li>A model with telemetry: at least RPM or cylinder temperature. Everything else is optional.</li>
+<li>A three-position switch for off / ignition / choke (for the flight list and the «engine off» alarm).</li>
+</ul>
+<h2>2 Install</h2><h3>With FrSky Suite (recommended)</h3><ol>
+<li>Connect the radio to the computer by USB and choose <b>Ethos Suite</b> on the radio.</li>
+<li>Open FrSky Suite and choose <b>Lua library</b>.</li>
+<li>Click <b>Install from local ZIP</b> and choose <b>Gas-Engine-Carb-0.10.0.zip</b>. Do not unzip it first.</li>
+<li>Disconnect the radio and restart it.</li>
+</ol><h3>Without Suite, via the SD card</h3><ol>
+<li>Unzip the file on the computer. It contains the folder <b>gas_carb</b>.</li>
+<li>Copy the whole folder to the radio's SD card into <b>scripts/</b>, i.e. <b>SD:/scripts/gas_carb/</b>.</li>
+<li>On a Mac, run <b>dot_clean -m</b> on the folder afterwards, otherwise hidden files get in the way.</li>
+<li>Restart the radio.</li>
+</ol><div class='kasten'>The X18RS with Ethos 26.2 loads scripts from the SD card only. If the folder is in the internal memory (RADIO), the widget does not appear in the list.</div>
+<h2>3 Set up the screen</h2><ol>
+<li>Select the model you want the widget in.</li>
+<li>Press <b>DISP</b> and add a new screen. Choose the layout <b>full screen</b> (one widget across the whole screen, no title).</li>
+<li>Tap the empty area and choose <b>Gas Engine Carb</b>.</li>
+<li>You now see page 1. Without sensors there are dashes everywhere, which is correct.</li>
+</ol><div class='kasten blau'>Compact view: if you choose the layout with top and bottom bar (one widget) instead of «full screen», the widget shows a compact page by itself (chapter 5). In an even smaller area it shows «full screen only».</div>
+<h2>4 Assign sensors</h2><ol>
+<li>Let Ethos find the sensors first: Model › Telemetry › <b>Discover sensors</b>.</li>
+<li>Long-press the widget and choose <b>Configure widget</b>.</li>
+<li>At the top, press <b>Search</b> next to <b>Find sensors automatically</b>. The search runs for a few seconds in steps and only fills empty fields.</li>
+<li>Close the menu. After a few seconds the widget briefly shows «n sensors newly assigned». Then open the menu again.</li>
+<li>If several sensors match a field, the top shows «Several sensors match, please check:», below it the field, the count and which sensor was chosen. Check these fields in their group and choose by hand if needed.</li>
+<li>Assign by hand what the search cannot know: <b>Engine switch (3 positions)</b>, <b>Throttle (channel)</b>, <b>Mute (switch)</b> and the two status bar switches.</li>
+<li>Set <b>Number of cylinders</b>, <b>Tank capacity</b> and for each battery the <b>role</b>, <b>cells</b> and <b>type</b>.</li>
+</ol><p>The search recognises sensors by their FrSky ID (application ID) and by known names. A deleted sensor («---») counts as empty and is filled again.</p>
+<h2 class='neu'>5 The display</h2>
+<p>Three pages. Next: swipe left or turn the rotary encoder right; back: swipe right or turn it left. The first encoder step after loading selects the widget in Ethos.</p>
+<h3>Page 1 Engine</h3>
+<div class="bild"><img src="../bilder-simulator/Gas%20Engine%20Carb%20-%20Sim%20800x480%2011%20Englisch%20Seite%201%20Motor.png"><div class="t">Page 1 in the simulator</div></div>
+<table><tr><th style='width:22%'>Part</th><th>What it shows</th></tr><tr><td>Status bar, top</td><td>State (RUNNING, WARM-UP, NO DATA, WARNING, ALARM), ignition, choke, the two switches, on the right model name, reception and page.</td></tr><tr><td>Message line</td><td>All active warnings (orange) and alarms (red) as text.</td></tr><tr><td>Cylinders</td><td>One bar per cylinder with temperature, trend arrow, difference and maximum.</td></tr><tr><td>RPM</td><td>Arc with RPM and maximum, below it the throttle bar in percent.</td></tr><tr><td>Fuel</td><td>Tank in percent and ml, fuel used, flow, time left, button <b>REFUELLED</b>.</td></tr><tr><td>Bottom row</td><td>Altitude, climb, speed.</td></tr></table>
+<h3>Page 2 Electrics</h3>
+<div class="bild"><img src="../bilder-simulator/Gas%20Engine%20Carb%20-%20Sim%20800x480%2009%20Seite%202%20Elektrik%203%20Akkus.png"><div class="t">Page 2 with three batteries (6S, cell sensors)</div></div>
+<table><tr><th style='width:22%'>Part</th><th>What it shows</th></tr><tr><td>Batteries</td><td>Up to 3 columns. With a cell sensor: one vertical bar per cell with its value, 5 and 6 cells in two rows, Δ = difference at the bottom. With a plain voltage sensor: one bar of the average cell (total ÷ cells) and «Ø … V per cell»; without a cell count «Set cell count in menu».</td></tr><tr><td>Power switch</td><td>Only if sensors are assigned: status, battery voltages and currents, channel currents as bars.</td></tr><tr><td>Reception</td><td>Signal values of receivers 1 and 2 (2.4 GHz, 900 MHz, VFR).</td></tr><tr><td>RXBATT</td><td>Receiver voltage.</td></tr></table>
+<h3>Page 3 Summary</h3>
+<div class="bild"><img src="../bilder-simulator/Gas%20Engine%20Carb%20-%20Sim%20800x480%2012%20Englisch%20Seite%203%20Flug-Details.png"><div class="t">Page 3: flight details</div></div>
+<p>On the left are the highest and lowest values since the last reset (total), on the right the flights. Tap a flight to see its values. There you can delete it on its own with <b>DELETE FLIGHT n</b>; the numbers move up. <b>RESET SUMMARY</b> deletes the highest values and the flight list after a question; the tank stays.</p>
+<h3>Compact view</h3>
+<div class="bild"><img src="../bilder-simulator/Gas%20Engine%20Carb%20-%20Sim%20630x258%2015%20Kompakt%20Englisch.png"><div class="t">Compact view in the layout with top and bottom bar</div></div>
+<p>Top left the engine run time of the current flight, next to it state, ignition and choke, on the right the reception. A warning replaces the pills. Below are four rings: RPM, hottest cylinder (with its number), tank with time left and the first battery with its lowest cell. The eight fields show cylinder difference, flow, fuel used, throttle, altitude, climb, speed and receiver voltage. There are no pages here; use full screen for battery details and the flight list.</p>
+<h2>6 Warnings and alarms</h2>
+<p>Every monitored value has two thresholds. <span class='orange'>Warning</span>: field and message line orange, the announcement plays. <span class='rot'>Alarm</span>: red, announcement and, if switched on, vibration. As long as the condition lasts, the announcement repeats every «Repeat every» seconds (default 30 s). It stops as soon as the value is good again. At least 3 s lie between two announcements. The mute switch silences all announcements; the colours stay.</p>
+<table><tr><th>Message</th><th>When</th><th style='width:14%'>Level</th></tr><tr><td>TELEMETRY LOST</td><td>No telemetry. When it returns: «Telemetry recovered».</td><td>Warning</td></tr><tr><td>ENGINE OFF</td><td>Engine stopped although the engine switch is on ignition (after the start delay).</td><td>Alarm</td></tr><tr><td>CHOKE OFF!</td><td>Choke on, engine running and warm or throttle high.</td><td>Warning</td></tr><tr><td>POWER SWITCH FAULT</td><td>The power switch reports failsafe, lost receiver, no signal, overload or a faulty channel.</td><td>Alarm</td></tr></table>
+<p>All limits with their announcements are listed with the setting in chapter 8.</p>
+<p><b>Alarm also with motor off.</b> With the motor switch at Off, all warnings and alarms still come (factory setting). In the menu group <b>Alarm also with motor off</b> you can clear the tick per limit; the switch <b>all</b> sets every tick at once. Without the tick, only tone, announcement and vibration of that value are silent while the motor switch is at Off; the display stays orange or red. When the switch is back at ignition, the announcement comes again. Without an assigned motor switch the setting has no effect. <b>ENGINE OFF</b>, <b>POWER SWITCH FAULT</b>, <b>TELEMETRY LOST</b> and <b>CHOKE OFF!</b> always come.</p>
+<h2>7 Operation</h2>
+<table><tr><td style='width:22%'><b>Start a flight</b></td><td>Engine switch from off to ignition. A paused flight continues («Flight resumed»).</td></tr><tr><td style='width:22%'><b>End a flight</b></td><td>Engine switch to off. Question «Flight finished?»: <b>YES, FINISHED</b> saves the flight, <b>NO, ONLY A PAUSE</b> keeps it open.</td></tr><tr><td style='width:22%'><b>Refuelled</b></td><td>Button <b>REFUELLED</b> on page 1, then <b>YES, REFUELLED</b>. Fuel used goes to 0, the tank to 100 %.</td></tr><tr><td style='width:22%'><b>Without touch</b></td><td>The rotary encoder changes pages. Questions, REFUELLED and the flight list need touch in this version.</td></tr><tr><td style='width:22%'><b>Mute</b></td><td>Flip the mute switch.</td></tr></table>
+<h2 class='neu'>8 All settings</h2><p>Long-press the widget › <b>Configure widget</b>. Groups can be expanded. A 0 switches a limit off. Sensors, channels and switches are stored in the model, all other values in the file <b>daten/modelname.txt</b> in the script folder.</p>
+<h3>Engine</h3>
+<table><tr><th style='width:27%'>Setting</th><th style='width:15%'>Default</th><th style='width:17%'>Range</th><th>Effect</th></tr>
+<tr><td>Number of cylinders</td><td>2</td><td>1 / 2 / 3 / 4</td><td>How many cylinder bars page 1 shows.</td></tr>
+<tr><td>Cylinder 1 temp.</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Temperature sensor of the cylinder (°C).</td></tr>
+<tr><td>Cylinder 2 temp.</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Temperature sensor of the cylinder (°C).</td></tr>
+<tr><td>Cylinder 3 temp.</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Temperature sensor of the cylinder (°C).</td></tr>
+<tr><td>Cylinder 4 temp.</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Temperature sensor of the cylinder (°C).</td></tr>
+<tr><td>RPM</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>RPM sensor. With «Engine running from» the widget knows whether the engine runs.</td></tr>
+<tr><td>Throttle (channel)</td><td>empty</td><td>sensor, channel or switch</td><td>Throttle channel of the radio (no telemetry). Drives the throttle bar and the choke warning.</td></tr>
+<tr><td>Engine switch (3 positions)</td><td>empty</td><td>sensor, channel or switch</td><td>Three-position switch for off / ignition / choke. Off → on starts a flight, on → off asks «Flight finished?».</td></tr>
+<tr><td>Position off (kill)</td><td>up</td><td>up / middle / down</td><td>Switch position in which the engine is off (kill).</td></tr>
+<tr><td>Position choke</td><td>none</td><td>none / up / middle / down</td><td>Switch position in which the choke is on.</td></tr>
+</table>
+<h3>Engine: limits (0 = off)</h3>
+<table><tr><th style='width:27%'>Setting</th><th style='width:15%'>Default</th><th style='width:17%'>Range</th><th>Effect</th></tr>
+<tr><td>Engine running from</td><td>0 (off)</td><td>0 – 5000 U/min</td><td>From this RPM the engine counts as running. 0 = any RPM above 0.</td></tr>
+<tr><td>Cylinder cold below</td><td>0 (off)</td><td>0 – 600°</td><td>Below this temperature the status bar shows «WARM-UP» instead of «RUNNING».</td></tr>
+<tr><td>Cylinder warning above</td><td>200°</td><td>0 – 600°</td><td>Cylinder above: orange, announcement «Cylinder n, too hot».</td></tr>
+<tr><td>Cylinder alarm above</td><td>230°</td><td>0 – 600°</td><td>Cylinder above: red, alarm with «Warning! Cylinder n, overheating» and vibration.</td></tr>
+<tr><td>Cyl. difference above</td><td>40°</td><td>0 – 300°</td><td>Difference hottest to coldest cylinder above: warning «Cylinder temperatures uneven». Also comes with the engine stopped and after shutdown; only not during the start lock after starting.</td></tr>
+<tr><td>RPM warning above</td><td>0 (off)</td><td>0 – 30000 U/min</td><td>RPM above: warning «RPM too high».</td></tr>
+<tr><td>RPM alarm above</td><td>0 (off)</td><td>0 – 30000 U/min</td><td>RPM above: alarm «RPM too high».</td></tr>
+<tr><td>Choke warning from cyl.</td><td>0 (off)</td><td>0 – 600°</td><td>Choke still on and cylinder from this temperature: «Please turn the choke off».</td></tr>
+<tr><td>Choke warning from throttle</td><td>0 (off)</td><td>0 – 100 %</td><td>Choke still on and throttle from this value: «Please turn the choke off».</td></tr>
+</table>
+<h3>Engine: display scales</h3>
+<table><tr><th style='width:27%'>Setting</th><th style='width:15%'>Default</th><th style='width:17%'>Range</th><th>Effect</th></tr>
+<tr><td>Cylinder from</td><td>0°</td><td>0 – 600°</td><td>Bottom of the cylinder bars (display only).</td></tr>
+<tr><td>Cylinder to</td><td>250°</td><td>10 – 600°</td><td>Top of the cylinder bars (display only).</td></tr>
+<tr><td>RPM to</td><td>9000 U/min</td><td>1000 – 30000 U/min</td><td>Full scale of the RPM arc (display only).</td></tr>
+</table>
+<h3>Fuel</h3>
+<table><tr><th style='width:27%'>Setting</th><th style='width:15%'>Default</th><th style='width:17%'>Range</th><th>Effect</th></tr>
+<tr><td>Pulse counter</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Pulse counter of the flow sensor. The widget calculates fuel used from it.</td></tr>
+<tr><td>ml per pulse</td><td>0.100 ml</td><td>0.001 – 10.000 ml</td><td>Volume per pulse. 0.100 ml is right for the FrSky flow meter.</td></tr>
+<tr><td>Flow (ml/min)</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Flow in ml/min, for display and time left.</td></tr>
+<tr><td>Tank capacity</td><td>0 (off)</td><td>0 – 20000 ml</td><td>Tank capacity in ml. 0 = no tank percentage.</td></tr>
+<tr><td>Reserve below</td><td>0 (off)</td><td>0 – 100 %</td><td>Tank below: warning «Fuel on reserve».</td></tr>
+<tr><td>Alarm below</td><td>0 (off)</td><td>0 – 100 %</td><td>Tank below: alarm «Warning! Fuel tank almost empty».</td></tr>
+<tr><td>Alarm time left below</td><td>0 (off)</td><td>0 – 120 min</td><td>Time left below: the same alarm «Tank almost empty». Only while the engine runs; a stopped engine has no time left. The percent limit «Alarm tank below» always applies.</td></tr>
+</table>
+<h3>Flight and reception</h3>
+<table><tr><th style='width:27%'>Setting</th><th style='width:15%'>Default</th><th style='width:17%'>Range</th><th>Effect</th></tr>
+<tr><td>Altitude</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Altitude for the bottom row and the flight list.</td></tr>
+<tr><td>Climb</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Climb rate for the bottom row and the flight list.</td></tr>
+<tr><td>Speed</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Speed for the bottom row.</td></tr>
+<tr><td>Reception (status bar)</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Reception value in the status bar. Without its own sensor the search uses RSSI of receiver 1.</td></tr>
+</table>
+<h3>Batteries (cell or voltage sensor)</h3>
+<table><tr><th style='width:27%'>Setting</th><th style='width:15%'>Default</th><th style='width:17%'>Range</th><th>Effect</th></tr>
+<tr><td>Battery 1 sensor</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Cell sensor (e.g. FLVS) or plain voltage sensor of the battery. The widget detects which one.</td></tr>
+<tr><td>Battery 1 is</td><td>Battery</td><td>Receiver / Ignition / Starter / Battery</td><td>Sets name and announcement of the battery (e.g. «Receiver battery one»). Same roles get a number.</td></tr>
+<tr><td>Battery 1 cells</td><td>automatic</td><td>automatic / 1S / 2S / 3S / 4S / 5S / 6S</td><td>Cell count. Needed for a plain voltage sensor: total ÷ cells = average cell. With a cell sensor «automatic» is fine.</td></tr>
+<tr><td>Battery 1 type</td><td>LiPo</td><td>LiPo / LiFe / NiMH</td><td>LiPo, LiFe or NiMH. When changed, the widget sets the two cell limits of this battery (LiPo 3.50/3.30 V, LiFe 3.10/2.90 V, NiMH 1.15/1.05 V) and the bar scale.</td></tr>
+<tr><td>Battery 2 sensor</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Cell sensor (e.g. FLVS) or plain voltage sensor of the battery. The widget detects which one.</td></tr>
+<tr><td>Battery 2 is</td><td>Battery</td><td>Receiver / Ignition / Starter / Battery</td><td>Sets name and announcement of the battery (e.g. «Receiver battery one»). Same roles get a number.</td></tr>
+<tr><td>Battery 2 cells</td><td>automatic</td><td>automatic / 1S / 2S / 3S / 4S / 5S / 6S</td><td>Cell count. Needed for a plain voltage sensor: total ÷ cells = average cell. With a cell sensor «automatic» is fine.</td></tr>
+<tr><td>Battery 2 type</td><td>LiPo</td><td>LiPo / LiFe / NiMH</td><td>LiPo, LiFe or NiMH. When changed, the widget sets the two cell limits of this battery (LiPo 3.50/3.30 V, LiFe 3.10/2.90 V, NiMH 1.15/1.05 V) and the bar scale.</td></tr>
+<tr><td>Battery 3 sensor</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Cell sensor (e.g. FLVS) or plain voltage sensor of the battery. The widget detects which one.</td></tr>
+<tr><td>Battery 3 is</td><td>Battery</td><td>Receiver / Ignition / Starter / Battery</td><td>Sets name and announcement of the battery (e.g. «Receiver battery one»). Same roles get a number.</td></tr>
+<tr><td>Battery 3 cells</td><td>automatic</td><td>automatic / 1S / 2S / 3S / 4S / 5S / 6S</td><td>Cell count. Needed for a plain voltage sensor: total ÷ cells = average cell. With a cell sensor «automatic» is fine.</td></tr>
+<tr><td>Battery 3 type</td><td>LiPo</td><td>LiPo / LiFe / NiMH</td><td>LiPo, LiFe or NiMH. When changed, the widget sets the two cell limits of this battery (LiPo 3.50/3.30 V, LiFe 3.10/2.90 V, NiMH 1.15/1.05 V) and the bar scale.</td></tr>
+<tr><td>Battery 1 cell warning below</td><td>3.50 V</td><td>0.00 – 5.00 V</td><td>Lowest cell below: orange, announcement «… voltage low».</td></tr>
+<tr><td>Battery 1 cell alarm below</td><td>3.30 V</td><td>0.00 – 5.00 V</td><td>Lowest cell below: red, alarm «Warning! … almost empty».</td></tr>
+<tr><td>Battery 2 cell warning below</td><td>3.50 V</td><td>0.00 – 5.00 V</td><td>Lowest cell below: orange, announcement «… voltage low».</td></tr>
+<tr><td>Battery 2 cell alarm below</td><td>3.30 V</td><td>0.00 – 5.00 V</td><td>Lowest cell below: red, alarm «Warning! … almost empty».</td></tr>
+<tr><td>Battery 3 cell warning below</td><td>3.50 V</td><td>0.00 – 5.00 V</td><td>Lowest cell below: orange, announcement «… voltage low».</td></tr>
+<tr><td>Battery 3 cell alarm below</td><td>3.30 V</td><td>0.00 – 5.00 V</td><td>Lowest cell below: red, alarm «Warning! … almost empty».</td></tr>
+<tr><td>Cell difference above</td><td>0.15 V</td><td>0.00 – 2.00 V</td><td>Difference highest to lowest cell from this value: warning «… cells unbalanced». Cell sensor only.</td></tr>
+<tr><td>Cell bar empty at</td><td>3.00 V</td><td>0.00 – 5.00 V</td><td>Cell bar empty at this value (LiPo).</td></tr>
+<tr><td>Cell bar full at</td><td>4.20 V</td><td>0.00 – 5.00 V</td><td>Cell bar full at this value (LiPo).</td></tr>
+</table>
+<h3>Power switch (RB, if present)</h3>
+<table><tr><th style='width:27%'>Setting</th><th style='width:15%'>Default</th><th style='width:17%'>Range</th><th>Effect</th></tr>
+<tr><td>Battery 1 voltage</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Voltage of the battery at the power switch (RB).</td></tr>
+<tr><td>Battery 1 current</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Current of the battery at the power switch.</td></tr>
+<tr><td>Battery 2 voltage</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Voltage of the battery at the power switch (RB).</td></tr>
+<tr><td>Battery 2 current</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Current of the battery at the power switch.</td></tr>
+<tr><td>Receiver status (RB State)</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Receiver status at the power switch. Anything except «OK» and single lost frames gives the alarm «Power switch fault».</td></tr>
+<tr><td>Channel status (RB Ch. State)</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Servo channel status at the power switch. A faulty channel («KO») gives the alarm «Power switch fault».</td></tr>
+<tr><td>Channel 1 current</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Current of one servo channel of the power switch, as a bar on page 2.</td></tr>
+<tr><td>Channel 2 current</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Current of one servo channel of the power switch, as a bar on page 2.</td></tr>
+<tr><td>Channel 3 current</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Current of one servo channel of the power switch, as a bar on page 2.</td></tr>
+<tr><td>Channel 4 current</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Current of one servo channel of the power switch, as a bar on page 2.</td></tr>
+<tr><td>Channel 5 current</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Current of one servo channel of the power switch, as a bar on page 2.</td></tr>
+<tr><td>Channel 6 current</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Current of one servo channel of the power switch, as a bar on page 2.</td></tr>
+<tr><td>Channel 7 current</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Current of one servo channel of the power switch, as a bar on page 2.</td></tr>
+<tr><td>Channel 8 current</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Current of one servo channel of the power switch, as a bar on page 2.</td></tr>
+<tr><td>Channel current warning above</td><td>0 (off)</td><td>0.0 – 50.0 A</td><td>Highest channel current above: warning «Servo current too high».</td></tr>
+<tr><td>Channel current alarm above</td><td>0 (off)</td><td>0.0 – 50.0 A</td><td>Highest channel current above: alarm «Servo current too high».</td></tr>
+</table>
+<h3>Receiver</h3>
+<table><tr><th style='width:27%'>Setting</th><th style='width:15%'>Default</th><th style='width:17%'>Range</th><th>Effect</th></tr>
+<tr><td>RX1 RSSI 2.4 GHz</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Signal value of the receiver for the «Reception» field on page 2.</td></tr>
+<tr><td>RX1 RSSI 900 MHz</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Signal value of the receiver for the «Reception» field on page 2.</td></tr>
+<tr><td>RX1 VFR</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Signal value of the receiver for the «Reception» field on page 2.</td></tr>
+<tr><td>RX2 RSSI 2.4 GHz</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Signal value of the receiver for the «Reception» field on page 2.</td></tr>
+<tr><td>RX2 RSSI 900 MHz</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Signal value of the receiver for the «Reception» field on page 2.</td></tr>
+<tr><td>RX2 VFR</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Signal value of the receiver for the «Reception» field on page 2.</td></tr>
+<tr><td>Receiver voltage (RxBatt)</td><td>empty, «Search» fills</td><td>sensor, channel or switch</td><td>Receiver voltage, as its own card on page 2.</td></tr>
+<tr><td>RSSI warning below</td><td>0 (off)</td><td>0 – 100</td><td>Signal below: warning «Receiver n, weak signal».</td></tr>
+<tr><td>RSSI alarm below</td><td>0 (off)</td><td>0 – 100</td><td>Signal below: alarm.</td></tr>
+</table>
+<h3>Switches in the status bar</h3>
+<table><tr><th style='width:27%'>Setting</th><th style='width:15%'>Default</th><th style='width:17%'>Range</th><th>Effect</th></tr>
+<tr><td>Switch 1</td><td>empty</td><td>sensor, channel or switch</td><td>Switch shown as a green pill at the top while on (e.g. tow release, lights).</td></tr>
+<tr><td>Switch 1 name</td><td>SCHALTER 1</td><td>text, 12 characters</td><td>Text of the pill, 12 characters at most.</td></tr>
+<tr><td>Switch 1 reverse</td><td>no</td><td>yes / no</td><td>Reverses the position if the pill lights the wrong way round.</td></tr>
+<tr><td>Switch 2</td><td>empty</td><td>sensor, channel or switch</td><td>Switch shown as a green pill at the top while on (e.g. tow release, lights).</td></tr>
+<tr><td>Switch 2 name</td><td>SCHALTER 2</td><td>text, 12 characters</td><td>Text of the pill, 12 characters at most.</td></tr>
+<tr><td>Switch 2 reverse</td><td>no</td><td>yes / no</td><td>Reverses the position if the pill lights the wrong way round.</td></tr>
+</table>
+<h3>Display</h3>
+<table><tr><th style='width:27%'>Setting</th><th style='width:15%'>Default</th><th style='width:17%'>Range</th><th>Effect</th></tr>
+<tr><td>Sprache / Language</td><td>as radio</td><td>as radio / Deutsch / English</td><td>Language of display, menu and announcements. «as radio» = German on a German radio, otherwise English.</td></tr>
+</table>
+<h3>Warnings</h3>
+<table><tr><th style='width:27%'>Setting</th><th style='width:15%'>Default</th><th style='width:17%'>Range</th><th>Effect</th></tr>
+<tr><td>Announcements</td><td>yes</td><td>yes / no</td><td>Announcements on or off.</td></tr>
+<tr><td>Announce value</td><td>yes</td><td>yes / no</td><td>Speak the value after the announcement (e.g. «205 degrees»).</td></tr>
+<tr><td>Vibration on alarm</td><td>yes</td><td>yes / no</td><td>The radio vibrates on an alarm (red).</td></tr>
+<tr><td>Repeat every</td><td>30 s</td><td>5 – 600 s</td><td>A warning is repeated at the earliest after this time.</td></tr>
+<tr><td>Start delay</td><td>10 s</td><td>0 – 120 s</td><td>After starting, no engine warnings for this long (pressure, difference, engine off).</td></tr>
+<tr><td>Mute (switch)</td><td>empty</td><td>sensor, channel or switch</td><td>Switch that mutes all announcements. When switched you hear «Announcements off» or «Announcements on».</td></tr>
+</table>
+<h3>Alarm also with motor off</h3>
+<table><tr><th style='width:27%'>Setting</th><th style='width:15%'>Default</th><th style='width:17%'>Range</th><th>Effect</th></tr>
+<tr><td>all</td><td>yes</td><td>yes / no</td><td>Sets all ticks of this group at once.</td></tr>
+<tr><td>per limit (cylinder, RPM,  tank %, tank time left, battery 1–3, cells uneven, servo current, reception)</td><td>yes</td><td>yes / no</td><td>No: tone, announcement and vibration of this alarm are silent while the motor switch is at Off. The display keeps its colour.</td></tr>
+</table>
+<h3>With Lua Studio</h3><p>If you have the PC program Lua Studio, it creates a file <b>SD:/scripts/studio/modelname.gas_carb.lua</b> per model (special characters and umlauts in the name become «_»). Settings, limits and the boxes of the compact view or page 1 then come from this file, and the menu shows «Studio file loaded». Changes you make in the menu afterwards are stored in <b>modelname.gas_carb.funke.lua</b>; the button <b>Back to Studio state</b> discards them after a question. Without a Studio file the button is called <b>Back to defaults</b> and resets all settings, sensors stay. If the file is broken or too new, a note shows at the bottom for 8 s, then a «!» top right, and the widget works as without Studio.</p>
+<p>In Lua Studio the setting is called «also with motor off» (field <b>beiMotorAus</b>). A limit entry without a number never changes the factory limit; an alarm is only switched off completely with «off».</p>
+<h2 class='neu'>9 Troubleshooting</h2>
+<table><tr><th style='width:36%'>What you see</th><th>What to do</th></tr><tr><td>The widget is not in the list</td><td>The folder is not on the SD card under scripts/, or Lua memory is full. Check the folder, restart, remove rarely used scripts from the SD card.</td></tr><tr><td>«full screen only»</td><td>The area is smaller than the compact view. Choose «full screen» or the layout with top and bottom bar.</td></tr><tr><td>Dashes everywhere, «NO DATA» at the top</td><td>No telemetry or no sensors assigned. Receiver on? Model › Telemetry › Discover sensors, then «Search» in the widget.</td></tr><tr><td>One field shows a dash</td><td>The sensor is assigned but has no value. Check in Ethos under Telemetry whether it has values.</td></tr><tr><td>A field is missing</td><td>No sensor assigned. Assign it in the menu.</td></tr><tr><td>Wrong sensor after the search</td><td>The top of the menu lists fields where several sensors matched. Choose the right one by hand.</td></tr><tr><td>Battery shows «Set cell count in menu»</td><td>Plain voltage sensor without cell count. Set «Battery n cells».</td></tr><tr><td>Constant cell warning with LiFe or NiMH</td><td>Set «Battery n type» correctly, the limits follow.</td></tr><tr><td>No announcements</td><td>«Announcements» on? Mute switch off? Radio volume? audio/ folder copied?</td></tr><tr><td>No flight in the list</td><td>Engine switch not assigned or «Position off» wrong.</td></tr><tr><td>Small red error text bottom left</td><td>A script error. Take a screenshot and report it with the log (FrSky Suite › Debug log), see TESTLEITFADEN.</td></tr></table>
+<h2>10 Update and remove</h2><p>Update: install the new ZIP the same way. Settings, tank, flights and assignments stay, across several versions.</p><p><b>Upgrading from Motoren Vergaser (up to 0.9.0):</b> the widget was renamed (folder <b>gas_carb</b>). Choose the widget again on the model's screen and assign the sensors with «Search»; settings, tank and flights of the old version are not taken over. A Lua-Studio file with the old name (<b>.motoren_vergaser.lua</b>) is still read once; re-transfer it from Lua-Studio. Then delete the old folder <b>SD:/scripts/motoren_vergaser/</b>. Remove: delete it in FrSky Suite under Lua library or delete the folder <b>SD:/scripts/gas_carb/</b>; the saved data in its <b>daten/</b> subfolder goes with it.</p>
+<h2>11 Which radios</h2><table><tr><th>Radio</th><th>Display</th><th>Status</th></tr>
+<tr><td>X18RS / X18S / X18</td><td>480×320</td><td>tested on the radio (X18RS)</td></tr>
+<tr><td>X20 / X20S / X20RS / X20 Pro</td><td>800×480</td><td>simulator only</td></tr>
+<tr><td>X14 / X14S</td><td>640×360</td><td>not tested</td></tr>
+<tr><td>X10 / Twin X Lite</td><td>480×272</td><td>not tested</td></tr>
+</table></body></html>

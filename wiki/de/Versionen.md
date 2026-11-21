@@ -1,0 +1,14 @@
+[🇬🇧 English](../en/Changelog.md) · 🇩🇪 Deutsch
+
+# Versionen
+
+Vollständige Liste: [CHANGELOG.md](../../CHANGELOG.md) (ab ECU 1.9.0 / Vergaser 0.9.0 auf Englisch, ältere Einträge deutsch).
+
+| Version | Datum | Wichtigste Punkte |
+|---|---|---|
+| Gas Engine ECU 1.10.0 / Carb 0.10.0 | 21.11.2026 | **Neuer Name, bisher Motoren ECU / Vergaser (Umstieg siehe Installation)**. Alarm auch bei Motor aus (je Grenze, Menü und Lua-Studio), Lua-Studio-Grenze ohne Zahl behält die Werkgrenze, enthält 1.8.1 / 0.8.1 |
+| ECU 1.8.1 / Vergaser 0.8.1 | 21.11.2026 | Nicht einzeln veröffentlicht: Zylinderdifferenz auch nach dem Abstellen, Restzeit nur bei laufendem Motor, Speicher wird beim Modellwechsel frei |
+| ECU 1.8.0 / Vergaser 0.8.0 | 20.11.2026 | Lua-Studio-Einstellungsdatei |
+
+---
+[← Start](../Home.md) | [Zurück](Fehlerbehebung.md) | Weiter →

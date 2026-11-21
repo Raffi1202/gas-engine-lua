@@ -1,0 +1,23 @@
+[🇬🇧 English](../en/Troubleshooting.md) · 🇩🇪 Deutsch
+
+# Fehlerbehebung
+
+| Was du siehst | Was tun |
+|---|---|
+| Das Widget fehlt in der Auswahl | Ordner nicht auf der SD-Karte unter `scripts/` oder Lua-Speicher voll. Ordner prüfen, neu starten, selten gebrauchte Skripte entfernen. |
+| «nur im Vollbild» | Das Feld ist kleiner als die Kompaktansicht. «Vollbild» oder das Layout mit Kopf- und Fussleiste wählen. |
+| Überall Striche, «KEINE DATEN» | Keine Telemetrie oder keine Sensoren. Empfänger an? Modell › Telemetrie › Sensoren suchen, dann «Suchen» im Widget. |
+| Ein Feld zeigt einen Strich | Sensor zugewiesen, aber ohne Wert. In Ethos unter Telemetrie prüfen. |
+| Falscher Sensor nach der Suche | Oben im Menü stehen die Felder, auf die mehrere Sensoren passten. Von Hand wählen. |
+| «Zellenzahl im Menü wählen» | Reiner Spannungssensor ohne Zellenzahl: «Akku n Zellen» einstellen. |
+| Dauernde Zellwarnung bei LiFe oder NiMH | «Akku n Art» richtig einstellen, die Grenzen folgen. |
+| Keine Ansagen | «Ansagen» an? Stumm-Schalter aus? Lautstärke? Ordner `audio/` mitkopiert? |
+| Ein Alarm kommt bei Motor aus nicht | «Alarm auch bei Motor aus» ist für diesen Wert ausgeschaltet (Menü oder Lua-Studio). |
+| Kein Flug in der Liste | Motorschalter nicht zugewiesen oder «Stellung Aus» falsch. |
+| Kleiner roter Fehlertext unten links | Ein Skriptfehler. Bildschirmfoto machen und mit dem Log (FrSky Suite › Debug-Log) als GitHub-Issue melden. |
+
+## Lua-Speicher («too much RAM»)
+Alle Lua-Skripte auf dem Sender teilen sich einen Lua-Speicher (rund 2048 KB auf der X18RS). Meldet Ethos «too much RAM» bzw. «Zu wenig Lua-Speicher», **den Sender aus- und wieder einschalten**. Seit ECU 1.8.1 / Vergaser 0.8.1 gibt das Widget seinen Speicher nach dem Wechsel auf ein Modell ohne dieses Widget frei (rund 4 KB bleiben statt rund 127 KB, im Simulator gemessen).
+
+---
+[← Start](../Home.md) | [Zurück](FAQ.md) | [Weiter →](Versionen.md)
