@@ -1090,33 +1090,43 @@ function K.wecke(w)
   if dt >= DT_SCHNELL then
     w.tS = now
     if dt > 1 or dt < 0 then dt = DT_SCHNELL end      -- nach einer Pause nichts nachrechnen
-    liesSchnell(w, now, dt)
-    if now - w.tL >= DT_LANGSAM then
-      w.tL = now
-      liesLangsam(w)
-    end
-    if now - w.tE >= 2 then
-      w.tE = now
-      liesEinheiten(w)
-    end
-    if now - w.tT >= TREND_DT then
-      w.tT = now
-      trend(w)
-    end
-    kraftstoff(w, now, dt)
-    uebersicht(w, dt)
-    schlepp(w, now)
-    warnungen(w, now)
-    ansagen(w, now)
-    if w.hinweis and now >= w.hinweisBis then w.hinweis = nil end
-    -- Datei schreiben: sofort nach «Vollgetankt», sonst frühestens 2 s nach der letzten Änderung
-    if w.dateiOffen and (w.dateiJetzt or now - (w.tDatei or -100) >= 2) then
+    -- Datei schreiben in zwei eigenen Aufrufen (Befehlsgrenze): 1. felder.lua laden und Verzeichnis bauen,
+    -- 2. schreiben. Diese Aufrufe machen sonst nichts (ein ausgelassener schneller Durchgang von 0,1 s schadet nicht).
+    if w.dateiF then
+      local okS, erfolg = pcall(w.dateiF.schreibeDatei, w)
+      w.dateiF = nil
+      if not (okS and erfolg) then print("Gas Engine Carb: Datei konnte nicht geschrieben werden") end
+      return
+    elseif w.dateiOffen and (w.dateiJetzt or now - (w.tDatei or -100) >= 2) then
       w.dateiOffen, w.dateiJetzt, w.tDatei = false, false, now
       local ok, F = pcall(lade, "felder.lua")
-      local okS, erfolg = false, false
-      if ok then okS, erfolg = pcall(F.schreibeDatei, w) end
-      if not (okS and erfolg) then print("Gas Engine Carb: Datei konnte nicht geschrieben werden") end
+      if ok then pcall(F.feld, "tank"); w.dateiF = F else print("Gas Engine Carb: Datei konnte nicht geschrieben werden") end
+      return
     end
+    -- Während eines Suchschritts (wenige Aufrufe) ruhen Lesen und Warnungen: sonst über der Befehlsgrenze
+    if not w.suchLaeuft then
+      liesSchnell(w, now, dt)
+      if now - w.tL >= DT_LANGSAM then
+        w.tL = now
+        liesLangsam(w)
+      end
+      if now - w.tE >= 2 then
+        w.tE = now
+        liesEinheiten(w)
+      end
+      if now - w.tT >= TREND_DT then
+        w.tT = now
+        trend(w)
+      end
+      kraftstoff(w, now, dt)
+      uebersicht(w, dt)
+      schlepp(w, now)
+      warnungen(w, now)
+      ansagen(w, now)
+    end
+    if w.hinweis and now >= w.hinweisBis then w.hinweis = nil end
+    -- Datei schreiben: sofort nach «Vollgetankt», sonst frühestens 2 s nach der letzten Änderung
+    w.schwer = false
     -- Erster Start ohne gespeicherte Einstellungen: Sensoren automatisch suchen, sobald Telemetrie da ist
     if w.suchZ == nil and w.autoOffen and w.v.tele and now - (w.tAuto or -100) >= 5 then
       w.tAuto, w.suchArt = now, "auto"
@@ -1127,7 +1137,9 @@ function K.wecke(w)
       w.infoNeu = nil
       w.studioZ = { art = "info" }
     end
-    if w.studioZ and not w.studioZ.fertig and not w.suchLaeuft then
+    if w.schwer then
+      -- nichts weiter in diesem Aufruf
+    elseif w.studioZ and not w.studioZ.fertig and not w.suchLaeuft then
       local ok, e = pcall(studioSchritt, w, now)
       if not ok then w.studioZ.fertig = true; print("Gas Engine Carb: Studio: " .. tostring(e)) end
     elseif w.funkeOffen and now - (w.tFunke or 0) >= 2 then
@@ -1136,7 +1148,7 @@ function K.wecke(w)
       if not ok then print("Gas Engine Carb: Studio: " .. tostring(e)) end
     end
     -- Die Suche läuft in Schritten, ein Schritt je Aufruf (Ethos begrenzt die Befehle je Aufruf)
-    if w.suchLaeuft then
+    if w.suchLaeuft and not w.schwer then
       local ok, n = pcall(function() return lade("suche.lua")(w) end)
       if not ok then
         w.suchZ, w.suchLaeuft = nil, false

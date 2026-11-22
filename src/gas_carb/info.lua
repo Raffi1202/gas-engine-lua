@@ -28,7 +28,7 @@ function I.schritt(w, version, S)
     w.infoZ = z
     return false
   end
-  local bis = math.min(#z.liste, z.i + 19, 100)
+  local bis = math.min(#z.liste, z.i + 9, 100)          -- je Aufruf 10 Sensoren (Befehlsgrenze)
   for i = z.i, bis do
     local q = z.liste[i]
     local a, sub, ph = rufe(q, "appId"), rufe(q, "subId"), rufe(q, "physId")

@@ -2,11 +2,17 @@
 
 Older entries (before ECU 1.9.0 / Vergaser 0.9.0) in German.
 
+## Gas Engine ECU 1.12.2 / Gas Engine Carb 0.12.2 – 22.11.2026 (pre-release)
+- Command limits: every wakeup now stays below 5,000 Lua commands, every paint below 10,000 (Mac count with the random test, 3 seeds × 5,000 calls; before: wakeup up to 9,274 ECU / 10,166 Carb).
+  - Writing the settings file runs in two calls of its own (load and index, then write); these calls do nothing else.
+  - The info file for Lua-Studio collects 10 sensors per call (was 20).
+  - During a sensor-search step (a few calls) reading values and warnings pause for that call.
+- Removed the «Known» note about command counts from 1.12.1.
+
 ## Gas Engine ECU 1.12.1 / Gas Engine Carb 0.12.1 – 22.11.2026 (pre-release)
 - The Studio note («Studio: view 800x480 adjusted», «Studio: file faulty …») now appears in the widget's own status/message line at the top instead of a band at the bottom, so it never covers values.
 - A tank place (`lua:tank_proz`, `lua:tank_ml`, `lua:restzeit`) without a tank capacity shows «No tank capacity» instead of an empty bar. With a Studio file, settings such as the tank capacity come from the Studio file only.
 - Grammar: «1 sensor newly assigned» / «n sensors …» (German and English).
-- Known: command counts above the guideline (Carb first frame ~10,500, ECU wakeup 5,700–8,400) are not fixed in this version.
 
 ## Gas Engine ECU 1.12.0 / Gas Engine Carb 0.12.0 – 22.11.2026 (pre-release)
 - **Studio layout is always found** (Lua-Studio issue #1):
