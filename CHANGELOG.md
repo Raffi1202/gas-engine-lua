@@ -2,6 +2,11 @@
 
 Older entries (before ECU 1.9.0 / Vergaser 0.9.0) in German.
 
+## Gas Engine ECU 1.12.5 / Gas Engine Carb 0.12.5 – 22.11.2026 (pre-release)
+- After the settings are read (start, model change, update), the widget searches the sensors once by itself as soon as telemetry is running, 5 s after reading. It fills only empty or invalid fields (e.g. «---» after an update or a sensor rediscovery); assigned sensors stay untouched. If sensors were assigned it shows «n sensors newly assigned» and marks the model as changed; otherwise nothing is shown.
+- Sensor list in the menu: the sensor ID is shown only for whole-number IDs (a non-integer value caused a caught error in the menu; seen in the random test only).
+- Command limits unchanged: wakeup at most 4,379, paint at most 9,151 (Mac count, 3 seeds × 20,000 calls).
+
 ## Gas Engine ECU 1.12.4 / Gas Engine Carb 0.12.4 – 22.11.2026 (pre-release)
 - Full screen: the Studio note now appears in the header line in place of the model name (orange) instead of a band over the field titles. In the compact view it stays in the widget's own top bar.
 

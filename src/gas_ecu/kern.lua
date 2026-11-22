@@ -1134,6 +1134,11 @@ function K.wecke(w)
     if w.suchZ == nil and w.autoOffen and w.v.tele and now - (w.tAuto or -100) >= 5 then
       w.tAuto, w.suchArt = now, "auto"
       w.suchLaeuft = true
+    elseif w.autoNach and w.suchZ == nil and not w.suchLaeuft and w.v.tele
+        and (w.studioZ == nil or w.studioZ.fertig) and now - (w.tLies or 0) >= 5 then
+      -- einmal nach dem Lesen: ungültige oder leere Quellen (z. B. «---» nach einem Update) neu suchen
+      w.autoNach, w.suchArt = false, "nach"
+      w.suchLaeuft = true
     end
     -- Lua-Studio: ein Schritt je Aufruf nach dem Modellwechsel; Änderungen aus dem Menü in .funke.lua
     if w.infoNeu and w.studioZ and w.studioZ.fertig and not w.suchLaeuft then
@@ -1164,7 +1169,7 @@ function K.wecke(w)
             w.autoOffen = false
             hinweis(w, n .. (n == 1 and " Sensor automatisch zugewiesen" or " Sensoren automatisch zugewiesen"), now)
           end
-        else
+        elseif w.suchArt ~= "nach" or n > 0 then
           hinweis(w, tostring(n) .. (n == 1 and " Sensor neu zugewiesen" or " Sensoren neu zugewiesen"), now)
         end
         print("Gas Engine ECU: Suche: " .. n .. " neu zugewiesen")
@@ -1400,6 +1405,7 @@ function K.lies(w)
   local F = lade("felder.lua")
   w.gelesen = F.lies(w)
   w.autoOffen = not w.gelesen
+  w.autoNach, w.tLies = w.gelesen and true or false, os.clock()
   grenzen(w)
   studioNeu(w)
 end

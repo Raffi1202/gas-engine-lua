@@ -3,7 +3,7 @@
 local NAME = "Gas Engine Carb"
 local INFO = "Vollbild-Telemetrie für Vergasermotoren mit FrSky AES: Motor, Elektrik und Flug-Übersicht mit Warnungen und Ansagen."
 local PAKET_KEY = "local.gasengine.carb"   -- Schlüssel der Suite, nie ändern
-local VERSION = "0.12.4"
+local VERSION = "0.12.5"
 local K = nil
 local gemeldet = {}
 local instanzen = 0   -- lebende Widget-Objekte (Speicher freigeben, sobald keines mehr da ist)

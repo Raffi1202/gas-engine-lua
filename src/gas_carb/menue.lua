@@ -19,8 +19,10 @@ return function(w, F, fertig, suche, zurueck, waehlen)
     if not okk or k ~= CATEGORY_TELEMETRY_SENSOR then return "" end
     local oka, a = pcall(q.appId, q)
     local okp, p = pcall(q.physId, q)
-    if not (oka and type(a) == "number") then return "" end
-    return string.format(" [%s/%04X]", (okp and type(p) == "number") and string.format("%02X", p) or "--", a)
+    a = oka and math.tointeger(a) or nil
+    p = okp and math.tointeger(p) or nil
+    if a == nil then return "" end
+    return string.format(" [%s/%04X]", p and string.format("%02X", p) or "--", a)
   end
 
   local kopf = form.addLine(T("Sensoren automatisch suchen"))
