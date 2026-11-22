@@ -2,6 +2,9 @@
 
 Older entries (before ECU 1.9.0 / Vergaser 0.9.0) in German.
 
+## Gas Engine ECU 1.12.4 / Gas Engine Carb 0.12.4 – 22.11.2026 (pre-release)
+- Full screen: the Studio note now appears in the header line in place of the model name (orange) instead of a band over the field titles. In the compact view it stays in the widget's own top bar.
+
 ## Gas Engine ECU 1.12.3 / Gas Engine Carb 0.12.3 – 22.11.2026 (pre-release)
 Findings from the transmitter test (X18RS):
 - The info file now lists the telemetry sensors on the transmitter: the sensor list is read with `system.getSources(CATEGORY_TELEMETRY_SENSOR)` (number form). The table form returned an empty list on the X18RS, so Lua-Studio's quick test reported «keineSensoren». The same fix applies to sensors chosen in a Studio file.

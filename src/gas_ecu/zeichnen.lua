@@ -312,8 +312,8 @@ function Z.kopf(w, L)
 
   -- Meldezeile über den Feldtiteln: aktive Warnungen aller Seiten, oder ein kurzer Hinweis
   local mt, mf, tf
-  if w.hinweis or w.studioT then
-    mt, mf, tf = w.hinweis or w.studioT, w.hinweis and C.blau or C.orange, w.hinweis and C.weiss or C.dunkel
+  if w.hinweis then
+    mt, mf, tf = w.hinweis, C.blau, C.weiss
   elseif w.nAktiv > 0 then
     mt, mf, tf = w.meldText, w.stufe == 2 and C.rot or C.orange, C.dunkel
   end

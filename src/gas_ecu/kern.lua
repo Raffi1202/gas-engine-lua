@@ -1061,6 +1061,9 @@ local function kopfTexte(w)
   n = n + 1
   t[n] = K.modellName(24)
   w.kopfName = n
+  -- Studio-Hinweis (A1) im Vollbild in der Kopfzeile statt des Modellnamens: verdeckt so nie Plätze oder Titel
+  studioText(w)
+  if w.studioT then t[n] = Z.tr and Z.tr(w.studioT) or w.studioT; w.kopfRot = n end
   w.kopfLeer = w.kopfLeer or {}
   w.kopfLeer[n] = false
   if w.cfg.ecuV then
