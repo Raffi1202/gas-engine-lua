@@ -895,6 +895,11 @@ local function studioSchritt(w, now)
         if da then print("Gas Engine Carb: old studio file found, please re-transfer") end
       end
     end
+    -- Keine Datei zum Modell: Standard.<lua>.lua für alle Modelle (Änderungen am Sender bleiben pro Modell)
+    if not d and grund == "fehlt" and not wp and S.kennung() ~= "Standard" then
+      local ds, gs, qs = S.suchen("Standard")
+      if ds or gs ~= "fehlt" then d, grund, quelle, w.studioWahl = ds, gs, qs, "standard" end
+    end
     w.studioStatus = d and "geladen" or grund
     w.studioQuelle = (d or grund ~= "fehlt" or wp) and quelle or ""
     -- R4: Standardanzeige trotz gefundener oder gewählter Datei: Hinweiszeile mit Grund, bleibt stehen

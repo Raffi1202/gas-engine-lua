@@ -104,9 +104,10 @@ function S.wahlPfad(wahl)
   return S.ORTE[tonumber(o)] .. n .. "." .. S.LUA .. ".lua"
 end
 
--- Studio-Datei zur Modellkennung an allen Orten suchen (R2.1). Rückgabe: Tabelle oder nil, Grund, Pfad
-function S.suchen()
-  local k = S.kennung()
+-- Studio-Datei zur Modellkennung an allen Orten suchen (R2.1). Rückgabe: Tabelle oder nil, Grund, Pfad.
+-- Mit k = "Standard": die Datei für alle Modelle (Standard.<lua>.lua), nur wenn keine Modelldatei da ist.
+function S.suchen(k)
+  k = k or S.kennung()
   for _, o in ipairs(S.ORTE) do
     local p = o .. k .. "." .. S.LUA .. ".lua"
     local d, g = studioLaden(p, S.FORMAT)
@@ -118,7 +119,7 @@ end
 -- Auswahlliste für das Widget-Menü (R2.2): alle *.<lua>.lua der drei Orte ohne .funke.lua. Nur beim Öffnen des
 -- Menüs. Derselbe Ordner unter zwei Namen (SCRIPTS: = SD:/scripts) zählt nur einmal: gleiche Dateiliste = gleicher Ort.
 function S.liste()
-  local r, gesehen = {}, {}
+  local r, gesehen, std = {}, {}, false
   if not (system and system.listFiles) then return r end
   local endung = "%." .. S.LUA .. "%.lua$"
   for i, o in ipairs(S.ORTE) do
@@ -136,7 +137,12 @@ function S.liste()
       if #namen > 0 and not gesehen[sig] then
         gesehen[sig] = true
         for _, n in ipairs(namen) do
-          if #r < 30 and #n <= 40 then r[#r + 1] = { i .. ":" .. n, n .. " (" .. S.ORTNAME[i] .. ")" } end
+          if #r < 30 and #n <= 40 then
+            local t = n .. " (" .. S.ORTNAME[i] .. ")"
+            local st = n == "Standard" and not std
+            if st then std = true; t = "Standard (alle Modelle)" end
+            r[#r + 1] = { i .. ":" .. n, t, st }
+          end
         end
       end
     end

@@ -14,7 +14,7 @@
 
 **Warum keine Restzeit bei stehendem Motor?** Ein stehender Motor verbraucht nichts. Die Prozent-Grenze des Tanks gilt immer.
 
-**Welche Sender?** Am echten Sender getestet: X18RS (Ethos 26.2.0). X20-Familie nur im Simulator; X14 und X10 / Twin X Lite nicht getestet.
+**Welche Sender?** Am echten Sender getestet: X18RS (Ethos 26.2.0). X20-Familie nur im Simulator (Skripte können im internen Speicher `SCRIPTS:` liegen); X14 und X10 / Twin X Lite nicht getestet.
 
 ---
 [← Start](../Home.md) | [Zurück](Lua-Studio.md) | [Weiter →](Fehlerbehebung.md)

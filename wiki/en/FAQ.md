@@ -14,7 +14,7 @@
 
 **Why is there no time left with the engine stopped?** A stopped engine uses no fuel. The percent limit of the tank always applies.
 
-**Which radios?** Tested on a real X18RS (Ethos 26.2.0). X20 family only in the simulator; X14 and X10 / Twin X Lite not tested.
+**Which radios?** Tested on a real X18RS (Ethos 26.2.0). X20 family only in the simulator (scripts may be in the internal memory `SCRIPTS:`); X14 and X10 / Twin X Lite not tested.
 
 ---
 [← Home](../Home.md) | [Previous](Lua-Studio.md) | [Next →](Troubleshooting.md)

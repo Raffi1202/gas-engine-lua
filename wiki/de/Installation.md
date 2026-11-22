@@ -2,7 +2,7 @@
 
 # Installation
 
-Für beide Widgets gleich; Datei- und Ordnernamen entsprechend ersetzen (`Gas-Engine-ECU-1.11.0.zip` / `gas_ecu` oder `Gas-Engine-Carb-0.11.0.zip` / `gas_carb`).
+Für beide Widgets gleich; Datei- und Ordnernamen entsprechend ersetzen (`Gas-Engine-ECU-1.13.0.zip` / `gas_ecu` oder `Gas-Engine-Carb-0.13.0.zip` / `gas_carb`).
 
 ## Mit der FrSky Suite (empfohlen)
 1. Die Paket-ZIP aus dem neusten **Release** auf GitHub laden. Nicht entpacken.
@@ -34,3 +34,5 @@ Bis ECU 1.9.0 / Vergaser 0.9.0 hiessen die Widgets **Motoren ECU** (Ordner `moto
 
 ---
 [← Start](../Home.md) | [Zurück](Carb.md) | [Weiter →](Einrichten.md)
+
+**X20 / X20 Pro:** Die Skripte können dort im internen Speicher liegen (`SCRIPTS:/gas_ecu/`, `SCRIPTS:/gas_carb/`) statt auf der SD-Karte. Widgets und Studio-Dateien funktionieren an beiden Orten (`SCRIPTS:/studio/` wird zuerst durchsucht).

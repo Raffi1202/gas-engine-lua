@@ -2,7 +2,7 @@
 
 # Installation
 
-The steps are the same for both widgets; replace the file and folder name (`Gas-Engine-ECU-1.11.0.zip` / `gas_ecu` or `Gas-Engine-Carb-0.11.0.zip` / `gas_carb`).
+The steps are the same for both widgets; replace the file and folder name (`Gas-Engine-ECU-1.13.0.zip` / `gas_ecu` or `Gas-Engine-Carb-0.13.0.zip` / `gas_carb`).
 
 ## With FrSky Suite (recommended)
 1. Download the package ZIP from the latest **release** on GitHub. Do not unzip it.
@@ -34,3 +34,5 @@ Up to ECU 1.9.0 / Vergaser 0.9.0 the widgets were called **Motoren ECU** (folder
 
 ---
 [← Home](../Home.md) | [Previous](Carb.md) | [Next →](Setup.md)
+
+**X20 / X20 Pro:** the scripts may live in the internal memory (`SCRIPTS:/gas_ecu/`, `SCRIPTS:/gas_carb/`) instead of the SD card. The widgets and the Studio files work from both places (`SCRIPTS:/studio/` is searched first).

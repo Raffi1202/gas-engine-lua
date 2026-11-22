@@ -2,7 +2,7 @@
 
 **English** · [Deutsch](README.de.md) · Documentation: [Wiki (English)](wiki/en/ECU.md) · [Wiki (Deutsch)](wiki/de/ECU.md)
 
-> **Configure on your PC with [Lua-Studio](https://github.com/Raffi1202/lua-studio)** – arrange the screen, choose values, alarms and symbols, then transfer to the radio. Download: [latest release](https://github.com/Raffi1202/lua-studio/releases/latest) · [Wiki](https://github.com/Raffi1202/lua-studio/tree/main/wiki)
+> **Configure on your PC with [Lua-Studio](https://github.com/Raffi1202/lua-studio)** – arrange the screen, choose values, alarms and colours, then transfer to the radio. Download: [latest release](https://github.com/Raffi1202/lua-studio/releases/latest) · [Wiki](https://github.com/Raffi1202/lua-studio/tree/main/wiki)
 
 Two full-screen widgets for FrSky radios running **Ethos 26.1 or newer**. They show the telemetry of a gas engine on
 three pages (engine, electrics, summary with flight list) or in a compact view, and warn with colour, voice and
@@ -10,13 +10,14 @@ vibration. Display, menu and voice in German and English.
 
 | Widget | For | Version | Folder on the SD card |
 |---|---|---|---|
-| **Gas Engine ECU** | Fuel-injected engines with an ECU (RPM, cylinders, fuel pressure, ECU voltage) | 1.11.0 | `SD:/scripts/gas_ecu/` |
-| **Gas Engine Carb** | Carburettor engines, e.g. with FrSky AES / AES II | 0.11.0 | `SD:/scripts/gas_carb/` |
+| **Gas Engine ECU** | Fuel-injected engines with an ECU (RPM, cylinders, fuel pressure, ECU voltage) | 1.13.0 | `SD:/scripts/gas_ecu/` |
+| **Gas Engine Carb** | Carburettor engines, e.g. with FrSky AES / AES II | 0.13.0 | `SD:/scripts/gas_carb/` |
 
 ![Gas Engine ECU page 1 (English, Ethos simulator)](docs/bilder-simulator/Gas%20Engine%20ECU%20-%20Sim%20800x480%2012%20Englisch%20Seite%201%20Alarm.png)
 
-**Status:** public pre-release (public beta). Gas Engine ECU 1.11.0 / Carb 0.11.0 are tested in the Ethos simulator; the
-transmitter test on the X18RS follows. Use at your own risk. License: GPL-3.0, see below.
+**Status:** public pre-release (public beta). Gas Engine ECU 1.13.0 / Carb 0.13.0 are pre-releases. Tested on the radio (X18RS, Ethos 26.2.0): ECU 1.11 and 1.12.3, Carb 0.12.5; newer parts in the Ethos simulator. Use at your own risk. License: GPL-3.0, see below.
+
+**New in Gas Engine ECU 1.13.0 / Carb 0.13.0:** save the Lua-Studio file as `Standard.gas_ecu.lua` / `Standard.gas_carb.lua`. Order: choice in the widget menu › file of the model (`<model>.gas_ecu.lua`) › `Standard` file › built-in display. The menu shows «Default (all models)»; changes made on the radio stay per model (`<model>.gas_ecu.funke.lua`). A model named «Standard» uses the file as its own model file.
 
 **New in Gas Engine ECU 1.12.0 / Carb 0.12.0:** the studio layout is always found: search in `SCRIPTS:/studio/`, `SD:/scripts/studio/` and `RADIO:/scripts/studio/`, menu entry **«Studio layout»** to pick a file whose name does not match the model, views scaled to other window sizes, and a note line when the default display is shown. See [Studio layout not showing?](#studio-layout-not-showing).
 
@@ -27,7 +28,7 @@ a Lua-Studio limit without a number keeps the factory limit; memory is freed on 
 
 ## Quick start
 
-1. Download `Gas-Engine-ECU-1.11.0.zip` or `Gas-Engine-Carb-0.11.0.zip` from the latest **release**.
+1. Download `Gas-Engine-ECU-1.13.0.zip` or `Gas-Engine-Carb-0.13.0.zip` from the latest **release**.
 2. Connect the radio by USB, choose **Ethos Suite** on the radio and open **FrSky Suite** on the computer.
 3. Suite › **Lua library** › **Install from local ZIP** › choose the ZIP (do not unzip it). Restart the radio.
 4. Model › **DISP** › new screen with layout **full screen** › choose the widget.
@@ -54,14 +55,17 @@ again, see [Wiki › Installation](wiki/en/Installation.md#upgrading-from-motore
 
 | Radio | Display | Status |
 |---|---|---|
-| X18RS / X18S / X18 | 480×320 | tested on the radio (X18RS, Ethos 26.2.0) |
+| X18RS | 800×480 | tested on the radio (Ethos 26.2.0) |
+| X18 / X18S | 480×320 | not tested |
 | X20 / X20S / X20RS / X20 Pro | 800×480 | Ethos simulator only |
 | X14 / X14S | 640×360 | not tested |
 | X10 / Twin X Lite | 480×272 | not tested |
 
+**X20 / X20 Pro:** the scripts may live in the internal memory (`SCRIPTS:/gas_ecu/`, `SCRIPTS:/gas_carb/`) instead of the SD card. The widgets and the Studio files work from both places (`SCRIPTS:/studio/` is searched first).
+
 Tested on a real X18RS (with a telemetry simulator, 48 sensors, receiver SR10 Plus): sensor search, power switch alarm,
 batteries, battery type, language, switch name field, the Lua-Studio file. **Never flown yet.** Not yet tested on the
-radio: everything new in 1.11.0 / 0.11.0, every single menu item, announcements in flight, other radios.
+radio: everything new in 1.13.0 / 0.13.0, every single menu item, announcements in flight, other radios.
 Questions, «Refuelled» and the flight list need touch; the rotary encoder only changes pages.
 
 ## Lua-Studio
@@ -75,7 +79,8 @@ everything works as before. What the widgets offer is described in
 
 ### Studio layout not showing?
 1. Copy the file to `scripts/studio/` on the SD card or in the radio memory (`SCRIPTS:/studio/`, `SD:/scripts/studio/` and `RADIO:/scripts/studio/` are all searched).
-2. If the file name does not match the model name: widget menu › **Studio layout** › pick the file (place in brackets). «automatic (model name)» uses `<model>.gas_ecu.lua` / `<model>.gas_carb.lua`.
+2. **One layout for all models:** save the Lua-Studio file as `Standard.gas_ecu.lua` / `Standard.gas_carb.lua`. Order: choice in the widget menu › file of the model (`<model>.gas_ecu.lua`) › `Standard` file › built-in display. The menu shows «Default (all models)»; changes made on the radio stay per model (`<model>.gas_ecu.funke.lua`). A model named «Standard» uses the file as its own model file.
+3. If the file name does not match the model name: widget menu › **Studio layout** › pick the file (place in brackets). «automatic (model name)» uses `<model>.gas_ecu.lua` / `<model>.gas_carb.lua`.
 3. Other window size (e.g. with top and bottom bar, 784 × 316, or a smaller radio): the widget scales the closest view and shows «Studio: view 800x480 adapted» for 5 s. Boxes too small for their type become numbers or are left out.
 4. A line at the bottom «Studio: file faulty (…)» or «Studio: no matching view» tells why the default display is shown. Export the file again from Lua-Studio.
 5. The info file `SCRIPTS:/studio/<model>.<lua>.info.json` shows `studioQuelle`, `studioWahl`, `ansichtGenutzt`, `angepasst` and `hinweis`; Lua-Studio reads it.

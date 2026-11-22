@@ -2,6 +2,14 @@
 
 Older entries (before ECU 1.9.0 / Vergaser 0.9.0) in German.
 
+## Gas Engine ECU 1.13.0 / Gas Engine Carb 0.13.0 – 22.11.2026 (pre-release)
+- One layout for all models: a Lua-Studio file named `Standard.gas_ecu.lua` / `Standard.gas_carb.lua` (same three places as before) is used by every model without its own file. Order: choice in the widget menu › file of the model › `Standard` file › built-in display.
+- Widget menu «Studio layout»: entry «Default (all models)» (DE «Standard (alle Modelle)»); «automatic» shows «(default)» when the Standard file is in use.
+- Changes made on the radio stay per model (`<model>.gas_ecu.funke.lua`), also with the Standard layout. Info file: `studioWahl` = `"standard"`, `studioQuelle` = path of the Standard file.
+- A model named «Standard» uses the file as its own model file. No new storage field, no FORMAT change; update without loss.
+- README and wiki: versions, test status (radio: ECU 1.11 / 1.12.3, Carb 0.12.5), X18RS is 800×480, X20 scripts may be in the internal memory, no more «symbols» in Lua-Studio.
+- Command limits: wakeup at most 4,096, paint at most 9,151 (Mac count, 3 seeds × 20,000 calls).
+
 ## Gas Engine ECU 1.12.5 / Gas Engine Carb 0.12.5 – 22.11.2026 (pre-release)
 - After the settings are read (start, model change, update), the widget searches the sensors once by itself as soon as telemetry is running, 5 s after reading. It fills only empty or invalid fields (e.g. «---» after an update or a sensor rediscovery); assigned sensors stay untouched. If sensors were assigned it shows «n sensors newly assigned» and marks the model as changed; otherwise nothing is shown.
 - Sensor list in the menu: the sensor ID is shown only for whole-number IDs (a non-integer value caused a caught error in the menu; seen in the random test only).

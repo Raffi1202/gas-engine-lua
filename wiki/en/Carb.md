@@ -2,7 +2,7 @@
 
 # Gas Engine Carb
 
-> **Pre-release:** Gas Engine ECU 1.11.0 / Carb 0.11.0 are tested in the Ethos simulator; the transmitter test on the X18RS follows. Use at your own risk.
+> **Pre-release:** Gas Engine ECU 1.13.0 / Carb 0.13.0 are pre-releases. Tested on the radio (X18RS, Ethos 26.2.0): ECU 1.11 and 1.12.3, Carb 0.12.5; newer parts in the Ethos simulator. Use at your own risk.
 
 **Gas Engine Carb** is the widget for **carburettor engines**, for example with FrSky AES / AES II. It shows cylinder temperatures (1–4 cylinders), RPM, tank, up to three batteries, power switch and reception, warns with colour, voice and vibration and keeps a list of your flights. It has no fuel pressure and no ECU voltage; everything else works as in the ECU widget.
 
@@ -10,8 +10,8 @@
 
 | | |
 |---|---|
-| Version | 0.11.0 |
-| Package | `Gas-Engine-Carb-0.11.0.zip` (release) |
+| Version | 0.13.0 |
+| Package | `Gas-Engine-Carb-0.13.0.zip` (release) |
 | Folder on the SD card | `SD:/scripts/gas_carb/` |
 | Manual (PDF) | [English](../../docs/Gas%20Engine%20Carb%20-%20Manual.pdf) · [German](../../docs/Gas%20Engine%20Carb%20-%20Anleitung.pdf) |
 

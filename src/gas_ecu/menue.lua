@@ -52,8 +52,8 @@ return function(w, F, fertig, suche, zurueck, waehlen)
   end
   -- Studio-Layout wählen (R2.2): Liste baut K.menue beim Öffnen; 0 = automatisch (Modellname)
   if form.addChoiceField and w.studioListe and waehlen then local okW, eW = pcall(function()
-    local l = { { T("automatisch (Modellname)"), 0 } }
-    for i, e in ipairs(w.studioListe) do l[#l + 1] = { e[2], i } end
+    local l = { { T(w.studioWahl == "standard" and "automatisch (Standard)" or "automatisch (Modellname)"), 0 } }
+    for i, e in ipairs(w.studioListe) do l[#l + 1] = { e[3] and T(e[2]) or e[2], i } end
     form.addChoiceField(form.addLine(T("Studio-Layout")), nil, l, function()
       for i, e in ipairs(w.studioListe) do if e[1] == w.wahl then return i end end
       return 0
