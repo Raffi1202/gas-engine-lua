@@ -2,6 +2,13 @@
 
 Older entries (before ECU 1.9.0 / Vergaser 0.9.0) in German.
 
+## Gas Engine ECU 1.12.3 / Gas Engine Carb 0.12.3 – 22.11.2026 (pre-release)
+Findings from the transmitter test (X18RS):
+- The info file now lists the telemetry sensors on the transmitter: the sensor list is read with `system.getSources(CATEGORY_TELEMETRY_SENSOR)` (number form). The table form returned an empty list on the X18RS, so Lua-Studio's quick test reported «keineSensoren». The same fix applies to sensors chosen in a Studio file.
+- The info file is updated again once the widget has been drawn in a new window size (`fenster` no longer stays empty).
+- A newly added widget writes the info file without reloading the model.
+- Command limits: while a sensor search or the Studio steps after a model change run (a few calls), reading and warnings pause for that call; every wakeup stays below 5,000 (Mac count: at most 4,280), every paint below 10,000 (at most 9,011).
+
 ## Gas Engine ECU 1.12.2 / Gas Engine Carb 0.12.2 – 22.11.2026 (pre-release)
 - Command limits: every wakeup now stays below 5,000 Lua commands, every paint below 10,000 (Mac count with the random test, 3 seeds × 5,000 calls; before: wakeup up to 9,274 ECU / 10,166 Carb).
   - Writing the settings file runs in two calls of its own (load and index, then write); these calls do nothing else.

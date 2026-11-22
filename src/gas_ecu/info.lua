@@ -23,7 +23,7 @@ function I.schritt(w, version, S)
   local z = w.infoZ
   if z == nil then
     z = { i = 1, sensoren = {} }
-    local ok, l = pcall(system.getSources, { category = CATEGORY_TELEMETRY_SENSOR })
+    local ok, l = pcall(system.getSources, CATEGORY_TELEMETRY_SENSOR)   -- am Sender nur mit der Zahl (Tabelle: leer)
     z.liste = (ok and type(l) == "table") and l or {}
     w.infoZ = z
     return false

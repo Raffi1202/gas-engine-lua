@@ -256,6 +256,7 @@ function K.neu()
     if ok then w.qTele = q end
   end
   w.studioZ = w.studioZ or { art = "start" }   -- neues Widget ohne gespeicherten Stand: Ethos ruft kein read
+  w.fenster = w.fenster or {}
   return w
 end
 
@@ -942,9 +943,9 @@ local function studioSchritt(w, now)
       z.ks, z.i, z.pz, z.art = ks, 1, nil, "quellen"
     end
   elseif z.art == "quellen" then
-    -- je Aufruf höchstens 4 Schlüssel; mit Physical ID die Sensorliste selbst durchgehen (getSource kennt sie nicht)
+    -- je Aufruf ein Schlüssel; die Sensorliste wird in Stücken zu 20 durchgegangen (Befehlsgrenze)
     local S, stu = z.S, w.studio
-    for _ = 1, 4 do
+    for _ = 1, 1 do
       local k = z.ks[z.i]
       if k == nil then z.art = "info" break end
       local art, a, sub, ph = S.schluessel(k, z.WERTE)
@@ -952,13 +953,11 @@ local function studioSchritt(w, now)
       if art == "kanal" and CATEGORY_CHANNEL then
         local ok, x = pcall(system.getSource, { category = CATEGORY_CHANNEL, member = a - 1 })
         if ok then q = x end
-      elseif art == "sensor" and not ph then
-        local ok, x = pcall(system.getSource, { category = CATEGORY_TELEMETRY_SENSOR, appId = a, subId = sub })
-        if ok then q = x end
       elseif art == "sensor" then
-        -- mit Physical ID: Sensorliste in Stücken zu 20 je Aufruf durchgehen (Befehlsgrenze)
+        -- Sensorliste selbst durchgehen, in Stücken zu 20 je Aufruf (Befehlsgrenze). Am Sender (X18RS, 26.2) liefert
+        -- getSources nur mit der Zahl eine Liste (Tabellenform: leer), und getSource({appId}) ein Objekt ohne Wert.
         if z.liste == nil then
-          local ok, l = pcall(system.getSources, { category = CATEGORY_TELEMETRY_SENSOR })
+          local ok, l = pcall(system.getSources, CATEGORY_TELEMETRY_SENSOR)
           z.liste = (ok and type(l) == "table") and l or {}
         end
         local j0 = z.j or 1
@@ -966,7 +965,7 @@ local function studioSchritt(w, now)
         for j = j0, j1 do
           local x = z.liste[j]
           local o1, xa = pcall(x.appId, x); local o2, xs = pcall(x.subId, x); local o3, xp = pcall(x.physId, x)
-          if o1 and o2 and o3 and xa == a and xs == sub and xp == ph then q = x break end
+          if o1 and o2 and xa == a and xs == sub and (ph == nil or (o3 and xp == ph)) then q = x break end
         end
         if not q and j1 < #z.liste then z.j = j1 + 1 return end    -- nächster Aufruf, gleicher Schlüssel
         z.j = nil
@@ -1103,8 +1102,9 @@ function K.wecke(w)
       if ok then pcall(F.feld, "tank"); w.dateiF = F else print("Gas Engine Carb: Datei konnte nicht geschrieben werden") end
       return
     end
-    -- Während eines Suchschritts (wenige Aufrufe) ruhen Lesen und Warnungen: sonst über der Befehlsgrenze
-    if not w.suchLaeuft then
+    -- Während eines Such- oder Studio-Schritts (wenige Aufrufe nach Modellwechsel bzw. Suche) ruhen Lesen und
+    -- Warnungen in diesem Aufruf: sonst über der Befehlsgrenze
+    if not w.suchLaeuft and not (w.studioZ and not w.studioZ.fertig) then
       liesSchnell(w, now, dt)
       if now - w.tL >= DT_LANGSAM then
         w.tL = now
@@ -1216,7 +1216,7 @@ function K.zeichne(w)
   w.fenster = w.fenster or {}
   local neuF = true
   for _, f in ipairs(w.fenster) do if f[1] == W and f[2] == H then neuF = false end end
-  if neuF and #w.fenster < 6 then w.fenster[#w.fenster + 1] = { W, H }; w.infoAlt = nil end
+  if neuF and #w.fenster < 6 then w.fenster[#w.fenster + 1] = { W, H }; w.infoAlt = nil; w.infoNeu = true end   -- Info nachführen
   -- Studio-Ansicht genau für diese Fenstergrösse?
   local an = studioAnsicht(w, W, H)
   studioText(w)
