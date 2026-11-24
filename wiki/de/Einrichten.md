@@ -18,6 +18,7 @@ Die Suche erkennt Sensoren an ihrer FrSky-ID (Application-ID) und an bekannten N
 ## Von Hand
 - **Motorschalter (3 Stufen)** mit «Stellung Aus (Kill)» und «Stellung Choke»: Aus → Zündung beginnt einen Flug, Zündung → Aus fragt «Flug beendet?».
 - **Gas (Kanal)**, **Stumm (Schalter)** und die zwei Schalter der Statusleiste (Name höchstens 12 Zeichen, «umkehren», wenn die Pille verkehrt leuchtet).
+- **Gas umkehren** (direkt unter «Gas (Kanal)»): einschalten, wenn du Gas Reverse fliegst (Vollgas = Knüppel hinten). Ab Werk aus.
 - **Anzahl Zylinder**, **Tankinhalt**, **ml pro Impuls** des Durchflusssensors (0,100 ml für das FrSky-Flowmeter).
 - Je Akku: **Rolle** (Empfänger, Zündung, Anlasser, ECU, Akku), **Zellen** (nötig bei reinem Spannungssensor) und **Art** (LiPo, LiFe, NiMH; ein Wechsel setzt die zwei Zellgrenzen).
 

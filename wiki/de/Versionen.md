@@ -6,6 +6,7 @@ Vollständige Liste: [CHANGELOG.md](../../CHANGELOG.md) (ab ECU 1.9.0 / Vergaser
 
 | Version | Datum | Wichtigste Punkte |
 |---|---|---|
+| Gas Engine ECU 1.13.1 / Carb 0.13.1 | 24.11.2026 | «Gas umkehren» für Gas Reverse (Vollgas = Knüppel hinten), ab Werk aus. |
 | Gas Engine ECU 1.13.0 / Carb 0.13.0 | 22.11.2026 | Ein Layout für alle Modelle: `Standard.gas_ecu.lua` / `Standard.gas_carb.lua`; Änderungen am Sender bleiben pro Modell. |
 | Gas Engine ECU 1.12.0 / Carb 0.12.0 | 22.11.2026 | Studio-Layout wird immer gefunden: drei Orte, Menü «Studio-Layout», Umrechnen auf andere Fenstergrössen, Hinweiszeile; Menü-Fehlerzeichen behoben |
 | Gas Engine ECU 1.11.0 / Carb 0.11.0 | 21.11.2026 | Lua-Studio-Darstellungen `zylinder` und `tank` für das eigene Layout |

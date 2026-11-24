@@ -30,6 +30,7 @@ M.gruppen = {
     { "druck", "q", "Kraftstoffdruck" },
     { "ecuV", "q", "ECU-Spannung" },
     { "gas", "q", "Gas (Kanal)" },
+    { "gasInv", "b", "Gas umkehren", false },   -- Gas Reverse: Vollgas = Knüppel hinten
     { "motorSw", "q", "Motorschalter (3 Stufen)" },
     { "swAus", "w", "Stellung Aus (Kill)", 1, POS },
     { "swChoke", "w", "Stellung Choke", 3, POS },
@@ -189,6 +190,8 @@ M.folge = {
   "rbChState",
   -- ab 1.9.0: «Alarm auch bei Motor aus» (Ja/Nein, stehen mit Namen in der Datei), FORMAT 6
   "maChtMax", "maChtDiff", "maRpm", "maDruck", "maEcuV", "maTankProz", "maRestzeit", "maAkku1", "maAkku2", "maAkku3", "maAkkuDiff", "maKanal", "maRssi",
+  -- ab ECU 1.13.1 / Carb 0.13.1: «Gas umkehren» (Ja/Nein, Datei nach Namen; keine Quelle, FORMAT bleibt 7)
+  "gasInv",
 }
 
 -- Feld zu einem Namen (Verzeichnis einmal aufbauen: Ethos begrenzt die Befehle je Aufruf).

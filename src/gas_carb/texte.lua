@@ -22,7 +22,7 @@ local SATZ = {
   ["Tank auf voll gesetzt"] = "Tank set to full", ["Übersicht zurückgesetzt"] = "Summary reset",
   ["Fehler bei der Suche"] = "Search failed", ["Suche läuft"] = "Searching", ["füllt nur leere Felder"] = "fills empty fields only",
   -- Seite 1
-  ["U/min"] = "rpm", ["2,4 GHz"] = "2.4 GHz", ["im Menü setzen"] = "set in menu", ["Tankinhalt fehlt"] = "No tank capacity", ["Standard (alle Modelle)"] = "Default (all models)", ["automatisch (Standard)"] = "automatic (default)", ["Studio-Datei geladen"] = "Studio file loaded", ["Studio-Layout"] = "Studio layout", ["automatisch (Modellname)"] = "automatic (model name)", ["Einstellungen"] = "Settings",
+  ["U/min"] = "rpm", ["2,4 GHz"] = "2.4 GHz", ["im Menü setzen"] = "set in menu", ["Tankinhalt fehlt"] = "No tank capacity", ["Gas umkehren"] = "Reverse throttle", ["Standard (alle Modelle)"] = "Default (all models)", ["automatisch (Standard)"] = "automatic (default)", ["Studio-Datei geladen"] = "Studio file loaded", ["Studio-Layout"] = "Studio layout", ["automatisch (Modellname)"] = "automatic (model name)", ["Einstellungen"] = "Settings",
   ["Zurück auf Studio-Stand"] = "Back to Studio state", ["Zurück auf Studio-Stand?"] = "Back to Studio state?", ["Zurück auf Standard?"] = "Back to defaults?",
   ["Änderungen an der Funke werden verworfen."] = "Changes made on the radio will be discarded.",
   ["Alle Einstellungen gehen auf den Werkwert. Sensoren bleiben."] = "All settings return to their defaults. Sensors stay.", ["Zurück auf Standard"] = "Back to defaults",

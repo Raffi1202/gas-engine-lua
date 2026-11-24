@@ -2,7 +2,7 @@
 
 # Gas Engine ECU
 
-> **Vorabversion:** Gas Engine ECU 1.13.0 / Carb 0.13.0 sind Vorabversionen. Am Sender getestet (X18RS, Ethos 26.2.0): ECU 1.11 und 1.12.3, Carb 0.12.5; Neueres im Ethos-Simulator. Benutzung auf eigene Gefahr.
+> **Vorabversion:** Gas Engine ECU 1.13.1 / Carb 0.13.1 sind Vorabversionen. Am Sender getestet (X18RS, Ethos 26.2.0): ECU 1.11 und 1.12.3, Carb 0.12.5; Neueres im Ethos-Simulator. Benutzung auf eigene Gefahr.
 
 **Gas Engine ECU** ist das Widget für **Einspritzmotoren mit ECU**. Es zeigt Zylindertemperaturen (1–4 Zylinder), Drehzahl, Spritdruck, ECU-Spannung, Tank, bis zu drei Akkus, Stromweiche und Empfang, warnt mit Farbe, Ansage und Vibration und führt eine Liste deiner Flüge.
 
@@ -10,8 +10,8 @@
 
 | | |
 |---|---|
-| Version | 1.13.0 |
-| Paket | `Gas-Engine-ECU-1.13.0.zip` (Release) |
+| Version | 1.13.1 |
+| Paket | `Gas-Engine-ECU-1.13.1.zip` (Release) |
 | Ordner auf der SD-Karte | `SD:/scripts/gas_ecu/` |
 | Anleitung (PDF) | [Deutsch](../../docs/Gas%20Engine%20ECU%20-%20Anleitung.pdf) · [Englisch](../../docs/Gas%20Engine%20ECU%20-%20Manual.pdf) |
 

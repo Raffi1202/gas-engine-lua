@@ -2,7 +2,7 @@
 
 # Alarme
 
-> **Vorabversion:** Gas Engine ECU 1.13.0 / Carb 0.13.0 sind Vorabversionen. Am Sender getestet (X18RS, Ethos 26.2.0): ECU 1.11 und 1.12.3, Carb 0.12.5; Neueres im Ethos-Simulator. Benutzung auf eigene Gefahr.
+> **Vorabversion:** Gas Engine ECU 1.13.1 / Carb 0.13.1 sind Vorabversionen. Am Sender getestet (X18RS, Ethos 26.2.0): ECU 1.11 und 1.12.3, Carb 0.12.5; Neueres im Ethos-Simulator. Benutzung auf eigene Gefahr.
 
 Jeder überwachte Wert hat **zwei Schwellen**: **Warnung** (orange, Ansage) und **Alarm** (rot, Ansage und, wenn eingeschaltet, Vibration). Die Ansage wiederholt sich alle «Wiederholung alle» Sekunden (Standard 30 s), solange der Zustand dauert, und hört auf, sobald der Wert wieder gut ist. Der Stumm-Schalter schaltet alle Ansagen stumm; die Farben bleiben. Eine 0 schaltet eine Grenze aus.
 

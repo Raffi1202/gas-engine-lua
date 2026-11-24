@@ -2,6 +2,10 @@
 
 **English** · [Deutsch](README.de.md) · Documentation: [Wiki (English)](wiki/en/ECU.md) · [Wiki (Deutsch)](wiki/de/ECU.md)
 
+This project is open source and free. If you like it, you can support it with a donation:
+
+<a href="https://paypal.me/RaphaelHunziker"><img src=".github/paypal-donate.png" alt="Donate with PayPal" width="200"></a>
+
 > **Configure on your PC with [Lua-Studio](https://github.com/Raffi1202/lua-studio)** – arrange the screen, choose values, alarms and colours, then transfer to the radio. Download: [latest release](https://github.com/Raffi1202/lua-studio/releases/latest) · [Wiki](https://github.com/Raffi1202/lua-studio/tree/main/wiki)
 
 Two full-screen widgets for FrSky radios running **Ethos 26.1 or newer**. They show the telemetry of a gas engine on
@@ -10,12 +14,14 @@ vibration. Display, menu and voice in German and English.
 
 | Widget | For | Version | Folder on the SD card |
 |---|---|---|---|
-| **Gas Engine ECU** | Fuel-injected engines with an ECU (RPM, cylinders, fuel pressure, ECU voltage) | 1.13.0 | `SD:/scripts/gas_ecu/` |
-| **Gas Engine Carb** | Carburettor engines, e.g. with FrSky AES / AES II | 0.13.0 | `SD:/scripts/gas_carb/` |
+| **Gas Engine ECU** | Fuel-injected engines with an ECU (RPM, cylinders, fuel pressure, ECU voltage) | 1.13.1 | `SD:/scripts/gas_ecu/` |
+| **Gas Engine Carb** | Carburettor engines, e.g. with FrSky AES / AES II | 0.13.1 | `SD:/scripts/gas_carb/` |
 
 ![Gas Engine ECU page 1 (English, Ethos simulator)](docs/bilder-simulator/Gas%20Engine%20ECU%20-%20Sim%20800x480%2012%20Englisch%20Seite%201%20Alarm.png)
 
-**Status:** public pre-release (public beta). Gas Engine ECU 1.13.0 / Carb 0.13.0 are pre-releases. Tested on the radio (X18RS, Ethos 26.2.0): ECU 1.11 and 1.12.3, Carb 0.12.5; newer parts in the Ethos simulator. Use at your own risk. License: GPL-3.0, see below.
+**Status:** public pre-release (public beta). Gas Engine ECU 1.13.1 / Carb 0.13.1 are pre-releases. Tested on the radio (X18RS, Ethos 26.2.0): ECU 1.11 and 1.12.3, Carb 0.12.5; newer parts in the Ethos simulator. Use at your own risk. License: GPL-3.0, see below.
+
+**New in Gas Engine ECU 1.13.1 / Carb 0.13.1:** setting **«Reverse throttle»** (menu, directly below «Throttle (channel)», off by default) for pilots who fly throttle reverse (full throttle = stick back). It turns the throttle % round for the throttle bar, the choke warning «from throttle» and Lua-Studio.
 
 **New in Gas Engine ECU 1.13.0 / Carb 0.13.0:** save the Lua-Studio file as `Standard.gas_ecu.lua` / `Standard.gas_carb.lua`. Order: choice in the widget menu › file of the model (`<model>.gas_ecu.lua`) › `Standard` file › built-in display. The menu shows «Default (all models)»; changes made on the radio stay per model (`<model>.gas_ecu.funke.lua`). A model named «Standard» uses the file as its own model file.
 
@@ -28,7 +34,7 @@ a Lua-Studio limit without a number keeps the factory limit; memory is freed on 
 
 ## Quick start
 
-1. Download `Gas-Engine-ECU-1.13.0.zip` or `Gas-Engine-Carb-0.13.0.zip` from the latest **release**.
+1. Download `Gas-Engine-ECU-1.13.1.zip` or `Gas-Engine-Carb-0.13.1.zip` from the latest **release**.
 2. Connect the radio by USB, choose **Ethos Suite** on the radio and open **FrSky Suite** on the computer.
 3. Suite › **Lua library** › **Install from local ZIP** › choose the ZIP (do not unzip it). Restart the radio.
 4. Model › **DISP** › new screen with layout **full screen** › choose the widget.
@@ -65,7 +71,7 @@ again, see [Wiki › Installation](wiki/en/Installation.md#upgrading-from-motore
 
 Tested on a real X18RS (with a telemetry simulator, 48 sensors, receiver SR10 Plus): sensor search, power switch alarm,
 batteries, battery type, language, switch name field, the Lua-Studio file. **Never flown yet.** Not yet tested on the
-radio: everything new in 1.13.0 / 0.13.0, every single menu item, announcements in flight, other radios.
+radio: everything new in 1.13.x / 0.13.x, every single menu item, announcements in flight, other radios.
 Questions, «Refuelled» and the flight list need touch; the rotary encoder only changes pages.
 
 ## Lua-Studio

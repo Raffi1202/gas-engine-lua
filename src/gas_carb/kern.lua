@@ -419,6 +419,7 @@ local function liesSchnell(w, now, dt)
   v.rpm = zahl(c.rpm)
   if v.rpm and v.rpm < 0 then v.rpm = 0 end
   v.gas = prozent(c.gas)
+  if v.gas and c.gasInv then v.gas = 100 - v.gas end   -- Gas Reverse: gilt für Anzeige, Choke-Warnung, Studio
   local st = stellung(c.motorSw)
   v.sw = st
   if st == nil then

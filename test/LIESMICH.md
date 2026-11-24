@@ -63,4 +63,6 @@ Beispiel: `python3 test/lauf.py einspritzer alarm /tmp/alarm.png 8 1 1`
 ## Sensorzuordnung (ab ECU 1.6.0 / Vergaser 0.6.0)
 
 - `/opt/homebrew/opt/lua@5.4/bin/lua test/suche_test.lua`: feste Fälle (a)–(g) der Vorgaben Sensorzuordnung für beide Widgets, ohne Simulator; misst dazu die Lua-Befehle je Aufruf (Ziel deutlich unter 10 000).
+- `/opt/homebrew/opt/lua@5.4/bin/lua test/standard_test.lua`: Standard-Layout für alle Modelle (Menüwahl vor Standard, .funke.lua pro Modell, Menüeintrag).
+- `/opt/homebrew/opt/lua@5.4/bin/lua test/gas_umkehr_test.lua <felder.lua Vorversion ECU> <felder.lua Vorversion Carb>`: «Gas umkehren»: Update von der Vorversion ohne Verlust (Feld danach aus), Rundlauf, Platz im Menü und am Ende der Speicherfolge. Die Rechnung (Knüppel hinten = 100 %) und die Choke-Warnung prüft der Simulatorlauf.
 - `cd test && node $ETHOS_LUA_TOOLS/simulator.cjs suche_ablauf.json --port <eigener Port>`: dieselbe Suche auf Ethos 26.2 mit per Lua angelegten Sensoren (`suche_makro.lua`). Fall (c) mischt der Simulator, er steht nur im Mac-Test.

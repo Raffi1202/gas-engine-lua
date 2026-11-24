@@ -18,6 +18,7 @@ The search recognises sensors by their FrSky ID (application ID) and by known na
 ## By hand
 - **Engine switch (3 positions)** with «Position off (kill)» and «Position choke»: off → ignition starts a flight, ignition → off asks «Flight finished?».
 - **Throttle (channel)**, **Mute (switch)** and the two status bar switches (name max. 12 characters, «reverse» if the pill lights the wrong way round).
+- **Reverse throttle** (directly below «Throttle (channel)»): switch on if you fly throttle reverse (full throttle = stick back). Off by default.
 - **Number of cylinders**, **Tank capacity**, **ml per pulse** of the flow sensor (0.100 ml for the FrSky flow meter).
 - For each battery: **role** (receiver, ignition, starter, ECU, battery), **cells** (needed for a plain voltage sensor) and **type** (LiPo, LiFe, NiMH; changing it sets the two cell limits).
 

@@ -2,6 +2,12 @@
 
 Older entries (before ECU 1.9.0 / Vergaser 0.9.0) in German.
 
+## Gas Engine ECU 1.13.1 / Gas Engine Carb 0.13.1 – 24.11.2026 (pre-release)
+- New setting **«Reverse throttle»** (DE «Gas umkehren»), yes/no, off by default, in the menu directly below «Throttle (channel)». For pilots who fly throttle reverse (full throttle = stick back): throttle % = 100 − channel %. Applies everywhere the throttle is used: throttle bar, compact view, the choke warning «from throttle» and the Lua-Studio value `lua:gas`. Lua-Studio key `gas_inv`.
+- Stored by name in the settings file; no new source, storage FORMAT unchanged. Updating from 1.13.0 / 0.13.0 keeps every setting, «Reverse throttle» is off afterwards.
+- Command counts (Mac, random test, 3 seeds × 20,000 calls): ECU wakeup at most 4,204, paint at most 8,611. Carb wakeup at most 4,147, paint at most 8,495 in two seeds.
+- Known (the code path is older than «Reverse throttle»; the changed random sequence now hit it): in one Carb random-test seed one paint reached 10,210 Lua commands (limit 10,000). Path: English display, page 2 with the tow question open, first picture right after switching the language, when every text is translated once. Not seen on the radio; to be fixed in a later version.
+
 ## Gas Engine ECU 1.13.0 / Gas Engine Carb 0.13.0 – 22.11.2026 (pre-release)
 - One layout for all models: a Lua-Studio file named `Standard.gas_ecu.lua` / `Standard.gas_carb.lua` (same three places as before) is used by every model without its own file. Order: choice in the widget menu › file of the model › `Standard` file › built-in display.
 - Widget menu «Studio layout»: entry «Default (all models)» (DE «Standard (alle Modelle)»); «automatic» shows «(default)» when the Standard file is in use.
