@@ -7,7 +7,7 @@
 ## English
 Two full-screen widgets for FrSky radios running Ethos: **Gas Engine ECU** for fuel-injected engines with an ECU and **Gas Engine Carb** for carburettor engines (e.g. FrSky AES). They show cylinder temperatures, RPM, fuel, batteries, power switch and reception, warn in two stages with colour, voice and vibration and keep a list of your flights. Display, menu and voice in German and English.
 
-> **Pre-release:** Gas Engine ECU 1.13.1 / Carb 0.13.1 are pre-releases. Tested on the radio (X18RS, Ethos 26.2.0): ECU 1.11 and 1.12.3, Carb 0.12.5; newer parts in the Ethos simulator. Use at your own risk.
+> **Pre-release:** Gas Engine ECU 1.14.0 / Carb 0.14.0 are pre-releases. Tested on the radio (X18RS, Ethos 26.2.0): ECU 1.11 and 1.12.3, Carb 0.12.5; newer parts in the Ethos simulator. Use at your own risk.
 
 **Tested on a real radio only on the X18RS** (Ethos 26.2.0). Other radios and display sizes only in the Ethos simulator or not at all.
 
@@ -24,7 +24,7 @@ Two full-screen widgets for FrSky radios running Ethos: **Gas Engine ECU** for f
 ## Deutsch
 Zwei Vollbild-Widgets für FrSky-Sender mit Ethos: **Gas Engine ECU** für Einspritzmotoren mit ECU und **Gas Engine Carb** für Vergasermotoren (z. B. FrSky AES). Sie zeigen Zylindertemperaturen, Drehzahl, Sprit, Akkus, Stromweiche und Empfang, warnen in zwei Stufen mit Farbe, Ansage und Vibration und führen eine Liste deiner Flüge. Anzeige, Menü und Ansagen deutsch und englisch.
 
-> **Vorabversion:** Gas Engine ECU 1.13.1 / Carb 0.13.1 sind Vorabversionen. Am Sender getestet (X18RS, Ethos 26.2.0): ECU 1.11 und 1.12.3, Carb 0.12.5; Neueres im Ethos-Simulator. Benutzung auf eigene Gefahr.
+> **Vorabversion:** Gas Engine ECU 1.14.0 / Carb 0.14.0 sind Vorabversionen. Am Sender getestet (X18RS, Ethos 26.2.0): ECU 1.11 und 1.12.3, Carb 0.12.5; Neueres im Ethos-Simulator. Benutzung auf eigene Gefahr.
 
 **Am echten Sender getestet nur an der X18RS** (Ethos 26.2.0). Andere Sender und Displaygrössen nur im Ethos-Simulator oder gar nicht.
 

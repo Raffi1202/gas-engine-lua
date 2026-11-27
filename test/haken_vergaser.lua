@@ -24,8 +24,11 @@ do
     local w = neuAlt()
     local c = w.cfg
     if SZ == "aes2" or SZ == "aes4" or SZ == "teleweg" or SZ == "fluege" or SZ == "flugdetail" or SZ == "dreh"
-      or SZ == "akkus" or SZ == "alt" or SZ == "spannung" or SZ == "zyl3" or SZ == "langname" or SZ == "m3" or SZ == "m4" or SZ == "rbfs" or SZ == "rbok" or SZ == "arten" or SZ == "rbtext" or SZ == "rbtextok" or SZ == "gesamt" then
-      c.zylAnz = SZ == "aes4" and 4 or SZ == "zyl3" and 3 or 2
+      or SZ == "akkus" or SZ == "alt" or SZ == "spannung" or SZ == "zyl3" or SZ == "zyl1" or SZ == "zyl2" or SZ == "zyl4" or SZ == "zyl5" or SZ == "zyl5heiss" or SZ == "langname" or SZ == "m3" or SZ == "m4" or SZ == "rbfs" or SZ == "rbok" or SZ == "arten" or SZ == "rbtext" or SZ == "rbtextok" or SZ == "gesamt" then
+      c.zylAnz = SZ == "aes4" and 4 or tonumber(SZ:match("^zyl(%d)")) or 2
+      local t5 = nil
+      c.cht5 = Q(function() if SZ ~= "zyl5heiss" then return 125 end t5 = t5 or os.clock() return os.clock() - t5 < 6 and 168 or 192 end,
+        "°C", 0, 300)   -- zyl5heiss: über «Warnung» (160), nach 6 s über «Alarm» (180); Unterschied zu Zyl. 4 > 25
       c.cht1 = Q(128, "°C", 0, 300); c.cht2 = Q(121, "°C", 0, 300); c.cht3 = Q(133, "°C", 0, 300); c.cht4 = Q(117, "°C", 0, 300)
       c.rpm = Q(5400, "rpm", 0, 10000); c.gas = Q(300, "", -1024, 1024); c.motorSw = Q(0, "", -100, 100)
       c.fluss = Q(42, "ml/min", 0, 500); c.hoehe = Q(180, "m", 0, 1000); c.vario = Q(2.4, "m/s", -10, 10, 1)
@@ -104,6 +107,8 @@ do
     if GROESSE == 3 then lcd.getWindowSize = function() return 784, 316 end end   -- Kompakt X20/X18RS
     if GROESSE == 4 then lcd.getWindowSize = function() return 472, 210 end end   -- Kompakt X18
     if GROESSE == 5 then lcd.getWindowSize = function() return 630, 258 end end   -- Kompakt X14
+    if GROESSE == 6 then lcd.getWindowSize = function() return 640, 360 end end   -- Vollbild 640 x 360
+    if GROESSE == 7 then lcd.getWindowSize = function() return 480, 272 end end   -- Vollbild 480 x 272
     if os.clock() - t0 > 1 and not w.tP then w.tP = true
       print("TEST", SZ, "fehler", w.fehler, "zustand", w.zustand, "nZyl", w.nZyl, "rxBatt", w.v.rxBatt, "diff", w.v.chtDiff)
       local ak = {}

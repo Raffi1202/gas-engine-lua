@@ -58,8 +58,8 @@ for i, d in ipairs({ "gas_ecu", "gas_carb" }) do
     local g = neu.gruppen[1][2]
     for j, f in ipairs(g) do if f[1] == "gas" then return g[j + 1][1] == "gasInv" and g[j + 1][2] == "b" and g[j + 1][4] == false end end
   end)())
-  pruefe(d .. " Feld am Ende der Speicherfolge", neu.folge[#neu.folge] == "gasInv")
-  pruefe(d .. " FORMAT unverändert", neu.FORMAT == alt.FORMAT)
+  pruefe(d .. " Feld in der Speicherfolge", (function() for _, k in ipairs(neu.folge) do if k == "gasInv" then return true end end end)())
+  pruefe(d .. " FORMAT nicht kleiner", neu.FORMAT >= alt.FORMAT)   -- ab ECU 1.14.0 / Carb 0.14.0 +1 wegen Zylinder 5
 end
 print(("ERGEBNIS: %d Fälle, %s"):format(faelle, fehler == 0 and "kein Fehler" or (fehler .. " Fehler")))
 os.exit(fehler == 0 and 0 or 1)

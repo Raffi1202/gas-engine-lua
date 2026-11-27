@@ -23,7 +23,7 @@ local EINZEL = {
 for i = 1, 8 do EINZEL[#EINZEL + 1] = { "rbK" .. i, { "rb35_k" .. i .. "_i", "rb_k" .. i .. "_i" } } end
 -- Gruppen: mehrere Sensoren füllen die Felder der Reihe nach (Zylinder, Empfänger, Zellensensoren)
 local GRUPPE = {
-  { { "cht1", "cht2", "cht3", "cht4" }, { "gas_temp1", "gas_temp2", "aes_temp1", "aes_temp2", "aes_temp3", "aes_temp4",
+  { { "cht1", "cht2", "cht3", "cht4", "cht5" }, { "gas_temp1", "gas_temp2", "aes_temp1", "aes_temp2", "aes_temp3", "aes_temp4",
     "aes_temp5", "aes_temp6", "aes_temp7", "temp1", "temp2" }, zyl = true },
   { { "rssi", "rx1R24", "rx2R24" }, { "rssi" }, beide = true },             -- 0xF101: erster Empfänger füllt Statusleiste und RX1
   { { "rx1Vfr", "rx2Vfr" }, { "vfr", "rx_vfr" } },
@@ -46,7 +46,7 @@ local NAME = "Gas Engine Carb"
 -- mehrere Aufrufe. Zustand in w.suchZ; jeder Aufruf macht einen Schritt und gibt nil zurück, am Ende die Zahl der
 -- neu zugewiesenen Felder (und w.suchZ ist wieder nil).
 local PRO_AUFRUF = 10   -- Sensoren je Aufruf
-local MAX_KAND = 4      -- je Schlüssel nur die besten Kandidaten behalten (mehr braucht kein Feld)
+local MAX_KAND = 5      -- je Schlüssel nur die besten Kandidaten behalten (mehr braucht kein Feld)
 
 local function rufe(q, f)
   local okf, v = pcall(q[f], q)

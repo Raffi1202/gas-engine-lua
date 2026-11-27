@@ -6,6 +6,7 @@ Full list: [CHANGELOG.md](../../CHANGELOG.md) (older entries in German).
 
 | Version | Date | Main points |
 |---|---|---|
+| Gas Engine ECU 1.14.0 / Carb 0.14.0 | 27.11.2026 | Up to 5 cylinders (sensor field «Cylinder 5 temp.», warning, alarm, voice announcements), fewer Lua commands on page 1, German announcements for cylinders 1 and 2 pronounced like the others, fixed a crash on page 2 before the first reading. |
 | Gas Engine ECU 1.13.1 / Carb 0.13.1 | 24.11.2026 | «Reverse throttle» for throttle reverse (full throttle = stick back), off by default. |
 | Gas Engine ECU 1.13.0 / Carb 0.13.0 | 22.11.2026 | One layout for all models: `Standard.gas_ecu.lua` / `Standard.gas_carb.lua`; changes on the radio stay per model. |
 | Gas Engine ECU 1.12.0 / Carb 0.12.0 | 22.11.2026 | Studio layout always found: three places, menu «Studio layout», scaling to other window sizes, note line; fix for the menu error mark |

@@ -11,10 +11,10 @@ Die folgenden Ansagen (insgesamt 58 je Sprache, mit den Akku-Rollen weiter unten
 ## Motor
 | Dateiname | Text | English | Wann |
 |---|---|---|---|
-| zyl1_heiss | Zylinder Nummer eins, zu heiss | Cylinder one, too hot | Warnung Temperatur Zylinder 1 |
-| zyl2_heiss | Zylinder Nummer zwei, zu heiss | Cylinder two, too hot | Warnung Temperatur Zylinder 2 |
-| zyl1_alarm | Achtung! Zylinder Nummer eins, viel zu heiss | Warning! Cylinder one, overheating | Alarm Temperatur Zylinder 1 |
-| zyl2_alarm | Achtung! Zylinder Nummer zwei, viel zu heiss | Warning! Cylinder two, overheating | Alarm Temperatur Zylinder 2 |
+| zyl1_heiss | Zilinder Nummer eins, zu heiss | Cylinder one, too hot | Warnung Temperatur Zylinder 1 |
+| zyl2_heiss | Zilinder Nummer zwei, zu heiss | Cylinder two, too hot | Warnung Temperatur Zylinder 2 |
+| zyl1_alarm | Achtung! Zilinder Nummer eins, viel zu heiss | Warning! Cylinder one, overheating | Alarm Temperatur Zylinder 1 |
+| zyl2_alarm | Achtung! Zilinder Nummer zwei, viel zu heiss | Warning! Cylinder two, overheating | Alarm Temperatur Zylinder 2 |
 | zyl_ungleich | Zylinder ungleich warm | Cylinder temperatures uneven | Unterschied Z1/Z2 zu gross |
 | drehzahl_hoch | Drehzahl zu hoch | RPM too high | Drehzahl über Grenze |
 | motor_aus | Achtung! Motor ist aus | Warning! Engine stopped | Motor stoppt, obwohl der Motorschalter auf Ein steht |
@@ -70,10 +70,10 @@ Die folgenden Ansagen (insgesamt 58 je Sprache, mit den Akku-Rollen weiter unten
 
 ## Zum Einfügen im Sprach-Tab (Dateiname = Text)
 ```
-zyl1_heiss = Zylinder Nummer eins, zu heiss
-zyl2_heiss = Zylinder Nummer zwei, zu heiss
-zyl1_alarm = Achtung! Zylinder Nummer eins, viel zu heiss
-zyl2_alarm = Achtung! Zylinder Nummer zwei, viel zu heiss
+zyl1_heiss = Zilinder Nummer eins, zu heiss
+zyl2_heiss = Zilinder Nummer zwei, zu heiss
+zyl1_alarm = Achtung! Zilinder Nummer eins, viel zu heiss
+zyl2_alarm = Achtung! Zilinder Nummer zwei, viel zu heiss
 zyl_ungleich = Zylinder ungleich warm
 drehzahl_hoch = Drehzahl zu hoch
 motor_aus = Achtung! Motor ist aus
@@ -109,7 +109,7 @@ ansagen_ein = Ansagen ein
 ```
 
 ## Akkus nach Rolle (Gas Engine ECU ab 1.2.0, Gas Engine Carb ab 0.3.0)
-Jeder der bis zu 3 Akkus hat im Menü eine Rolle: Empfänger, Zündung, Anlasser, ECU oder Akku. Die Ansage richtet sich nach der Rolle (Dateien `empf1_…`, `empf2_…`, `anlass_…`). Für die Rolle «Akku» und für Rollen ohne eigene Datei kommt die allgemeine Ansage «Akku Nummer n» (`akku1_…` bis `akku3_…`, gleiche Dateien wie beim Vergaser). Ausserdem nutzt die ECU ab 1.2.0 `zyl3_…` und `zyl4_…` des Vergasers.
+Jeder der bis zu 3 Akkus hat im Menü eine Rolle: Empfänger, Zündung, Anlasser, ECU oder Akku. Die Ansage richtet sich nach der Rolle (Dateien `empf1_…`, `empf2_…`, `anlass_…`). Für die Rolle «Akku» und für Rollen ohne eigene Datei kommt die allgemeine Ansage «Akku Nummer n» (`akku1_…` bis `akku3_…`, gleiche Dateien wie beim Vergaser). Ausserdem nutzt die ECU ab 1.2.0 `zyl3_…` und `zyl4_…` des Vergasers, ab 1.14.0 auch `zyl5_…` (beide Widgets).
 
 **Seit ECU 1.4.0 / Vergaser 0.4.0 vorhanden** (vorher kam die allgemeine Ansage):
 | Dateiname | Text DE | Text EN |
@@ -133,6 +133,8 @@ zyl3_heiss = Zilinder Nummer drei, zu heiss
 zyl3_alarm = Achtung! Zilinder Nummer drei, viel zu heiss
 zyl4_heiss = Zilinder Nummer vier, zu heiss
 zyl4_alarm = Achtung! Zilinder Nummer vier, viel zu heiss
+zyl5_heiss = Zilinder Nummer fünf, zu heiss
+zyl5_alarm = Achtung! Zilinder Nummer fünf, viel zu heiss
 akku1_tief = Akku Nummer eins, Spannung tief
 akku2_tief = Akku Nummer zwei, Spannung tief
 akku3_tief = Akku Nummer drei, Spannung tief
@@ -150,6 +152,8 @@ zyl3_heiss = Cylinder three, too hot
 zyl4_heiss = Cylinder four, too hot
 zyl3_alarm = Warning! Cylinder three, overheating
 zyl4_alarm = Warning! Cylinder four, overheating
+zyl5_heiss = Cylinder five, too hot
+zyl5_alarm = Warning! Cylinder five, overheating
 akku1_tief = Battery one, voltage low
 akku2_tief = Battery two, voltage low
 akku3_tief = Battery three, voltage low

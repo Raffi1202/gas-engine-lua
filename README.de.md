@@ -14,14 +14,14 @@ Farbe, Ansage und Vibration. Anzeige, Menü und Ansagen deutsch und englisch.
 
 | Widget | Für | Version | Ordner auf der SD-Karte |
 |---|---|---|---|
-| **Gas Engine ECU** | Einspritzmotoren mit ECU (Drehzahl, Zylinder, Kraftstoffdruck, ECU-Spannung) | 1.13.1 | `SD:/scripts/gas_ecu/` |
-| **Gas Engine Carb** | Vergasermotoren, z. B. mit FrSky AES / AES II | 0.13.1 | `SD:/scripts/gas_carb/` |
+| **Gas Engine ECU** | Einspritzmotoren mit ECU (Drehzahl, Zylinder, Kraftstoffdruck, ECU-Spannung) | 1.14.0 | `SD:/scripts/gas_ecu/` |
+| **Gas Engine Carb** | Vergasermotoren, z. B. mit FrSky AES / AES II | 0.14.0 | `SD:/scripts/gas_carb/` |
 
 ![Seite 1 der Gas Engine ECU im Simulator](docs/bilder-simulator/Gas%20Engine%20ECU%20-%20Sim%20800x480%2001%20Seite%201%20Normal.png)
 
-**Stand:** öffentliche Vorabversion (public beta). Gas Engine ECU 1.13.1 / Carb 0.13.1 sind Vorabversionen. Am Sender getestet (X18RS, Ethos 26.2.0): ECU 1.11 und 1.12.3, Carb 0.12.5; Neueres im Ethos-Simulator. Benutzung auf eigene Gefahr. Lizenz: GPL-3.0, siehe unten.
+**Stand:** öffentliche Vorabversion (public beta). Gas Engine ECU 1.14.0 / Carb 0.14.0 sind Vorabversionen. Am Sender getestet (X18RS, Ethos 26.2.0): ECU 1.11 und 1.12.3, Carb 0.12.5; Neueres im Ethos-Simulator. Benutzung auf eigene Gefahr. Lizenz: GPL-3.0, siehe unten.
 
-**Neu in Gas Engine ECU 1.13.1 / Carb 0.13.1:** Einstellung **«Gas umkehren»** (Menü, direkt unter «Gas (Kanal)», ab Werk aus) für alle, die Gas Reverse fliegen (Vollgas = Knüppel hinten). Sie dreht Gas % um für den Gasbalken, die Choke-Warnung «ab Gas» und Lua-Studio.
+**Neu in Gas Engine ECU 1.14.0 / Carb 0.14.0:** bis **5 Zylinder** (Balken wie bisher, neues Sensorfeld «Zylinder 5 Temp.» mit Warnung, Alarm und Ansagen), Seite 1 braucht weniger Lua-Befehle je Bild.
 
 **Neu in Gas Engine ECU 1.13.0 / Carb 0.13.0:** die Lua-Studio-Datei als `Standard.gas_ecu.lua` / `Standard.gas_carb.lua` speichern. Reihenfolge: Wahl im Widget-Menü › Datei des Modells (`<Modell>.gas_ecu.lua`) › `Standard`-Datei › eingebaute Anzeige. Im Menü steht «Standard (alle Modelle)»; Änderungen am Sender bleiben pro Modell (`<Modell>.gas_ecu.funke.lua`). Heisst ein Modell «Standard», gilt die Datei als seine Modelldatei.
 
@@ -34,7 +34,7 @@ Lua-Studio-Grenze ohne Zahl behält die Werkgrenze; Speicher wird beim Modellwec
 
 ## Schnellstart
 
-1. Aus dem neusten **Release** `Gas-Engine-ECU-1.13.1.zip` oder `Gas-Engine-Carb-0.13.1.zip` laden.
+1. Aus dem neusten **Release** `Gas-Engine-ECU-1.14.0.zip` oder `Gas-Engine-Carb-0.14.0.zip` laden.
 2. Sender per USB anschliessen, am Sender **Ethos Suite** wählen, am Computer die **FrSky Suite** öffnen.
 3. Suite › **Lua-Bibliothek** › **Von lokaler ZIP installieren** › die ZIP wählen (nicht entpacken). Sender neu starten.
 4. Modell › **DISP** › neuer Bildschirm im Layout **Vollbild** › Widget wählen.

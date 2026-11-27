@@ -14,14 +14,14 @@ vibration. Display, menu and voice in German and English.
 
 | Widget | For | Version | Folder on the SD card |
 |---|---|---|---|
-| **Gas Engine ECU** | Fuel-injected engines with an ECU (RPM, cylinders, fuel pressure, ECU voltage) | 1.13.1 | `SD:/scripts/gas_ecu/` |
-| **Gas Engine Carb** | Carburettor engines, e.g. with FrSky AES / AES II | 0.13.1 | `SD:/scripts/gas_carb/` |
+| **Gas Engine ECU** | Fuel-injected engines with an ECU (RPM, cylinders, fuel pressure, ECU voltage) | 1.14.0 | `SD:/scripts/gas_ecu/` |
+| **Gas Engine Carb** | Carburettor engines, e.g. with FrSky AES / AES II | 0.14.0 | `SD:/scripts/gas_carb/` |
 
 ![Gas Engine ECU page 1 (English, Ethos simulator)](docs/bilder-simulator/Gas%20Engine%20ECU%20-%20Sim%20800x480%2012%20Englisch%20Seite%201%20Alarm.png)
 
-**Status:** public pre-release (public beta). Gas Engine ECU 1.13.1 / Carb 0.13.1 are pre-releases. Tested on the radio (X18RS, Ethos 26.2.0): ECU 1.11 and 1.12.3, Carb 0.12.5; newer parts in the Ethos simulator. Use at your own risk. License: GPL-3.0, see below.
+**Status:** public pre-release (public beta). Gas Engine ECU 1.14.0 / Carb 0.14.0 are pre-releases. Tested on the radio (X18RS, Ethos 26.2.0): ECU 1.11 and 1.12.3, Carb 0.12.5; newer parts in the Ethos simulator. Use at your own risk. License: GPL-3.0, see below.
 
-**New in Gas Engine ECU 1.13.1 / Carb 0.13.1:** setting **«Reverse throttle»** (menu, directly below «Throttle (channel)», off by default) for pilots who fly throttle reverse (full throttle = stick back). It turns the throttle % round for the throttle bar, the choke warning «from throttle» and Lua-Studio.
+**New in Gas Engine ECU 1.14.0 / Carb 0.14.0:** up to **5 cylinders** (bars as before, new sensor field «Cylinder 5 temp.» with warning, alarm and voice announcements), page 1 needs fewer Lua commands per picture.
 
 **New in Gas Engine ECU 1.13.0 / Carb 0.13.0:** save the Lua-Studio file as `Standard.gas_ecu.lua` / `Standard.gas_carb.lua`. Order: choice in the widget menu › file of the model (`<model>.gas_ecu.lua`) › `Standard` file › built-in display. The menu shows «Default (all models)»; changes made on the radio stay per model (`<model>.gas_ecu.funke.lua`). A model named «Standard» uses the file as its own model file.
 
@@ -34,7 +34,7 @@ a Lua-Studio limit without a number keeps the factory limit; memory is freed on 
 
 ## Quick start
 
-1. Download `Gas-Engine-ECU-1.13.1.zip` or `Gas-Engine-Carb-0.13.1.zip` from the latest **release**.
+1. Download `Gas-Engine-ECU-1.14.0.zip` or `Gas-Engine-Carb-0.14.0.zip` from the latest **release**.
 2. Connect the radio by USB, choose **Ethos Suite** on the radio and open **FrSky Suite** on the computer.
 3. Suite › **Lua library** › **Install from local ZIP** › choose the ZIP (do not unzip it). Restart the radio.
 4. Model › **DISP** › new screen with layout **full screen** › choose the widget.

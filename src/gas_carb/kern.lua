@@ -243,7 +243,7 @@ function K.neu()
     tk = { verbr = 0, pt = {}, pv = {}, pn = 0 },
     akku = { {}, {}, {} },
     rb = { k = {}, spitze = 0 },
-    tr = { {}, {}, {}, {} }, trN = 0,
+    tr = { {}, {}, {}, {}, {} }, trN = 0,
     lauf = false, laufSumme = 0, gelesen = false, autoOffen = true, version = K.VERSION,
     ue = {},                -- Übersicht seit dem letzten Zurücksetzen (dauerhaft)
     schlepps = {},          -- abgeschlossene Flüge { ml, h, steig } (dauerhaft, höchstens MAX_SCHLEPPS)
@@ -319,7 +319,7 @@ local function uebersicht(w, dt)
     hoeher(ue, "steigMax", v.vario)
     tiefer(ue, "sinkMax", v.vario)
   end
-  for i = 1, 4 do hoeher(ue, "chtMax", v["cht" .. i]) end
+  for i = 1, 5 do hoeher(ue, "chtMax", v["cht" .. i]) end
   hoeher(ue, "rpmMax", v.rpm)
   hoeher(ue, "flussMax", w.tk.fluss)
   if v.ecuV and v.ecuV > 0 then tiefer(ue, "ecuMin", v.ecuV) end
@@ -332,7 +332,7 @@ local function uebersicht(w, dt)
       tiefer(sl, "sink", v.vario)
     end
     hoeher(sl, "fl", w.tk.fluss)
-    for i = 1, 4 do hoeher(sl, "cht", v["cht" .. i]) end
+    for i = 1, 5 do hoeher(sl, "cht", v["cht" .. i]) end
     hoeher(sl, "rpm", v.rpm)
     if v.ecuV and v.ecuV > 0 then tiefer(sl, "ecu", v.ecuV) end
     for i = 1, 3 do tiefer(sl, "zel", zelle(w.akku[i])) end
@@ -411,11 +411,11 @@ local function liesSchnell(w, now, dt)
   local c, v, g, h = w.cfg, w.v, w.g, w.hoch
   v.tele = telemetrie(w)
   if v.tele then w.teleWar = true end
-  -- Zylinder: nur so viele, wie im Menü eingestellt (1 bis 4)
+  -- Zylinder: nur so viele, wie im Menü eingestellt (1 bis 5)
   local nz = c.zylAnz
-  if nz ~= 1 and nz ~= 3 and nz ~= 4 then nz = 2 end
+  if nz ~= 1 and nz ~= 3 and nz ~= 4 and nz ~= 5 then nz = 2 end
   w.nZyl = nz
-  for i = 1, 4 do v["cht" .. i] = (i <= nz) and zahl(c["cht" .. i]) or nil end
+  for i = 1, 5 do v["cht" .. i] = (i <= nz) and zahl(c["cht" .. i]) or nil end
   v.rpm = zahl(c.rpm)
   if v.rpm and v.rpm < 0 then v.rpm = 0 end
   v.gas = prozent(c.gas)
@@ -431,7 +431,7 @@ local function liesSchnell(w, now, dt)
   v.hoehe, v.vario, v.speed, v.rssi = zahl(c.hoehe), zahl(c.vario), zahl(c.speed), zahl(c.rssi)
 
   if v.tele then
-    for _, k in ipairs({ "cht1", "cht2", "cht3", "cht4", "rpm", "hoehe" }) do
+    for _, k in ipairs({ "cht1", "cht2", "cht3", "cht4", "cht5", "rpm", "hoehe" }) do
       local x = v[k]
       if x and (h[k] == nil or x > h[k]) then h[k] = x end
     end
@@ -538,7 +538,7 @@ local function trend(w)
   local v = w.v
   local n = w.trN % 6 + 1
   w.trN = w.trN + 1
-  for i = 1, 4 do
+  for i = 1, 5 do
     local r, x = w.tr[i], v["cht" .. i]
     local alt = r[n]
     r[n] = x
@@ -650,7 +650,7 @@ end
 -- eigenes Menüfeld) kommt immer.
 local MA = { zDiff = "maChtDiff", rpmA = "maRpm", rpmW = "maRpm", tankRes = "maTankProz", zd1 = "maAkkuDiff", zd2 = "maAkkuDiff", zd3 = "maAkkuDiff", kA = "maKanal",
   kW = "maKanal", rxA1 = "maRssi", rxW1 = "maRssi", rxA2 = "maRssi", rxW2 = "maRssi" }
-for i = 1, 4 do MA["zA" .. i], MA["zW" .. i] = "maChtMax", "maChtMax" end
+for i = 1, 5 do MA["zA" .. i], MA["zW" .. i] = "maChtMax", "maChtMax" end
 for i = 1, 3 do MA["za" .. i], MA["zw" .. i] = "maAkku" .. i, "maAkku" .. i end
 
 -- Schweigt diese Meldung (nur Ton, Ansage, Vibration; die Anzeige bleibt)? Nur bei Motorschalter auf Aus und Haken aus.
@@ -675,9 +675,9 @@ local function warnungen(w, now)
   local start = w.lauf and (now - w.laufSeit) < g.sperre
   local GC, VO, PR = UNIT_CELSIUS, UNIT_VOLT, UNIT_PERCENT
 
-  -- Zylinder 1..4: Alarm/Warnung je Zylinder, Unterschied = heissester minus kältester
+  -- Zylinder 1..5: Alarm/Warnung je Zylinder, Unterschied = heissester minus kältester
   local tMin, tMax
-  for i = 1, 4 do
+  for i = 1, 5 do
     local x = v["cht" .. i]
     local a = d and g.chtAlarm and x and x >= g.chtAlarm
     melde(w, now, "zA" .. i, 2, a, "ZYL " .. i .. " HEISS", "zyl" .. i .. "_alarm", x, GC, 0)
@@ -812,7 +812,7 @@ local function warnungen(w, now)
     w.zustand = "KEINE DATEN"
   elseif w.lauf then
     local kalt = false
-    for i = 1, 4 do local x = v["cht" .. i]; if g.chtKalt and x and x < g.chtKalt then kalt = true end end
+    for i = 1, 5 do local x = v["cht" .. i]; if g.chtKalt and x and x < g.chtKalt then kalt = true end end
     w.zustand = kalt and "WARMLAUF" or "LÄUFT"
   else
     w.zustand = "AUS"

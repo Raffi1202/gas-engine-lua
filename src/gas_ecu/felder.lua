@@ -9,7 +9,7 @@
 local M = {}
 
 local POS = { { "oben", 1 }, { "Mitte", 2 }, { "unten", 3 } }
-local ZYL = { { "1", 1 }, { "2", 2 }, { "3", 3 }, { "4", 4 } }
+local ZYL = { { "1", 1 }, { "2", 2 }, { "3", 3 }, { "4", 4 }, { "5", 5 } }
 -- Rolle eines Akkus: bestimmt Name und Ansage (Empfänger mehrfach möglich, dann mit Nummer)
 local ROLLE = { { "Empfänger", 1 }, { "Zündung", 2 }, { "Anlasser", 3 }, { "ECU", 4 }, { "Akku", 5 } }
 M.ROLLE = ROLLE
@@ -26,6 +26,7 @@ M.gruppen = {
     { "cht2", "q", "Zylinder 2 Temp." },
     { "cht3", "q", "Zylinder 3 Temp." },
     { "cht4", "q", "Zylinder 4 Temp." },
+    { "cht5", "q", "Zylinder 5 Temp." },
     { "rpm", "q", "Drehzahl" },
     { "druck", "q", "Kraftstoffdruck" },
     { "ecuV", "q", "ECU-Spannung" },
@@ -192,6 +193,8 @@ M.folge = {
   "maChtMax", "maChtDiff", "maRpm", "maDruck", "maEcuV", "maTankProz", "maRestzeit", "maAkku1", "maAkku2", "maAkku3", "maAkkuDiff", "maKanal", "maRssi",
   -- ab ECU 1.13.1 / Carb 0.13.1: «Gas umkehren» (Ja/Nein, Datei nach Namen; keine Quelle, FORMAT bleibt 7)
   "gasInv",
+  -- ab ECU 1.14.0: Zylinder 5 (Quelle, darum FORMAT 8)
+  "cht5",
 }
 
 -- Feld zu einem Namen (Verzeichnis einmal aufbauen: Ethos begrenzt die Befehle je Aufruf).
@@ -270,8 +273,9 @@ end
 -- FORMAT 6 (ab 1.9.0): Quellen unverändert; neu sind die Ja/Nein-Werte «Alarm auch bei Motor aus» (Datei, nach Namen).
 -- FORMAT 7 (Studio-Layout sicher finden): Quellen unverändert; nach «ende» steht die Wahl «Studio-Layout»
 -- («<Ort>:<Name>» oder leer = automatisch). FORMAT 6 hat dieselben Quellen ohne diesen Wert.
-M.FORMAT = 7
-local ENDE = { [3] = "stumm", [4] = "rxBatt", [5] = "rbChState" }
+M.FORMAT = 8
+local STUDIO_AB = 7   -- ab diesem FORMAT steht nach «ende» die Wahl «Studio-Layout»
+local ENDE = { [3] = "stumm", [4] = "rxBatt", [5] = "rbChState", [6] = "rbChState", [7] = "rbChState" }
 
 -- Quellen in Speicher-Reihenfolge; mit bis = Name nur die Quellen bis und mit diesem Feld (ältere Formate).
 local function quellen(bis)
@@ -334,7 +338,7 @@ function M.lies(w)
         gefunden = true
         for i, name in ipairs(q) do c[name] = istQuelle(werte[i]) and werte[i] or nil end
         w.wahl = nil
-        if fmt == M.FORMAT then
+        if fmt >= STUDIO_AB then
           local s = hol("studio")
           if type(s) == "string" and s ~= "" and #s <= 48 then w.wahl = s end
         end

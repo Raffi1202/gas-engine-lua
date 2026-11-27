@@ -7,6 +7,7 @@ return {
   cht2 = { "Zylinder 2", "Cylinder 2", "°C", 0, 0, 300, nil },
   cht3 = { "Zylinder 3", "Cylinder 3", "°C", 0, 0, 300, nil },
   cht4 = { "Zylinder 4", "Cylinder 4", "°C", 0, 0, 300, nil },
+  cht5 = { "Zylinder 5", "Cylinder 5", "°C", 0, 0, 300, nil },
   cht_max = { "Zylinder max", "Cylinder max", "°C", 0, 0, 300, "ueber" },
   cht_diff = { "Zylinderunterschied", "Cylinder difference", "°C", 0, 0, 100, "ueber" },
   druck = { "Kraftstoffdruck", "Fuel pressure", "bar", 1, 0, 5, "unter" },

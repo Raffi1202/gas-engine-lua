@@ -20,8 +20,25 @@ end
 local function zylinder(w, L, Z, x0, b, top, h)
   local C, s, v, g, hoch, c = Z.C, L.s, w.v, w.g, w.hoch, w.cfg
   local n = w.nZyl or 2
-  local cw, bt, bh = b * (n == 4 and 0.15 or n == 3 and 0.19 or n == 1 and 0.30 or 0.24), top + 64 * s, h * 0.46
-  local tg = n == 4 and 20 or n == 3 and 24 or 28                  -- Schriftgrösse der Temperatur
+  local cw, bt, bh = b * (n == 5 and 0.12 or n == 4 and 0.15 or n == 3 and 0.19 or n == 1 and 0.30 or 0.24), top + 64 * s, h * 0.46
+  local tg = n == 5 and 17 or n == 4 and 20 or n == 3 and 24 or 28            -- Schriftgrösse der Temperatur
+  local rp = (n == 5 and 6 or 9) * s                              -- Kühlrippen: Überstand je Seite
+  local re = n >= 4 and 0 or 1                                     -- runde Ecken nur bis 3 Säulen (Befehle je Bild)
+  -- Schrift für Zahl + Pfeil und «°» (nur wenn es mit Abstand passt): je Fenster, Säulenzahl und Breite einmal ausmessen.
+  -- rawget: Studio-Plätze erben sonst über __index die Werte der Vollbild-Seite.
+  local zc = rawget(L, "zylC")
+  if not zc then zc = {}; L.zylC = zc end
+  local k = n * 4096 + floor(b)
+  local zo, grad, zg = zc[k], zc[-k], zc[k + 0.5]                 -- Schrift ohne / mit Trendpfeil
+  if not zo then
+    zo = tg
+    while zo > 12 and Z.breite(L, "888°", zo) + 4 * s > b / n do zo = zo - 2 end
+    grad = Z.breite(L, "888°", zo) + 4 * s <= b / n and "°" or ""
+    zg = zo
+    while zg > 12 and Z.breite(L, "888" .. grad, zg) + 16 * s > b / n - 2 * s do zg = zg - 2 end
+    zc[k], zc[-k], zc[k + 0.5] = zo, grad, zg
+  end
+  local fh = max(1, floor(3 * s + 0.5))
   for i = 1, n do
     local cx = x0 + b * (n == 2 and (i == 1 and 0.27 or 0.73) or (i - 0.5) / n)
     local da = c["cht" .. i]
@@ -30,11 +47,19 @@ local function zylinder(w, L, Z, x0, b, top, h)
     local farbe = zone(C, g, temp)
     Z.text(L, cx, top + 41 * s, "Z" .. i, 15, C.dim, CENTERED)
     Z.rechteck(cx - 4 * s, bt - 14 * s, 8 * s, 10 * s, C.grau)
-    Z.rund(cx - cw * 0.42, bt - 5 * s, cw * 0.84, 8 * s, 3 * s, C.grau)
-    for k = 1, 8 do
-      Z.rechteck(cx - cw / 2 - 9 * s, bt + 4 * s + bh * k / 9 - 1.5 * s, cw + 18 * s, 3 * s, C.grau)
+    local fx, fb = floor(cx - cw / 2 - rp), floor(cw + 2 * rp + 0.5)
+    if re == 1 then Z.rund(cx - cw * 0.42, bt - 5 * s, cw * 0.84, 8 * s, 3 * s, C.grau) end
+    lcd.color(C.grau)
+    if re == 0 then lcd.drawFilledRectangle(floor(cx - cw * 0.42), floor(bt - 5 * s), floor(cw * 0.84), floor(8 * s)) end   -- Deckel
+    for k = 1, 8 do lcd.drawFilledRectangle(fx, floor(bt + 4 * s + bh * k / 9 - 1.5 * s), fb, fh) end   -- Kühlrippen
+    if re == 1 then
+      Z.feld(cx - cw / 2, bt + 4 * s, cw, bh, 4 * s, C.grau, C.dunkel, max(1, floor(1.5 * s)))
+    else                                                           -- Rohr mit Rand, eckig: direkt zwei Rechtecke
+      local rd, rx, ry, rb, rh = max(1, floor(1.5 * s)), floor(cx - cw / 2), floor(bt + 4 * s), floor(cw), floor(bh)
+      lcd.drawFilledRectangle(rx, ry, rb, rh)
+      lcd.color(C.dunkel)
+      lcd.drawFilledRectangle(rx + rd, ry + rd, rb - 2 * rd, rh - 2 * rd)
     end
-    Z.feld(cx - cw / 2, bt + 4 * s, cw, bh, 4 * s, C.grau, C.dunkel, max(1, floor(1.5 * s)))
     if temp then
       local fh = (bh - 4) * anteil(temp, g.chtVon, g.chtBis)
       Z.rechteck(cx - cw / 2 + 2, bt + 4 * s + 2 + (bh - 4) - fh, cw - 4, fh, farbe)
@@ -46,13 +71,13 @@ local function zylinder(w, L, Z, x0, b, top, h)
     local ty = bt + bh + 30 * s
     if temp then
       local tr = v["trend" .. i] or 0
-      local t = Z.zahl(temp, 0) .. "°"
+      local t = Z.zahl(temp, 0) .. grad
       if tr == 0 then
-        Z.text(L, cx, ty, t, tg, farbe, CENTERED, b / n)
+        Z.text(L, cx, ty, t, zo, farbe, CENTERED, b / n - 4 * s)   -- Abstand zur Nachbarspalte
       else
-        local tb = Z.breite(L, t, tg)
+        local tb = Z.breite(L, t, zg)
         local x = cx - (tb + 16 * s) / 2
-        Z.text(L, x, ty, t, tg, farbe, LEFT)
+        Z.text(L, x, ty, t, zg, farbe, LEFT)
         Z.pfeil(x + tb + 3 * s, ty, 6 * s, tr, farbe)
       end
     elseif da then

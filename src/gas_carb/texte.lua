@@ -124,6 +124,7 @@ local cache, n = {}, 0
 -- Übersetzt einen Text der Anzeige ins Englische.
 return function(t)
   if type(t) ~= "string" or t == "" then return t end
+  if not t:find("%a") then return t end   -- nur Zahlen und Zeichen (z. B. «128°»): nichts zu übersetzen, Cache bleibt frei
   local r = cache[t]
   if r then return r end
   r = SATZ[t]

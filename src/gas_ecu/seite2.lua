@@ -20,11 +20,12 @@ local function akku(w, L, Z, i, x0, y0, b, h)
   local f = (a.alarm and C.rot) or (a.warn and C.orange) or nil
   Z.feld(x0, y0, b, h, 10 * s, f or C.rand, C.panel, f and max(2, floor(2 * s)) or 1)
   local name = (g.aName and g.aName[i]) or ("AKKU " .. i)
-  local nS = a.n > 0 and a.n or (g.aS and g.aS[i] or 0)
+  local an = a.n or 0                                     -- vor dem ersten wakeup noch ohne Zellenzahl
+  local nS = an > 0 and an or (g.aS and g.aS[i] or 0)
   local kopfY = y0 + max(12, 16 * s)                      -- auf kleinen Anzeigen nicht auf den Rand
   Z.text(L, x0 + 10 * s, kopfY, name, kl and 12 or 14, C.dim, LEFT, b - (nS > 0 and 44 or 20) * s)
   if nS > 0 then Z.text(L, x0 + b - 10 * s, kopfY, nS .. "S", kl and 12 or 14, C.dim, RIGHT) end
-  local n = a.n
+  local n = an
   if n == 0 then
     -- nur Gesamtspannung (kein Zellensensor): Gesamtspannung oben, EIN Balken mit der mittleren Zelle
     -- (Gesamt / Zellenzahl aus dem Menü), darunter der Mittelwert; ohne Zellenzahl ein Hinweis

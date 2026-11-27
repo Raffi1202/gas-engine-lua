@@ -84,9 +84,11 @@ do
         c.zuendAkku = Q(7.9, "V", 0, 20, 2); c.rbK1 = Q(1.2, "A", 0, 20, 1); c.rbK2 = Q(0.4, "A", 0, 20, 1)
       elseif SZ == "spannung" then
         c.lipo1 = Q(24.3, "V", 0, 30, 2); c.a1S = 6; c.a1Rolle = 4; c.z1Warn = 370
-      elseif SZ == "zyl3" or SZ == "zyl4" then
-        c.zylAnz = SZ == "zyl3" and 3 or 4
+      elseif SZ == "zyl1" or SZ == "zyl2" or SZ == "zyl3" or SZ == "zyl4" or SZ == "zyl5" or SZ == "zyl5heiss" then
+        c.zylAnz = tonumber(SZ:sub(4, 4))
         c.cht3 = Q(function() return d.z1 + 6 end, "°C", 0, 300); c.cht4 = Q(function() return d.z2 - 3 end, "°C", 0, 300)
+        c.cht5 = Q(function() if SZ == "zyl5heiss" and zeit0 then return os.clock() - zeit0 < 6 and 180 or 238 end return d.z1 - 8 end,
+          "°C", 0, 300)   -- zyl5heiss: über «Warnung» (170), nach 6 s über «Alarm» (190); Unterschied zu Zyl. 2 > 25
       end
     elseif SZ == "teil" then
       -- nur ein Teil zugewiesen: Zylinder, Drehzahl, Höhe; Drehzahl-Sensor fällt nach 8 s weg
@@ -124,6 +126,8 @@ do
     if GROESSE == 3 then lcd.getWindowSize = function() return 784, 316 end end   -- Kompakt X20/X18RS
     if GROESSE == 4 then lcd.getWindowSize = function() return 472, 210 end end   -- Kompakt X18
     if GROESSE == 5 then lcd.getWindowSize = function() return 630, 258 end end   -- Kompakt X14
+    if GROESSE == 6 then lcd.getWindowSize = function() return 640, 360 end end   -- Vollbild 640 x 360
+    if GROESSE == 7 then lcd.getWindowSize = function() return 480, 272 end end   -- Vollbild 480 x 272
     local r = weckeAlt(w)
     local t = now - zeit0
     if SZ == "wechsel" and t > 2 and (w.nW or 0) < 10 and t - (w.tW or 0) > 1.5 then   -- Modellwechsel 10x (Studio neu laden)

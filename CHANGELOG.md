@@ -2,6 +2,15 @@
 
 Older entries (before ECU 1.9.0 / Vergaser 0.9.0) in German.
 
+## Gas Engine ECU 1.14.0 / Gas Engine Carb 0.14.0 – 27.11.2026 (pre-release)
+- **Up to 5 cylinders:** «Number of cylinders» 1 to 5, new sensor field **«Cylinder 5 temp.»** (DE «Zylinder 5 Temp.») directly below «Cylinder 4 temp.». Cylinder 5 works like the others: warning and alarm with voice announcements (`zyl5_heiss`, `zyl5_alarm`, German and English), «Diff | max», cylinder difference, choke warning, cold display, trend arrow, overview and flight list, sensor search, Lua-Studio value `cht5`.
+- Page 1 draws 5 bars as before (narrower). Temperature and trend arrow get a font that fits the column; on very narrow columns (e.g. 480×272) the «°» is left out so the numbers do not touch.
+- Storage: the new source is stored at the end, storage FORMAT +1 (ECU 8, Carb 7). Updating from 1.13.1 / 0.13.1 keeps every sensor, setting and the Studio layout choice; «Number of cylinders» stays as stored.
+- Fewer Lua commands per picture on page 1: the font size of the temperatures is measured once per window size, numbers without letters (e.g. «128°») skip the translator, and with 4 or 5 cylinders the bars are drawn as plain rectangles. Fixes paint above the limit with 4 cylinders assigned (up to 10,531 before, Mac count).
+- Command counts (Mac, 3 seeds × 20,000 calls, page 1 fixed to 4 resp. 5 cylinders): ECU paint at most 8,956 (4) / 9,615 (5), Carb at most 8,924 (4) / 9,680 (5); wakeup at most 4,736.
+- Fixed: page 2 could stop drawing when it was painted before the first reading (cell count still empty); found by the random test.
+- German announcements for cylinders 1 and 2 are now pronounced like those for cylinders 3 to 5.
+
 ## Gas Engine ECU 1.13.1 / Gas Engine Carb 0.13.1 – 24.11.2026 (pre-release)
 - New setting **«Reverse throttle»** (DE «Gas umkehren»), yes/no, off by default, in the menu directly below «Throttle (channel)». For pilots who fly throttle reverse (full throttle = stick back): throttle % = 100 − channel %. Applies everywhere the throttle is used: throttle bar, compact view, the choke warning «from throttle» and the Lua-Studio value `lua:gas`. Lua-Studio key `gas_inv`.
 - Stored by name in the settings file; no new source, storage FORMAT unchanged. Updating from 1.13.0 / 0.13.0 keeps every setting, «Reverse throttle» is off afterwards.
